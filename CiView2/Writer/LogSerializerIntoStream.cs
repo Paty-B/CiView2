@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Writer
 {
@@ -54,7 +55,9 @@ namespace Writer
                     writer.Write((byte)group.GroupLevel);
                     writer.Write(group.GroupText);
                     writer.Write(group.LogTimeUtc.ToBinary());
-                    //exception
+                    //Add exception
+                    BinaryFormatter bFormatter = new BinaryFormatter();
+                    bFormatter.Serialize(writer.BaseStream, group.Exception);
                 }
             }
         }
