@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Writer
 {
-    public class LogSerializerIntoStream : IActivityLoggerClient
+    public class LogSerializerIntoStream : IActivityLoggerClient, IDisposable
     {
         private const byte VERSION = 2;
         private const int LOG_TYPE_COUNT = 4;
@@ -26,6 +26,8 @@ namespace Writer
 
         public void OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
         {
+            if (_stream == null)
+                throw new InvalidOperationException("the stream is close");
             using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
             {
                 writer.Write(_cacheHeaders[(int)LogType.OnUnfilteredLog]);
@@ -38,6 +40,8 @@ namespace Writer
 
         public void OnOpenGroup(IActivityLogGroup group)
         {
+            if (_stream == null)
+                throw new InvalidOperationException("the stream is close");
             using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
             {
                 if (group.Exception == null)
@@ -64,6 +68,8 @@ namespace Writer
         
         public void OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
         {
+            if (_stream == null)
+                throw new InvalidOperationException("the stream is close");
             using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
             {
                 writer.Write(_cacheHeaders[(int)LogType.OnGroupClosed]);
@@ -91,5 +97,15 @@ namespace Writer
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
+            {
+                writer.Write((byte)0);
+            }
+            _stream.Close();
+            _stream = null;
+        }
     }
 }
