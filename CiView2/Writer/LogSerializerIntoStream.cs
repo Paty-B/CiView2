@@ -11,54 +11,36 @@ namespace Writer
 {
     public class LogSerializerIntoStream : IActivityLoggerClient, IDisposable
     {
-        private const byte VERSION = 2;
-        private const int LOG_TYPE_COUNT = 4;
+        public const LogSerializerHelper _helper = 
+            new LogSerializerHelper(
+                /* VERSION          */ 2,
+                /* LOG TYPE COUNT   */ 4    );
 
         private Stream _stream;
-        private byte[] _cacheHeaders = new byte[LOG_TYPE_COUNT];
 
         public LogSerializerIntoStream(Stream stream)
         {
             _stream = stream;
-            for (int i = 0; i < LOG_TYPE_COUNT; i++)
-                _cacheHeaders[i] = (byte)((VERSION << 4)+i);
         }
 
         public void OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
         {
-            if (_stream == null)
-                throw new InvalidOperationException("the stream is close");
-            using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
-            {
-                writer.Write(_cacheHeaders[(int)LogType.OnUnfilteredLog]);
-                writer.Write(tags.ToString());
-                writer.Write((byte)level);
-                writer.Write(text);
-                writer.Write(logTimeUtc.ToBinary());
-            }
+            EasyWriteLog(LogType.OnUnfilteredLog, tags, level, text, logTimeUtc);
         }
 
         public void OnOpenGroup(IActivityLogGroup group)
         {
             if (_stream == null)
-                throw new InvalidOperationException("the stream is close");
+                throw new NullReferenceException("Stream is not define");
             using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
             {
                 if (group.Exception == null)
                 {
-                    writer.Write(_cacheHeaders[(int)LogType.OnOpenGroup]);
-                    writer.Write(group.GroupTags.ToString());
-                    writer.Write((byte)group.GroupLevel);
-                    writer.Write(group.GroupText);
-                    writer.Write(group.LogTimeUtc.ToBinary());
+                    EasyWriteLog(LogType.OnOpenGroup, group.GroupTags, group.GroupLevel, group.GroupText, group.LogTimeUtc);
                 }
                 else
                 {
-                    writer.Write(_cacheHeaders[(int)LogType.OnOpenGroupWithException]);
-                    writer.Write(group.GroupTags.ToString());
-                    writer.Write((byte)group.GroupLevel);
-                    writer.Write(group.GroupText);
-                    writer.Write(group.LogTimeUtc.ToBinary());
+                    EasyWriteLog(LogType.OnOpenGroupWithException, group.GroupTags, group.GroupLevel, group.GroupText, group.LogTimeUtc);
                     //Add exception
                     BinaryFormatter bFormatter = new BinaryFormatter();
                     bFormatter.Serialize(writer.BaseStream, group.Exception);
@@ -68,21 +50,29 @@ namespace Writer
         
         public void OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
         {
-            if (_stream == null)
-                throw new InvalidOperationException("the stream is close");
             using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
             {
-                writer.Write(_cacheHeaders[(int)LogType.OnGroupClosed]);
-                writer.Write(group.GroupTags.ToString());
-                writer.Write((byte)group.GroupLevel);
-                writer.Write(group.GroupText);
-                writer.Write(group.LogTimeUtc.ToBinary());
+                EasyWriteLog(LogType.OnGroupClosed, group.GroupTags, group.GroupLevel, group.GroupText, group.CloseLogTimeUtc);
                 writer.Write(conclusions.Count);
                 foreach (ActivityLogGroupConclusion conclusion in conclusions)
                 {
                     writer.Write(conclusion.Tag.ToString());
                     writer.Write(conclusion.Text);
                 }
+            }
+        }
+
+        private void EasyWriteLog(LogType logType, CKTrait tags, LogLevel logLevel, string text, DateTime LogTimeUtc)
+        {
+            if (_stream == null)
+                throw new NullReferenceException("Stream is not define");
+            using (BinaryWriter writer = new BinaryWriter(_stream, Encoding.UTF8))
+            {
+                writer.Write(_helper.Hearder(logType));
+                writer.Write(tags.ToString());
+                writer.Write((byte)logLevel);
+                writer.Write(text);
+                writer.Write(LogTimeUtc.ToBinary());
             }
         }
 
