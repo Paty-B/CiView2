@@ -12,17 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Viewer.View;
 
 namespace Viewer
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LogViewer : Window
     {
-        public MainWindow()
+        public LogViewer()
         {
             InitializeComponent();
+        }
+        private void WindowLoaded(object sender, EventArgs e)
+        {
+            VisualHost visualHost = new VisualHost();
+            //MyCanvas.Children.Add(visualHost);
         }
     }
 }
