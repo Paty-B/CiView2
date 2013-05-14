@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\CKCore\CK.Core\bin\Debug\NET45\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\ck-core\CK.Core\bin\Debug\NET40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

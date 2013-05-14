@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CK.Core">
+      <HintPath>..\..\..\ck-core\CK.Core\bin\Debug\NET40\CK.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -53,7 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="userControl.xaml.cs">
+      <DependentUpon>userControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VisualHost.cs" />
+    <Page Include="LogViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -61,12 +69,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="LogViewer.xaml.cs">
+      <DependentUpon>LogViewer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="userControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\BagItems.cs" />
+    <Compile Include="Model\FiltredLineItem.cs" />
+    <Compile Include="Model\LineItem.cs" />
+    <Compile Include="Model\LogLineItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

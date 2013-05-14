@@ -11,7 +11,7 @@ namespace Writer
 {
     public class LogSerializerIntoStream : IActivityLoggerClient, IDisposable
     {
-        public const LogSerializerHelper _helper = 
+        public LogSerializerHelper _helper =
             new LogSerializerHelper(
                 /* VERSION          */ 2,
                 /* LOG TYPE COUNT   */ 4    );

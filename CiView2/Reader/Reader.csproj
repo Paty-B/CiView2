@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\..\..\lib\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\ck-core\CK.Core\bin\Debug\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,7 +45,6 @@
     <Compile Include="LogData.cs" />
     <Compile Include="LogDeserializerFromStream.cs" />
     <Compile Include="LogRecorder.cs" />
-    <Compile Include="OldLogDeserializerFromStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
