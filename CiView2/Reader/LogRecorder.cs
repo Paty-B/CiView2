@@ -11,10 +11,10 @@ namespace Reader
     public class LogRecorder
     {
         List<LogData> _logs;
-        LogDeserializerFromStream _readerHelper;
+        LogReader _readerHelper;
         public LogRecorder(Stream s)
         {
-            _readerHelper = new LogDeserializerFromStream(s);
+            _readerHelper = new LogReader(s);
             _logs = new List<LogData>();
         }
 

@@ -45,7 +45,6 @@
     <Compile Include="LogData.cs" />
     <Compile Include="LogDeserializerFromStream.cs" />
     <Compile Include="LogRecorder.cs" />
-    <Compile Include="OldLogDeserializerFromStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

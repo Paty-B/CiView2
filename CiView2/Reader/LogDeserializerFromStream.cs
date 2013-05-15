@@ -10,18 +10,65 @@ using Writer;
 
 namespace Reader
 {
-    class LogDeserializerFromStream 
+    class LogReader 
     {
-        private Stream _stream;
-        private BinaryReader _binaryReader;
-        private BinaryFormatter _binaryFormatter;
-       
+        readonly Stream _stream;
+        readonly BinaryReader _binaryReader;
+        readonly BinaryFormatter _binaryFormatter;
 
-        public LogDeserializerFromStream(Stream s)
+        public LogReader( Stream s )
         {
             _stream = s;
             _binaryReader = new BinaryReader(s, Encoding.UTF8);
             _binaryFormatter = new BinaryFormatter();
+        }
+
+        class EnumImpl : IEnumerable<LogData>
+        {
+
+            class Enumerator : IEnumerator<LogData>
+            {
+
+                public LogData Current
+                {
+                    get { throw new NotImplementedException(); }
+                }
+
+                public void Dispose()
+                {
+                    // Close the file stream.
+                }
+
+                object System.Collections.IEnumerator.Current
+                {
+                    get { return Current; }
+                }
+
+                public bool MoveNext()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void Reset()
+                {
+                    throw new NotSupportedException();
+                }
+            }
+
+            public IEnumerator<LogData> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        public static IEnumerable<LogData> Open( string filePath )
+        {
+
         }
 
         public LogData Read()
