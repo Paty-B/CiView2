@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F016BCD0-1A8D-44C2-99C0-1ED7BA3DE7C7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{7FBDC6EA-C7C5-46DC-879E-D7CA6CC4408E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reader</RootNamespace>
-    <AssemblyName>Reader</AssemblyName>
+    <RootNamespace>Console</RootNamespace>
+    <AssemblyName>Console</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,14 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogData.cs" />
-    <Compile Include="LogDataCloseGroup.cs" />
-    <Compile Include="LogDataOpenGroup.cs" />
-    <Compile Include="LogReader.cs" />
-    <Compile Include="LogPlayer.cs" />
+    <Compile Include="ChildGroup.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reader\Reader.csproj">
+      <Project>{f016bcd0-1a8d-44c2-99c0-1ed7ba3de7c7}</Project>
+      <Name>Reader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Writer\Writer.csproj">
       <Project>{f2f4a7b1-4a01-4a0d-8af3-82613fa90729}</Project>
       <Name>Writer</Name>

@@ -10,14 +10,11 @@ namespace Reader
 {
     public class LogData
     {
-        CKTrait _tag;
-        LogLevel _level;
-        string _text;
-        DateTime _date;
-        Exception _exception;
-        CKTrait[] _conclusionTraits;
-        string[] _conclusionTexts;
-
+         CKTrait _tag;
+         LogLevel _level;
+         string _text;
+         DateTime _date;
+        
         #region constructeurs
         
         internal LogData( string tag, byte level, string text, DateTime date )
@@ -27,20 +24,12 @@ namespace Reader
             _text = text;
             _date = date;
         }
-
-        internal LogData(string tag, byte level, string text, DateTime date, Exception e) 
-            : this(tag, level, text, date)
-        {
-            _exception = e;
-        }
-
-        internal LogData(string tag, byte level, string text, DateTime date, int nb, CKTrait[] cTraits, string[] cTexts )
-            : this(tag, level, text, date)
-        {
-            Debug.Assert(cTraits != null && cTexts != null && cTraits.Length > 0 && cTraits.Length == cTexts.Length);
-            _conclusionTraits = cTraits;
-            _conclusionTexts = cTexts;
-        }
+     
         #endregion
+
+        public CKTrait GetTag()
+        {
+            return _tag;
+        }
     }
 }

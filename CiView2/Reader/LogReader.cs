@@ -21,32 +21,46 @@ namespace Reader
             _stream = s;
             _binaryReader = new BinaryReader(s, Encoding.UTF8);
             _binaryFormatter = new BinaryFormatter();
+            
         }
+
+        #region Enumerable Implementation
 
         class EnumImpl : IEnumerable<LogData>
         {
+            Enumerator enumerator;
+
+            public EnumImpl(Stream s)
+            {
+                enumerator = new Enumerator(s);
+            }
 
             class Enumerator : IEnumerator<LogData>
             {
+                LogReader lr;
+                LogData current;
 
-                public LogData Current
+                public Enumerator(Stream s)
                 {
-                    get { throw new NotImplementedException(); }
+                    lr = new LogReader(s);
                 }
-
-                public void Dispose()
-                {
-                    // Close the file stream.
-                }
-
+                public LogData Current { get { return current; } }
+                
                 object System.Collections.IEnumerator.Current
                 {
                     get { return Current; }
                 }
 
+                public void Dispose()
+                {
+                    lr.Free();
+                }
+
                 public bool MoveNext()
                 {
-                    throw new NotImplementedException();
+                    if ((current = lr.Read()) == null)
+                        return false;
+                    return true;
                 }
 
                 public void Reset()
@@ -57,7 +71,7 @@ namespace Reader
 
             public IEnumerator<LogData> GetEnumerator()
             {
-                throw new NotImplementedException();
+                return enumerator;
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -66,15 +80,21 @@ namespace Reader
             }
         }
 
+        #endregion
+
         public static IEnumerable<LogData> Open( string filePath )
         {
-
+            return new EnumImpl(File.Open(filePath, FileMode.Open, FileAccess.Read));
         }
+
+
+        #region read function
 
         public LogData Read()
         {
             LogData ld = null;
             int nbConclusion = 0;
+            TabsBuilder ts;
             byte firstByte = _binaryReader.ReadByte();
             byte logType;
             if (firstByte == 0)
@@ -93,14 +113,15 @@ namespace Reader
                     return ld;
                     
                 case LogType.OnOpenGroup:
-                    ld = new LogData(_binaryReader.ReadString(),
+                    ld = new LogDataOpenGroup(_binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
-                                      DateTime.FromBinary(_binaryReader.ReadInt64()));
+                                      DateTime.FromBinary(_binaryReader.ReadInt64()),
+                                      null);
                     return ld;
 
                 case LogType.OnOpenGroupWithException:
-                    ld = new LogData(_binaryReader.ReadString(),
+                    ld = new LogDataOpenGroup(_binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()),
@@ -108,27 +129,37 @@ namespace Reader
                     return ld;
 
                 case LogType.OnGroupClosed:
-                    ld = new LogData(_binaryReader.ReadString(),
+                    ld = new LogDataCloseGroup(_binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()),
                                       nbConclusion = _binaryReader.ReadInt32(),
-                                      BuildDictionary(nbConclusion));
+                                      (ts = new TabsBuilder(nbConclusion, _binaryReader)).tags, ts.texts);
                     return ld;
 
                 default:
                     return null;
             }
-
         }
 
-        public Dictionary<String, String> BuildDictionary(int nb)
-        {
-            Dictionary<String, String> dict = new Dictionary<string, string>();
-            for (int i = 0; i < nb; i++)
-                dict.Add(_binaryReader.ReadString(), _binaryReader.ReadString());
+        #endregion
 
-            return dict;
+    internal class TabsBuilder
+    {
+        internal CKTrait[] tags { get; set; }
+        internal string[] texts { get; set; }
+
+        internal TabsBuilder(int nb, BinaryReader reader)
+        {
+            tags = new CKTrait[nb];
+            texts = new string[nb];
+
+            for (int i = 0; i < nb; i++)
+            {
+                tags[i] = ActivityLogger.RegisteredTags.FindOrCreate(reader.ReadString());
+                texts[i] = reader.ReadString();
+            }
+          }
         }
 
         public void Free()
