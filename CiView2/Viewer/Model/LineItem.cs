@@ -9,7 +9,7 @@ namespace Viewer.Model
     public abstract class LineItem
     {
         #region Properties
-        public BagItems Host { get; private set; }
+        public LineItemHost Host { get; internal set; }
         public LineItem Parent { get; internal set; }
         public LineItem Next { get; internal set; }
         public LineItem FirstChild { get; internal set; }
@@ -18,11 +18,13 @@ namespace Viewer.Model
         public int Depth { get; internal set; }
         public int LineHeight { get; set; }
         public int TotalLineHeight { get; set; }
-        public Status status;
+        public Status Status { get; internal set; }
         public int AbsoluteY;
         public int LocalY;
-        public int ID;
         public LineItem NextError;
+        public int NbFatal;
+        public int NbError;
+        public int NbWarning;
         #endregion
     }
 }

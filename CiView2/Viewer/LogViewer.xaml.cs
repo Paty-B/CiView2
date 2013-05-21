@@ -28,7 +28,6 @@ namespace Viewer
         private void WindowLoaded(object sender, EventArgs e)
         {
             VisualHost visualHost = new VisualHost();
-            //MyCanvas.Children.Add(visualHost);
         }
     }
 }

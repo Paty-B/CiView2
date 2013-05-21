@@ -8,5 +8,6 @@ namespace Viewer.Model
 {
     class FiltredLineItem : LineItem
     {
+        int height;
     }
 }

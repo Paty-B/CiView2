@@ -4,10 +4,7 @@
         xmlns:View="clr-namespace:Viewer.View" xmlns:local="clr-namespace:Viewer" x:Class="Viewer.LogViewer"
         Title="Ciview2" Height="600" Width="800">
     <Grid>
-        <Canvas HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="558">
-            <View:VisualHost Height="530" Canvas.Left="10" Canvas.Top="10" Width="752"/>
-        </Canvas>
-
+        <View:VisualHost Height="530" Width="752" Margin="10,10,30,30"/>
         <local:userControl HorizontalAlignment="Left" Margin="568,0,0,0" VerticalAlignment="Top" Height="570" Width="224"/>
 
     </Grid>

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Viewer.Model;
 
 namespace Viewer.View
 {
@@ -16,11 +17,22 @@ namespace Viewer.View
     {
         private VisualCollection _children;
         private int fontSize = 16;
+        private Point position = new Point(0,0);
 
 
         public VisualHost()
         {
             _children = new VisualCollection(this);
+            CreateFakeLog();
+            
+
+
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
+
+        }
+
+        private void CreateFakeLog()
+        {
             Point pt = new Point(0, 0);
             _children.Add(CreateDrawingVisualText("main log", LogLevel.Info, pt));
             _children.Add(CreateDrawingVisualSymbol(LogLevel.Info, new Point(pt.X - fontSize, pt.Y)));
@@ -42,10 +54,6 @@ namespace Viewer.View
             pt = decrementOnce(pt);
             _children.Add(CreateDrawingVisualText("groupe 1.2", LogLevel.Warn, pt));
             _children.Add(CreateDrawingVisualSymbol(LogLevel.Warn, new Point(pt.X - fontSize, pt.Y)));
-
-
-            this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
-
         }
 
         private Point incrementOnce(Point pt)
@@ -54,25 +62,97 @@ namespace Viewer.View
             pt = downOne(pt);
             return pt;
         }
-
         private Point decrementOnce(Point pt)
         {
             pt.X = pt.X - 20;
             pt = downOne(pt);
             return pt;
         }
-
         private Point downOne(Point pt)
         {
             pt.Y = pt.Y + fontSize;
             return pt;
         }
-
         private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition(this);
         }
+
+
+        private DrawingVisual DrawLogLineItem(LogLineItem logLineItem)
+        {
+            DrawingVisual drawingLogLineItem = new DrawingVisual();
+            DrawingContext drawingContext = drawingLogLineItem.RenderOpen();
+            Point drawingPosition = new Point(logLineItem.Depth-position.X, Math.Round((double)((logLineItem.AbsoluteY-position.Y) * fontSize)));
+
+
+            VisualDesigner.CreateExpender(drawingContext, drawingPosition, logLineItem.Status);
+            drawingPosition.X += fontSize;
+            VisualDesigner.CreateSymbol(drawingContext, drawingPosition, logLineItem.LogLevel);
+            drawingPosition.X += fontSize;
+            VisualDesigner.CreateContent(drawingContext, drawingPosition, logLineItem.Content);
+            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Content.Length);
+            VisualDesigner.CreateTag(drawingContext, drawingPosition, logLineItem.Tag);
+            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Tag.ToString().Length);
+            VisualDesigner.CreateNextLogIndicator(drawingContext, drawingPosition, logLineItem.NbWarning, logLineItem.NbError, logLineItem.NbFatal);
+
+
+            drawingContext.Close();
+            return drawingLogLineItem;
+        }
+
+        public DrawingVisual DrawFiltredLineItem(FiltredLineItem filtredLineItem)
+        {
+            DrawingVisual drawingFiltredLineItem = new DrawingVisual();
+            DrawingContext drawingContext = drawingFiltredLineItem.RenderOpen();
+            Point drawingPosition = new Point(filtredLineItem.Depth - position.X, Math.Round((double)((filtredLineItem.AbsoluteY - position.Y) * fontSize)));
+
+            VisualDesigner.CreateFiltredLogRepresentation(drawingContext, drawingPosition);
+
+            drawingContext.Close();
+            return drawingFiltredLineItem;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private DrawingVisual CreateDrawingVisualText(String text, LogLevel loglevel, Point pt)
         {
@@ -91,7 +171,6 @@ namespace Viewer.View
             drawingContext.Close();
             return drawingVisual;
         }
-
         private DrawingVisual CreateDrawingVisualSymbol(LogLevel loglevel, Point pt)
         {
             DrawingVisual drawingVisual = new DrawingVisual();
@@ -125,7 +204,12 @@ namespace Viewer.View
             return drawingVisual;
         }
 
-
+        public void GoToLineItem(LineItem lineItem)
+        {
+            position.X = lineItem.Depth;
+            position.Y = lineItem.AbsoluteY;
+            //mutiplicateur de position = position absolute de LineItem
+        }
         protected override int VisualChildrenCount
         {
             get { return _children.Count; }

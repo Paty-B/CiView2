@@ -60,6 +60,7 @@
     <Compile Include="userControl.xaml.cs">
       <DependentUpon>userControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\VisualDesigner.cs" />
     <Compile Include="View\VisualHost.cs" />
     <Page Include="LogViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -79,7 +80,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\BagItems.cs" />
+    <Compile Include="Model\LineItemHost.cs" />
     <Compile Include="Model\FiltredLineItem.cs" />
     <Compile Include="Model\LineItem.cs" />
     <Compile Include="Model\LogLineItem.cs" />

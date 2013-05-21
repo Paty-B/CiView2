@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    public class BagItems
+    public class LineItemHost
     {
         #region Properties
         public LineItem FirstChild { get; internal set; }
