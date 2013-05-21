@@ -11,12 +11,34 @@ namespace Reader
     public class LogPlayer
     {
         IEnumerable<LogData> _enum;
+        bool _Playing;
 
         public LogPlayer(string filePath)
         {
             _enum = LogReader.Open(filePath);
+            _Playing = false;
         }
-        
+
+        public void Play()
+        {
+            _Playing = true;
+            while (_Playing == true)
+            {
+                Next();
+                /// send ????
+            }
+        }
+
+        public void Pause()
+        {
+            _Playing = false;
+        }
+
+        public void Stop()
+        {
+            _Playing = false;
+            _enum.GetEnumerator().Dispose();
+        }
 
         public void Next()
         {
