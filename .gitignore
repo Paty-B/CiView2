@@ -30,10 +30,11 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-/packages/
+packages/
 CK-Core.Tests.VisualState.xml
 CK.Core.nuspec
 CK.Interop.nuspec
 CK.Reflection.nuspec
 CK.Storage.nuspec
 
+CiView2/CiView2.v11.suo
