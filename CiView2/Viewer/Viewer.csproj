@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\LineItemHost.cs" />
-    <Compile Include="Model\FiltredLineItem.cs" />
+    <Compile Include="Model\FilteredLineItem.cs" />
     <Compile Include="Model\LineItem.cs" />
     <Compile Include="Model\LogLineItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

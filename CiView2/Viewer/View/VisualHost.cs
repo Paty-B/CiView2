@@ -103,7 +103,7 @@ namespace Viewer.View
             return drawingLogLineItem;
         }
 
-        public DrawingVisual DrawFiltredLineItem(FiltredLineItem filtredLineItem)
+        public DrawingVisual DrawFiltredLineItem(FilteredLineItem filtredLineItem)
         {
             DrawingVisual drawingFiltredLineItem = new DrawingVisual();
             DrawingContext drawingContext = drawingFiltredLineItem.RenderOpen();
