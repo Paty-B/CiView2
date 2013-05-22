@@ -12,7 +12,7 @@ namespace Viewer.Model
         public LineItem FirstChild { get; internal set; }
         public LineItem LastChild { get; internal set; }
         public int ChildrenNumber { get; set; }
-        public int BagHeight;
+        public int Height;
         #endregion
 
 

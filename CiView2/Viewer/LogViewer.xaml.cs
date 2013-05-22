@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Viewer.Model;
 using Viewer.View;
 
 namespace Viewer
@@ -21,12 +22,15 @@ namespace Viewer
     /// </summary>
     public partial class LogViewer : Window
     {
+        public LineItemHost host;
+
         public LogViewer()
         {
             InitializeComponent();
         }
         private void WindowLoaded(object sender, EventArgs e)
         {
+            host = new LineItemHost();
             VisualHost visualHost = new VisualHost();
         }
     }

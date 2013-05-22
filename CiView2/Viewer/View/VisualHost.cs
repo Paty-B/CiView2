@@ -54,6 +54,7 @@ namespace Viewer.View
             pt = decrementOnce(pt);
             _children.Add(CreateDrawingVisualText("groupe 1.2", LogLevel.Warn, pt));
             _children.Add(CreateDrawingVisualSymbol(LogLevel.Warn, new Point(pt.X - fontSize, pt.Y)));
+    
         }
 
         private Point incrementOnce(Point pt)
@@ -87,7 +88,7 @@ namespace Viewer.View
             Point drawingPosition = new Point(logLineItem.Depth-position.X, Math.Round((double)((logLineItem.AbsoluteY-position.Y) * fontSize)));
 
 
-            VisualDesigner.CreateExpender(drawingContext, drawingPosition, logLineItem.Status);
+            VisualDesigner.CreateExpander(drawingContext, drawingPosition, logLineItem.Status);
             drawingPosition.X += fontSize;
             VisualDesigner.CreateSymbol(drawingContext, drawingPosition, logLineItem.LogLevel);
             drawingPosition.X += fontSize;

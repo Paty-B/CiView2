@@ -15,10 +15,9 @@ namespace Viewer.Model
         public CKTrait Tag { get; private set; }
         public Exception Ex { get; private set; }
 
-        public LogLineItem(String content, LogLevel loglevel,/* BagItems host,*/ Status status, CKTrait tag, Exception ex)
+        public LogLineItem(String content, LogLevel loglevel,/* BagItems host,*/ Status status, CKTrait tag, Exception ex) : base ()
         {
             Content = content;
-            //Host = host;
             LogLevel = loglevel;
             Tag = tag;
             Ex = ex;
@@ -31,7 +30,7 @@ namespace Viewer.Model
                 InsertChild(child);
             }
         }
-        public void InsertChild(LogLineItem child)
+        public override void InsertChild(LineItem child)
         {
             Contract.Requires(child != null, "LineItem child must be not null");
             child.Parent = this;

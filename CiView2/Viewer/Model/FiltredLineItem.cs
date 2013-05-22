@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    class FiltredLineItem : LineItem
+    public class FiltredLineItem : LineItem
     {
         int height;
+
+        public override void InsertChild(LineItem child)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

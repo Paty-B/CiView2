@@ -12,7 +12,7 @@ namespace Viewer.View
 {
     public static class VisualDesigner
     {
-        public static void CreateExpender(DrawingContext drawingContext, Point drawingPosition, Status status)
+        public static void CreateExpander(DrawingContext drawingContext, Point drawingPosition, Status status)
         {
         }
         public static void CreateSymbol(DrawingContext drawingContext, Point drawingPosition, LogLevel logLevel)
@@ -20,6 +20,17 @@ namespace Viewer.View
         }
         public static void CreateContent(DrawingContext drawingContext, Point drawingPosition, String content)
         {
+            FormattedText ft = new FormattedText(
+                                content, 
+                                culture,   
+                                FlowDirection.LeftToRight, 
+                                new Typeface(new FontFamily("Consolas"), 
+                                FontStyles.Normal, 
+                                FontWeights.Bold, 
+                                FontStretches.Normal),
+                                24,
+                                Brushes.Black);
+            drawingContext.DrawText(ft, drawingPosition);
         }
         public static void CreateTag(DrawingContext drawingContext, Point drawingPosition, CKTrait tag)
         {
@@ -30,5 +41,7 @@ namespace Viewer.View
         public static void CreateFiltredLogRepresentation(DrawingContext drawingContext, Point drawingPosition)
         {
         }
+
+        public static System.Globalization.CultureInfo culture { get; set; }
     }
 }
