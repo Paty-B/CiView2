@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    public class FilteredLineItem : LineItem
+    public class FilteredLineItem : LineItemBase
     {
         int height;
 

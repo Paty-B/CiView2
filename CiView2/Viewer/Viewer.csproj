@@ -58,6 +58,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ILineItem.cs" />
+    <Compile Include="Model\ILineItemHost.cs" />
+    <Compile Include="Model\ILineItemImpl.cs" />
+    <Compile Include="Model\ILineItemParentImpl.cs" />
+    <Compile Include="Model\LineItemRoot.cs" />
     <Compile Include="Model\Status.cs" />
     <Compile Include="userControl.xaml.cs">
       <DependentUpon>userControl.xaml</DependentUpon>
@@ -84,7 +89,7 @@
   <ItemGroup>
     <Compile Include="Model\LineItemHost.cs" />
     <Compile Include="Model\FilteredLineItem.cs" />
-    <Compile Include="Model\LineItem.cs" />
+    <Compile Include="Model\LineItemBase.cs" />
     <Compile Include="Model\LogLineItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

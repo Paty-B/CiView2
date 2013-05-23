@@ -6,24 +6,18 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    public class LineItemHost
+    class LineItemHost : ILineItemHost
     {
-        #region Properties
-        public LineItem FirstChild { get; internal set; }
-        public LineItem LastChild { get; internal set; }
-        public int ChildrenNumber { get; set; }
-        public int Height;
-        #endregion
+       internal readonly LineItemRoot Root;
 
-
-        public void InsertRootItems(List<LineItem> items)
+        public LineItemHost()
         {
+            Root = new LineItemRoot( this );
         }
 
-        public void InsterRootItem(LineItem item)
+        ILineItem ILineItemHost.Root
         {
+            get { return Root; }
         }
-
-
     }
 }
