@@ -10,12 +10,10 @@ namespace Viewer
 {
     public class EnvironmentCreator : IActivityLoggerClient
     {
-        private LineItem currentLineItem;
+        private ILineItem currentLineItem;
 
-        public EnvironmentCreator(LineItemHost lineItemHost)
+        public EnvironmentCreator(ILineItem root)
         {
-            currentLineItem = null;
-            RootLineItem root = new RootLineItem(lineItemHost);
             currentLineItem = root;
         }   
 
@@ -27,29 +25,24 @@ namespace Viewer
         
         public void OnOpenGroup(IActivityLogGroup group)
         {
-            LogLineItem logLineItem = new LogLineItem(group.GroupText, group.GroupLevel, Status.Expanded, group.GroupTags, group.Exception);
-            currentLineItem.InsertChild(logLineItem);
-            currentLineItem = logLineItem;
+            currentLineItem.InsertChild(LineItem.CreateLogLineItem(group.GroupText,group.GroupLevel,group.GroupTags,group.LogTimeUtc));
+            currentLineItem = currentLineItem.LastChild;
         }
 
         public void OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
         {
-            LogLineItem logLineItem = new LogLineItem(text, level, Status.Expanded, tags, null);
-            currentLineItem.InsertChild(logLineItem);
-
+            currentLineItem.InsertChild(LineItem.CreateLogLineItem(text,level,tags,logTimeUtc));
         }
 
         #region useless function
 
         public void OnGroupClosing(IActivityLogGroup group, ref List<ActivityLogGroupConclusion> conclusions)
         {
-            throw new NotImplementedException();
             //useless
         }
 
         public void OnFilterChanged(LogLevelFilter current, LogLevelFilter newValue)
         {
-            throw new NotImplementedException();
             //useless
         }
 

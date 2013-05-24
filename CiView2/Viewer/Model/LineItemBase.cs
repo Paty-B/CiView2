@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CK.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -136,9 +137,14 @@ namespace Viewer.Model
     static public class LineItem
     {
         //factory pour les lineitem
-        public static ILineItem CreateLogLineItem()
+        public static ILineItem CreateLogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
         {
-            return new LogLineItem();
+            return new LogLineItem(content,loglevel,tag,logTimeUtc);
+        }
+
+        public static ILineItem CreateFilteredLineItem()
+        {
+            return new FilteredLineItem();
         }
     }
 }

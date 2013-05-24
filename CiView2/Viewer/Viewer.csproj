@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EnvironmentCreator.cs" />
     <Compile Include="Model\ILineItem.cs" />
     <Compile Include="Model\ILineItemHost.cs" />
     <Compile Include="Model\ILineItemImpl.cs" />

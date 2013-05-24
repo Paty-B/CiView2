@@ -10,21 +10,20 @@ namespace Viewer.Model
 {
     class LogLineItem : LineItemBase
     {
-        public String Content { get; private set; }
-        public LogLevel LogLevel { get; private set; }
-        public CKTrait Tag { get; private set; }
-        public Exception Ex { get; private set; }
-        public LogLineItem()
-        {
-        }
+        String Content;
+        LogLevel LogLevel;
+        CKTrait Tag;
+        Status Status;
+        DateTime LogtimeUtc;
+        int LineHeight;
 
-        public LogLineItem(String content, LogLevel loglevel,/* BagItems host,*/ Status status, CKTrait tag, Exception ex)
-            : base()
+        public LogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
         {
             Content = content;
             LogLevel = loglevel;
+            Status = Status.Expanded;
             Tag = tag;
-            Ex = ex;
+            LogtimeUtc = logTimeUtc;
         }
     }
 }

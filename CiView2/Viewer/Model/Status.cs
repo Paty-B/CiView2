@@ -8,8 +8,8 @@ namespace Viewer.Model
 {
     public enum Status
     {
-        Collapsed,
-        Expanded,
-        Hidden,
+        Collapsed, // replier
+        Expanded, // déplier
+        Hidden, // invisible
     }
 }
