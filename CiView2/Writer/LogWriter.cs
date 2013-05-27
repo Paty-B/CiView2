@@ -7,26 +7,45 @@ using System.Threading.Tasks;
 using CK.Core;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Writer
+namespace CiView.Recorder.Writer
 {
-    public class LogSerializerIntoStream : IActivityLoggerClient, IDisposable
+    public class LogWriter : IActivityLoggerClient, IDisposable
     {
-        public const LogSerializerHelper _helper = 
-            new LogSerializerHelper(
-                /* VERSION          */ 2,
-                /* LOG TYPE COUNT   */ 4    );
+        private byte[] _cacheHeaders;
+
+        public const byte VERSION = 3;
 
         private bool _mustClose;
         private Stream _stream;
         private BinaryWriter _binaryWriter;
         private BinaryFormatter _binaryFormatter;
 
-        public LogSerializerIntoStream(Stream stream, bool mustClose = false)
+        public LogWriter(Stream stream, bool mustClose = false)
         {
             _stream = stream;
             _binaryWriter = new BinaryWriter(stream, Encoding.UTF8);
             _binaryFormatter = new BinaryFormatter();
             _mustClose = mustClose;
+
+            int logTypeCount = 4;
+            _cacheHeaders = new byte[logTypeCount];
+            for (int i = 0; i < logTypeCount; i++)
+                _cacheHeaders[i] = (byte)((VERSION << 4) + i);
+        }
+
+        static public LogWriter LogWriterIntoFile(string logFileEmplacement, string autoNameFile = "CiView2_{0:u}.log")
+        {
+            string finalLinkEmplacement;
+            if (autoNameFile == null)
+            {
+                finalLinkEmplacement = String.Format(logFileEmplacement + "/" + autoNameFile, DateTime.UtcNow);
+            }
+            else
+            {
+                finalLinkEmplacement = logFileEmplacement;
+            }
+            StreamWriter streamWriter = new StreamWriter(finalLinkEmplacement, true, Encoding.UTF8);
+            return new LogWriter(streamWriter.BaseStream, false);
         }
 
         public void OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
@@ -63,7 +82,7 @@ namespace Writer
         {
             if (_stream == null) throw new ObjectDisposedException("LogWriter");
 
-            _binaryWriter.Write(_helper.Hearder(logType));
+            _binaryWriter.Write(_cacheHeaders[(int)logType]);
             _binaryWriter.Write(tags.ToString());
             _binaryWriter.Write((byte)logLevel);
             _binaryWriter.Write(text);
@@ -86,7 +105,8 @@ namespace Writer
         {
             if (_stream == null) return;
             _binaryWriter.Write((byte)0);
-            if(_mustClose)
+            _binaryWriter.Close();
+            if (_mustClose)
                 _stream.Close();
             _stream = null;
         }

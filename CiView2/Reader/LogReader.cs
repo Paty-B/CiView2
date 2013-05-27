@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
-using Writer;
+using CiView.Recorder.Reader;
 
 namespace Reader
 {

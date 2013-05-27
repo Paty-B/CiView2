@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\..\..\lib\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\CKCore\CK.Core\bin\Debug\NET45\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,7 +47,10 @@
     <Compile Include="LogDataOpenGroup.cs" />
     <Compile Include="LogReader.cs" />
     <Compile Include="LogPlayer.cs" />
+    <Compile Include="LogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RealLogData.cs" />
+    <Compile Include="RealLogReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Writer\Writer.csproj">
