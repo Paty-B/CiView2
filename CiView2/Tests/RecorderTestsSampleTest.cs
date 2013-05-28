@@ -66,16 +66,26 @@ namespace CiView.Recorder.Tests
         [Test]
         public void OnUnfilteredLogSampleTestWriteRead()
         {
+            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
+            LogLevel logLevel = LogLevel.Info;
+            string text = "I'm a log who do nothing but i exist";
+            DateTime logTimeUtc = DateTime.UtcNow;
+
+            byte[] saveMemory;
             using (MemoryStream memory = new MemoryStream())
             using (LogWriter logWriter = new LogWriter(memory, true))
             {
-                CKTrait tag = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
-                LogLevel logLevel = LogLevel.Info;
-                string text = "I'm a log who do nothing but i exist";
-                DateTime dateTime = DateTime.UtcNow;
-
-                //OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
-                logWriter.OnUnfilteredLog(tag, logLevel, text, dateTime);
+                logWriter.OnUnfilteredLog(tags, logLevel, text, logTimeUtc);
+                saveMemory = memory.ToArray();
+            }
+            using (MemoryStream memory = new MemoryStream(saveMemory))
+            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            {
+                RealLogData logData = logReader.ReadOneLog();
+                Assert.That(logData.Level == logLevel);
+                Assert.That(logData.Text == text);
+                Assert.That(logData.Tags == tags);
+                Assert.That(logData.LogTimeUtc == logTimeUtc);
             }
         }
 
@@ -85,42 +95,92 @@ namespace CiView.Recorder.Tests
             FakeLogGroup fakeLogGroup;
             byte[] saveMemory;
             using (MemoryStream memory = new MemoryStream())
+            using (LogWriter logWriter = new LogWriter(memory, true))
             {
-                using (LogWriter logWriter = new LogWriter(memory, true))
+                fakeLogGroup = new FakeLogGroup()
                 {
-                    fakeLogGroup = new FakeLogGroup()
-                    {
-                        GroupLevel = LogLevel.Info,
-                        GroupText = "this group is nothing because he is a troll",
-                        GroupTags = ActivityLogger.RegisteredTags.FindOrCreate("Tag"),
-                        LogTimeUtc = DateTime.UtcNow
-                    };
-                    //OnOpenGroup(IActivityLogGroup group)
-                    logWriter.OnOpenGroup(fakeLogGroup);
-                }
+                    GroupLevel = LogLevel.Info,
+                    GroupText = "this group is nothing because he is a troll",
+                    GroupTags = ActivityLogger.RegisteredTags.FindOrCreate("Tag"),
+                    LogTimeUtc = DateTime.UtcNow
+                };
+                logWriter.OnOpenGroup(fakeLogGroup);
                 saveMemory = memory.ToArray();
             }
             using (MemoryStream memory = new MemoryStream(saveMemory))
+            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
             {
-                using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
-                {
-                    RealLogData logData = logReader.ReadOneLog();
-                    System.Console.WriteLine(logData.Text + " == " + fakeLogGroup.GroupText);
-                    Assert.That(logData.Text == fakeLogGroup.GroupText);
-                }
+                RealLogData logData = logReader.ReadOneLog();
+                Assert.That(logData.Level == fakeLogGroup.GroupLevel);
+                Assert.That(logData.Text == fakeLogGroup.GroupText);
+                Assert.That(logData.Tags == fakeLogGroup.GroupTags);
+                Assert.That(logData.LogTimeUtc == fakeLogGroup.LogTimeUtc);
             }
         }
 
         [Test]
         public void OnOpenGroupWithExceptionSampleTestWriteRead()
         {
-            //OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
+            string text = "this group is nothing with exception because he is a troll";
+            FakeLogGroup fakeLogGroup = new FakeLogGroup()
+            {
+                GroupLevel = LogLevel.Info,
+                GroupText = text,
+                GroupTags = ActivityLogger.RegisteredTags.FindOrCreate("Tag"),
+                LogTimeUtc = DateTime.UtcNow,
+                Exception = new Exception(text)
+            };
+            byte[] saveMemory;
+            using (MemoryStream memory = new MemoryStream())
+            using (LogWriter logWriter = new LogWriter(memory, true))
+            {
+                logWriter.OnOpenGroup(fakeLogGroup);
+                saveMemory = memory.ToArray();
+            }
+            using (MemoryStream memory = new MemoryStream(saveMemory))
+            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            {
+                RealLogData logData = logReader.ReadOneLog();
+                Assert.That(logData.Level == fakeLogGroup.GroupLevel);
+                Assert.That(logData.Text == fakeLogGroup.GroupText);
+                Assert.That(logData.Tags == fakeLogGroup.GroupTags);
+                Assert.That(logData.LogTimeUtc == fakeLogGroup.LogTimeUtc);
+                Assert.That(logData.LogException.ToString() == fakeLogGroup.Exception.ToString());
+            }
         }
 
         [Test]
         public void OnGroupClosedSampleTestWriteRead()
         {
-            //OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
+            byte[] saveMemory;
+            FakeLogGroup fakeLogGroup = new FakeLogGroup()
+            {
+                GroupLevel = LogLevel.Info,
+                GroupText = "it's so close, try!",
+                GroupTags = ActivityLogger.RegisteredTags.FindOrCreate("Tag"),
+                CloseLogTimeUtc = DateTime.UtcNow
+            };
+            List<ActivityLogGroupConclusion> conclusions = new List<ActivityLogGroupConclusion>();
+            conclusions.Add(new ActivityLogGroupConclusion("first conlusion",ActivityLogger.RegisteredTags.FindOrCreate("A")));
+            conclusions.Add(new ActivityLogGroupConclusion("second conclusion",ActivityLogger.RegisteredTags.FindOrCreate("C")));
+            conclusions.Add(new ActivityLogGroupConclusion("final conclusion",ActivityLogger.RegisteredTags.FindOrCreate("Z")));
+            ICKReadOnlyList<ActivityLogGroupConclusion> ConclusionsReadOnly = new CKReadOnlyListOnIList<ActivityLogGroupConclusion>(conclusions);
+            using (MemoryStream memory = new MemoryStream())
+            using (LogWriter logWriter = new LogWriter(memory, true))
+            {
+                logWriter.OnGroupClosed(fakeLogGroup,ConclusionsReadOnly);
+                saveMemory = memory.ToArray();
+            }
+            using (MemoryStream memory = new MemoryStream(saveMemory))
+            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            {
+                RealLogData logData = logReader.ReadOneLog();
+                Assert.That(logData.Level == fakeLogGroup.GroupLevel);
+                Assert.That(logData.Text == fakeLogGroup.GroupText);
+                Assert.That(logData.Tags == fakeLogGroup.GroupTags);
+                Assert.That(logData.LogTimeUtc == fakeLogGroup.CloseLogTimeUtc);
+                CollectionAssert.AreEqual(logData.Conclusions, ConclusionsReadOnly);
+            }
         }
     }
 }
