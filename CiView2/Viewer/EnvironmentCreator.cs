@@ -12,9 +12,9 @@ namespace Viewer
     {
         private ILineItem currentLineItem;
 
-        public EnvironmentCreator(ILineItem root)
+        public EnvironmentCreator(ILineItemHost host)
         {
-            currentLineItem = root;
+            currentLineItem = host.Root;
         }   
 
         public void OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)

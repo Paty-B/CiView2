@@ -30,6 +30,7 @@ namespace Viewer.View
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
         }
+        #region fake
 
         private void CreateFakeLog()
         {
@@ -74,87 +75,6 @@ namespace Viewer.View
             pt.Y = pt.Y + fontSize;
             return pt;
         }
-        private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //capture la position de la sourie dans mon framwork element
-            System.Windows.Point pt = e.GetPosition(this);
-        }
-
-
-        private DrawingVisual DrawLogLineItem(LogLineItem logLineItem)
-        {
-            DrawingVisual drawingLogLineItem = new DrawingVisual();
-            DrawingContext drawingContext = drawingLogLineItem.RenderOpen();
-            Point drawingPosition = new Point(logLineItem.Depth-position.X, Math.Round((double)((logLineItem.AbsoluteY-position.Y) * fontSize)));
-
-
-            VisualDesigner.CreateExpander(drawingContext, drawingPosition, logLineItem.Status);
-            drawingPosition.X += fontSize;
-            VisualDesigner.CreateSymbol(drawingContext, drawingPosition, logLineItem.LogLevel);
-            drawingPosition.X += fontSize;
-            VisualDesigner.CreateContent(drawingContext, drawingPosition, logLineItem.Content);
-            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Content.Length);
-            VisualDesigner.CreateTag(drawingContext, drawingPosition, logLineItem.Tag);
-            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Tag.ToString().Length);
-            VisualDesigner.CreateNextLogIndicator(drawingContext, drawingPosition, logLineItem.NbWarning, logLineItem.NbError, logLineItem.NbFatal);
-
-
-            drawingContext.Close();
-            return drawingLogLineItem;
-        }
-
-        public DrawingVisual DrawFiltredLineItem(FilteredLineItem filtredLineItem)
-        {
-            DrawingVisual drawingFiltredLineItem = new DrawingVisual();
-            DrawingContext drawingContext = drawingFiltredLineItem.RenderOpen();
-            Point drawingPosition = new Point(filtredLineItem.Depth - position.X, Math.Round((double)((filtredLineItem.AbsoluteY - position.Y) * fontSize)));
-
-            VisualDesigner.CreateFiltredLogRepresentation(drawingContext, drawingPosition);
-
-            drawingContext.Close();
-            return drawingFiltredLineItem;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private DrawingVisual CreateDrawingVisualText(String text, LogLevel loglevel, Point pt)
         {
             DrawingVisual drawingVisual = new DrawingVisual();
@@ -177,7 +97,7 @@ namespace Viewer.View
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
             BitmapImage fatalImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\fatal15.png"));
-            BitmapImage errorImg = new BitmapImage(new Uri (@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\error15.png"));
+            BitmapImage errorImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\error15.png"));
             BitmapImage warningImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\warning15.png"));
             BitmapImage logLevelImg;
 
@@ -205,7 +125,93 @@ namespace Viewer.View
             return drawingVisual;
         }
 
-        public void GoToLineItem(LineItem lineItem)
+        #endregion
+
+        private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            //capture la position de la sourie dans mon framwork element
+            System.Windows.Point pt = e.GetPosition(this);
+        }
+
+/*
+        private DrawingVisual DrawLogLineItem(ILineItem logLineItem)
+        {
+            DrawingVisual drawingLogLineItem = new DrawingVisual();
+            DrawingContext drawingContext = drawingLogLineItem.RenderOpen();
+            Point drawingPosition = new Point(logLineItem.Depth-position.X, Math.Round((double)((logLineItem.AbsoluteY-position.Y) * fontSize)));
+
+
+            VisualDesigner.CreateExpander(drawingContext, drawingPosition, logLineItem.Status);
+            drawingPosition.X += fontSize;
+            VisualDesigner.CreateSymbol(drawingContext, drawingPosition, logLineItem.LogLevel);
+            drawingPosition.X += fontSize;
+            VisualDesigner.CreateContent(drawingContext, drawingPosition, logLineItem.Content);
+            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Content.Length);
+            VisualDesigner.CreateTag(drawingContext, drawingPosition, logLineItem.Tag);
+            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Tag.ToString().Length);
+            VisualDesigner.CreateNextLogIndicator(drawingContext, drawingPosition, logLineItem.NbWarning, logLineItem.NbError, logLineItem.NbFatal);
+
+
+            drawingContext.Close();
+            return drawingLogLineItem;
+        }
+
+        DrawingVisual DrawFiltredLineItem(ILineItem filtredLineItem)
+        {
+            DrawingVisual drawingFiltredLineItem = new DrawingVisual();
+            DrawingContext drawingContext = drawingFiltredLineItem.RenderOpen();
+            Point drawingPosition = new Point(filtredLineItem.Depth - position.X, Math.Round((double)((filtredLineItem.AbsoluteY - position.Y) * fontSize)));
+
+            VisualDesigner.CreateFiltredLogRepresentation(drawingContext, drawingPosition);
+
+            drawingContext.Close();
+            return drawingFiltredLineItem;
+        }
+         */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+
+        public void GoToLineItem(ILineItem lineItem)
         {
             position.X = lineItem.Depth;
             position.Y = lineItem.AbsoluteY;

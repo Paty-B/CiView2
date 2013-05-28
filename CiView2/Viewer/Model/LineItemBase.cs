@@ -62,6 +62,7 @@ namespace Viewer.Model
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
         {
             InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
+            Host.OnChildInserted(child, EventArgs.Empty);
         }
 
         internal static void RemoveChild( ILineItem child, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -109,6 +110,7 @@ namespace Viewer.Model
             }
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
+            
         }
 
         public void Grow( int delta )
@@ -126,25 +128,6 @@ namespace Viewer.Model
         public void AdjustAbsoluteY( int delta )
         {
             _absoluteY += delta;
-        }
-
-    }
-
-
-
-
-
-    static public class LineItem
-    {
-        //factory pour les lineitem
-        public static ILineItem CreateLogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
-        {
-            return new LogLineItem(content,loglevel,tag,logTimeUtc);
-        }
-
-        public static ILineItem CreateFilteredLineItem()
-        {
-            return new FilteredLineItem();
         }
     }
 }

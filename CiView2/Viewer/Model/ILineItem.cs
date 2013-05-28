@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    interface ILineItem
+    public interface ILineItem
     {
         ILineItemHost Host { get; }
         ILineItem Parent { get; }
@@ -19,6 +19,7 @@ namespace Viewer.Model
         int TotalLineHeight { get; }
         void InsertChild( ILineItem child, ILineItem nextChild = null );
         void RemoveChild( ILineItem child );
+        event EventHandler ChildInserted;
         //VisualLine CreateLine();
     }
 }

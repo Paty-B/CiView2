@@ -22,7 +22,7 @@ namespace Viewer
     /// </summary>
     public partial class LogViewer : Window
     {
-        public LineItemHost host;
+        public ILineItemHost host;
 
         public LogViewer()
         {

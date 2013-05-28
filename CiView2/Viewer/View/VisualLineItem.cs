@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
-namespace Viewer.Model
+namespace Viewer.View
 {
-    public interface ILineItemHost
+    class VisualLineItem : Visual
     {
-        ILineItem Root { get; }
+
     }
 }
