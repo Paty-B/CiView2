@@ -1,61 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using CK.Core;
 
 namespace Reader
 {
     public class LogPlayer
     {
         IEnumerable<LogData> _enum;
-        bool _Playing;
+        ActivityLogger activityLogger;
+        IEnumerator<LogData> _enumerator;
 
         public LogPlayer(string filePath)
         {
             _enum = LogReader.Open(filePath);
-            _Playing = false;
+            _enumerator = _enum.GetEnumerator();
+            activityLogger = new ActivityLogger();
         }
 
-        public void Play()
+        public int Play(int count = 1)
         {
-            _Playing = true;
-            while (_Playing == true)
+            LogData log;
+            while(count>0 &&_enumerator.MoveNext())
             {
-                Next();
-                /// send ????
+                log=_enumerator.Current;
+                    switch (log.GetLogType())
+                    {                 
+                case LogType.OnGroupClosed:
+                     activityLogger.CloseGroup(log.GetDate(),log.);
+                    break;
+                case LogType.OnOpenGroup:
+                    activityLogger.OpenGroup(log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate);
+                    break;
+                case LogType.OnUnfilteredLog:
+                    activityLogger.UnfilteredLog(
+                        // log.GetTag,log.GetLogLevel,log.GetText,log.GetDate
+                        );
+                    break;
+                case LogType.OnOpenGroupWithException:
+                   activityLogger.OpenGroup((log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate,/*log.GetException*/);
+                    break;
+                    }
+               count--;
             }
+
         }
 
         public void Pause()
         {
-            _Playing = false;
+
         }
 
         public void Stop()
         {
-            _Playing = false;
             _enum.GetEnumerator().Dispose();
         }
 
-        public void Next()
-        {
-            _enum.GetEnumerator().MoveNext();          
-        }
-
-        public LogData GetCurrent()
-        {
-            return _enum.GetEnumerator().Current;
-        }
-
-        public IEnumerable<LogData> ReadAll()
-        {
-            foreach (LogData ld in _enum)
-            {
-                yield return ld;
-            }
-        }
     }
 }

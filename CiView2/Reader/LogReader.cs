@@ -6,22 +6,22 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
-using CiView.Recorder.Reader;
+
 
 namespace Reader
 {
-    class LogReader 
+    class LogReader
     {
         readonly Stream _stream;
         readonly BinaryReader _binaryReader;
         readonly BinaryFormatter _binaryFormatter;
 
-        public LogReader( Stream s )
+        public LogReader(Stream s)
         {
             _stream = s;
             _binaryReader = new BinaryReader(s, Encoding.UTF8);
             _binaryFormatter = new BinaryFormatter();
-            
+
         }
 
         #region Enumerable Implementation
@@ -45,7 +45,7 @@ namespace Reader
                     lr = new LogReader(s);
                 }
                 public LogData Current { get { return current; } }
-                
+
                 object System.Collections.IEnumerator.Current
                 {
                     get { return Current; }
@@ -82,7 +82,7 @@ namespace Reader
 
         #endregion
 
-        public static IEnumerable<LogData> Open( string filePath )
+        public static IEnumerable<LogData> Open(string filePath)
         {
             return new EnumImpl(File.Open(filePath, FileMode.Open, FileAccess.Read));
         }
@@ -106,14 +106,16 @@ namespace Reader
             switch ((LogType)logType)
             {
                 case LogType.OnUnfilteredLog:
-                    ld = new LogData(_binaryReader.ReadString(),
+                    ld = new LogData((LogType)logType,
+                                      _binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()));
                     return ld;
-                    
+
                 case LogType.OnOpenGroup:
-                    ld = new LogDataOpenGroup(_binaryReader.ReadString(),
+                    ld = new LogDataOpenGroup((LogType)logType,
+                                        _binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()),
@@ -121,7 +123,8 @@ namespace Reader
                     return ld;
 
                 case LogType.OnOpenGroupWithException:
-                    ld = new LogDataOpenGroup(_binaryReader.ReadString(),
+                    ld = new LogDataOpenGroup((LogType)logType,
+                                        _binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()),
@@ -129,12 +132,12 @@ namespace Reader
                     return ld;
 
                 case LogType.OnGroupClosed:
-                    ld = new LogDataCloseGroup(_binaryReader.ReadString(),
+                    ld = new LogDataCloseGroup((LogType)logType,
+                                        _binaryReader.ReadString(),
                                       _binaryReader.ReadByte(),
                                       _binaryReader.ReadString(),
                                       DateTime.FromBinary(_binaryReader.ReadInt64()),
-                                      nbConclusion = _binaryReader.ReadInt32(),
-                                      (ts = new TabsBuilder(nbConclusion, _binaryReader)).tags, ts.texts);
+                                      (ts = new TabsBuilder(nbConclusion = _binaryReader.ReadInt32(), _binaryReader)).Conclusions);
                     return ld;
 
                 default:
@@ -144,22 +147,24 @@ namespace Reader
 
         #endregion
 
-    internal class TabsBuilder
-    {
-        internal CKTrait[] tags { get; set; }
-        internal string[] texts { get; set; }
-
-        internal TabsBuilder(int nb, BinaryReader reader)
+        internal class TabsBuilder
         {
-            tags = new CKTrait[nb];
-            texts = new string[nb];
+            internal CKReadOnlyListOnIList<ActivityLogGroupConclusion> Conclusions { get; set; }
 
-            for (int i = 0; i < nb; i++)
+            internal TabsBuilder(int nb, BinaryReader reader)
             {
-                tags[i] = ActivityLogger.RegisteredTags.FindOrCreate(reader.ReadString());
-                texts[i] = reader.ReadString();
+                List<ActivityLogGroupConclusion> conclusions = new List<ActivityLogGroupConclusion>();
+                CKTrait[] tags = new CKTrait[nb];
+                string[] texts = new string[nb];
+
+                for (int i = 0; i < nb; i++)
+                {
+                    tags[i] = ActivityLogger.RegisteredTags.FindOrCreate(reader.ReadString());
+                    texts[i] = reader.ReadString();
+                    conclusions.Add(new ActivityLogGroupConclusion(texts[i], tags[i]));
+                }
+                Conclusions = new CKReadOnlyListOnIList<ActivityLogGroupConclusion>(conclusions);
             }
-          }
         }
 
         public void Free()

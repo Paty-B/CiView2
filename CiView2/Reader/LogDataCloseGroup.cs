@@ -8,17 +8,24 @@ using CK.Core;
 
 namespace Reader
 {
-    class LogDataCloseGroup : LogData
+    public class LogDataCloseGroup : LogData
     {
-        CKTrait[] _conclusionTraits;
-        string[] _conclusionTexts;
+        public ICKReadOnlyList<ActivityLogGroupConclusion> Conclusions { get; set; }
 
-         internal LogDataCloseGroup(string tag, byte level, string text, DateTime date, int nb, CKTrait[] cTraits, string[] cTexts )
-            : base(tag, level, text, date)
+        internal LogDataCloseGroup(LogType logType, string tag, byte level, string text, DateTime date, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
+            : base(logType, tag, level, text, date)
         {
-            Debug.Assert(cTraits != null && cTexts != null && cTraits.Length > 0 && cTraits.Length == cTexts.Length);
-            _conclusionTraits = cTraits;
-            _conclusionTexts = cTexts;
+            //  Debug.Assert(cTraits != null && cTexts != null && cTraits.Length > 0 && cTraits.Length == cTexts.Length);
+            Conclusions = conclusions;
         }
+        /*
+                 public CKTrait [] GetConclusionTraits()
+                 {
+                     return _conclusionTraits;
+                 }
+                 public string[] GetConclusionTexts()
+                 {
+                     return _conclusionTexts;
+                 }*/
     }
 }

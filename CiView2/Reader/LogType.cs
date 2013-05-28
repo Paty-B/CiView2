@@ -1,4 +1,4 @@
-﻿namespace CiView.Recorder.Reader
+﻿namespace Reader
 {
     public enum LogType
     {
