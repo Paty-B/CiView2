@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CK.Core;
 
 
-namespace Reader
+namespace CiView.Recorder.Reader
 {
     class LogReader
     {

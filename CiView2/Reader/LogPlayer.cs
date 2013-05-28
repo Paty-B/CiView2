@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using CK.Core;
 
-namespace Reader
+namespace CiView.Recorder.Reader
 {
     public class LogPlayer
     {
@@ -30,23 +30,23 @@ namespace Reader
                     switch (log.GetLogType())
                     {                 
                 case LogType.OnGroupClosed:
-                     activityLogger.CloseGroup(log.GetDate(),log.);
+                     //activityLogger.CloseGroup(log.GetDate(),);
                     break;
                 case LogType.OnOpenGroup:
-                    activityLogger.OpenGroup(log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate);
+                    //activityLogger.OpenGroup(log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate);
                     break;
                 case LogType.OnUnfilteredLog:
-                    activityLogger.UnfilteredLog(
-                        // log.GetTag,log.GetLogLevel,log.GetText,log.GetDate
-                        );
+                    /*activityLogger.UnfilteredLog(
+                         log.GetTag,log.GetLogLevel,log.GetText,log.GetDate
+                        );*/
                     break;
                 case LogType.OnOpenGroupWithException:
-                   activityLogger.OpenGroup((log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate,/*log.GetException*/);
+                   //activityLogger.OpenGroup((log.GetTag,log.GetLogLevel,/*Func<string> GetConclusionsText*/,log.GetText,log.GetDate,/*log.GetException*/);
                     break;
                     }
                count--;
             }
-
+            return 0;
         }
 
         public void Pause()

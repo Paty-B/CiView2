@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
 
-namespace Reader
+namespace CiView.Recorder.Reader
 {
     public class LogData
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reader
+namespace CiView.Recorder.Reader
 {
     class LogDataOpenGroup : LogData
     {
