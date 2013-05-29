@@ -10,24 +10,24 @@ namespace CiView.Recorder.Reader
 {
     public class LogPlayer
     {
-        IEnumerable<LogData> _enum;
+        IEnumerable<ILogEntry> _enum;
         ActivityLogger activityLogger;
-        IEnumerator<LogData> _enumerator;
+        IEnumerator<ILogEntry> _enumerator;
 
         public LogPlayer(string filePath)
         {
-            _enum = LogReader.Open(filePath);
+            //_enum = LogReader.Open(filePath);
             _enumerator = _enum.GetEnumerator();
             activityLogger = new ActivityLogger();
         }
 
         public int Play(int count = 1)
         {
-            LogData log;
+            ILogEntry log;
             while(count>0 &&_enumerator.MoveNext())
             {
                 log=_enumerator.Current;
-                    switch (log.GetLogType())
+                    switch (log.LogType)
                     {                 
                 case LogType.OnGroupClosed:
                      //activityLogger.CloseGroup(log.GetDate(),);

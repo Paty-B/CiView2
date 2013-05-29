@@ -9,15 +9,15 @@ namespace CiView.Recorder.Reader
 {
     public interface ILogEntry
     {
-        public LogType LogType { get; }
+        LogType LogType { get; }
 
-        public CKTrait Tags { get; }
-        public LogLevel LogLevel { get; }
-        public string Text { get; }
-        public DateTime LogTimeUtc { get; }
+        CKTrait Tags { get; }
+        LogLevel LogLevel { get; }
+        string Text { get; }
+        DateTime LogTimeUtc { get; }
 
-        public Exception Exception { get; }
+        Exception Exception { get; }
 
-        public ICKReadOnlyList<ActivityLogGroupConclusion> Conclusions { get; }
+        ICKReadOnlyList<ActivityLogGroupConclusion> Conclusions { get; }
     }
 }

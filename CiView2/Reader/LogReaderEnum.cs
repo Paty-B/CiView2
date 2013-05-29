@@ -55,5 +55,10 @@ namespace CiView.Recorder.Reader
         {
             _position = -1;
         }
+
+        object IEnumerator.Current
+        {
+            get { return this.Current; }
+        }
     }
 }

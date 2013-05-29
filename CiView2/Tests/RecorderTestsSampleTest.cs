@@ -17,6 +17,34 @@ namespace CiView.Recorder.Tests
         [Test]
         public void OnUnfilteredLogSampleTestWriteRead()
         {
+            ActivityLogger logger = new ActivityLogger();
+            
+            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
+            string text = "I'm a log who do nothing but i exist";
+
+            ILogEntry logEntry;
+
+            using (MemoryStream memory = new MemoryStream())
+            {
+                using (LogWriter logWriter = new LogWriter(memory))
+                {
+                    logger.Output.RegisterClient(logWriter);
+                    logger.Trace(text, tags);
+                }
+                memory.Seek(0, SeekOrigin.Begin);
+                using (LogReader logReader = new LogReader(memory))
+                {
+                    logEntry = logReader.ReadOneLog();
+                }
+            }
+
+            //Assert.That(logEntry.Tags == tags);
+            Assert.That(logEntry.Text == text);
+        }
+        /*
+        [Test]
+        public void OnUnfilteredLogSampleTestWriteRead()
+        {
             CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
             LogLevel logLevel = LogLevel.Info;
             string text = "I'm a log who do nothing but i exist";
@@ -136,5 +164,6 @@ namespace CiView.Recorder.Tests
                 CollectionAssert.AreEqual(logData.Conclusions, ConclusionsReadOnly);
             }
         }
+         * */
     }
 }

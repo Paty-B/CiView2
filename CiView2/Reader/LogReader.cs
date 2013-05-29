@@ -15,15 +15,14 @@ namespace CiView.Recorder.Reader
         private Stream _stream;
         private BinaryReader _binaryReader;
         private BinaryFormatter _binaryFormatter;
-        private byte _version;
         private bool _mustClose;
+        public const byte VERSION = 3;
 
-        public LogReader(Stream stream, byte version, bool mustClose = false)
+        public LogReader(Stream stream, bool mustClose = false)
         {
             _stream = stream;
             _binaryReader = new BinaryReader(stream, Encoding.UTF8);
             _binaryFormatter = new BinaryFormatter();
-            _version = version;
             _mustClose = mustClose;
         }
 
@@ -38,10 +37,10 @@ namespace CiView.Recorder.Reader
 
             byte logVersion = (byte)(header >> 4);
 
-            if (_version != logVersion)
+            if (VERSION != logVersion)
                 throw new NotSupportedException("the version of the record log ( "
                     + logVersion + " ) is not the same than current reader ( "
-                    + _version + " ) authorized to read");
+                    + VERSION + " ) authorized to read");
 
             header &= 0xF;
 
@@ -110,21 +109,25 @@ namespace CiView.Recorder.Reader
 
         public void Dispose()
         {
+            Close();
+        }
+
+        public void Close()
+        {
             if (_stream == null) return;
-            _binaryReader.Close();
             if (_mustClose)
-                _stream.Close();
+                _binaryReader.Dispose();
             _stream = null;
         }
 
         public IEnumerator<ILogEntry> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new LogReaderEnum(this);
         }
 
-        IEnumerator GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new LogReaderEnum(this);
         }
     }
 }
