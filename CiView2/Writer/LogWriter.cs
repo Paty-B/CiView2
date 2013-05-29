@@ -33,10 +33,10 @@ namespace CiView.Recorder.Writer
                 _cacheHeaders[i] = (byte)((VERSION << 4) + i);
         }
 
-        static public LogWriter LogWriterIntoFile(string logFileEmplacement, string autoNameFile = "CiView2_{0:u}.log")
+        public static LogWriter LogWriterInFile(string logFileEmplacement, string autoNameFile = "CiView2_{0:u}.log")
         {
             string finalLinkEmplacement;
-            if (autoNameFile == null)
+            if (autoNameFile != null)
             {
                 finalLinkEmplacement = String.Format(logFileEmplacement + "/" + autoNameFile, DateTime.UtcNow);
             }
@@ -45,6 +45,7 @@ namespace CiView.Recorder.Writer
                 finalLinkEmplacement = logFileEmplacement;
             }
             StreamWriter streamWriter = new StreamWriter(finalLinkEmplacement, true, Encoding.UTF8);
+            
             return new LogWriter(streamWriter.BaseStream, false);
         }
 
@@ -69,7 +70,7 @@ namespace CiView.Recorder.Writer
         
         public void OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
         {
-            EasyWriteLog(LogType.OnGroupClosed, group.GroupTags, group.GroupLevel, group.GroupText, group.CloseLogTimeUtc);
+            _binaryWriter.Write(group.CloseLogTimeUtc.ToBinary());
             _binaryWriter.Write(conclusions.Count);
             foreach (ActivityLogGroupConclusion conclusion in conclusions)
             {
@@ -103,11 +104,15 @@ namespace CiView.Recorder.Writer
 
         public void Dispose()
         {
+            Close();
+        }
+
+        public void Close()
+        {
             if (_stream == null) return;
             _binaryWriter.Write((byte)0);
-            _binaryWriter.Close();
-            if (_mustClose)
-                _stream.Close();
+            if(_mustClose)
+                _binaryWriter.Dispose();
             _stream = null;
         }
     }

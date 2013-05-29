@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "Console\Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{6741E43F-148D-49E4-B320-953D7FB176B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateBinaryLogFileApp", "GenerateBinaryLogFileApp\GenerateBinaryLogFileApp.csproj", "{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6741E43F-148D-49E4-B320-953D7FB176B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6741E43F-148D-49E4-B320-953D7FB176B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6741E43F-148D-49E4-B320-953D7FB176B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 		{F016BCD0-1A8D-44C2-99C0-1ED7BA3DE7C7} = {40BC0328-A3A9-40CB-B49F-91AF2A257DAE}
 		{7FBDC6EA-C7C5-46DC-879E-D7CA6CC4408E} = {40BC0328-A3A9-40CB-B49F-91AF2A257DAE}
 		{6741E43F-148D-49E4-B320-953D7FB176B7} = {40BC0328-A3A9-40CB-B49F-91AF2A257DAE}
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA} = {40BC0328-A3A9-40CB-B49F-91AF2A257DAE}
 	EndGlobalSection
 EndGlobal

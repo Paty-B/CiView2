@@ -14,55 +14,6 @@ namespace CiView.Recorder.Tests
     [TestFixture]
     public class RecorderTestsSampleTest
     {
-        internal class FakeLogGroup : IActivityLogGroup
-        {
-            public DateTime CloseLogTimeUtc { get; set; }
-
-            public Exception Exception { get; set; }
-
-            public LogLevel GroupLevel { get; set; }
-
-            public CKTrait GroupTags { get; set; }
-
-            public string GroupText { get; set; }
-
-            public DateTime LogTimeUtc { get; set; }
-
-            #region function useless for the save of logs
-
-            public int Depth
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public IActivityLogger OriginLogger
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public IActivityLogGroup Parent
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public CKTrait SavedLoggerTags
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public LogLevelFilter SavedLoggerFilter
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsGroupTextTheExceptionMessage
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            #endregion
-        }
-
         [Test]
         public void OnUnfilteredLogSampleTestWriteRead()
         {
@@ -70,23 +21,25 @@ namespace CiView.Recorder.Tests
             LogLevel logLevel = LogLevel.Info;
             string text = "I'm a log who do nothing but i exist";
             DateTime logTimeUtc = DateTime.UtcNow;
+            RealLogData logData;
 
-            byte[] saveMemory;
             using (MemoryStream memory = new MemoryStream())
-            using (LogWriter logWriter = new LogWriter(memory, true))
             {
-                logWriter.OnUnfilteredLog(tags, logLevel, text, logTimeUtc);
-                saveMemory = memory.ToArray();
+                using (LogWriter logWriter = new LogWriter(memory))
+                {
+                    logWriter.OnUnfilteredLog(tags, logLevel, text, logTimeUtc);
+                }
+                memory.Seek(0, SeekOrigin.Begin);
+                using (LogReader logReader = new LogReader(memory, LogWriter.VERSION))
+                {
+                    logData = logReader.ReadOneLog();
+                }
             }
-            using (MemoryStream memory = new MemoryStream(saveMemory))
-            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
-            {
-                RealLogData logData = logReader.ReadOneLog();
-                Assert.That(logData.Level == logLevel);
-                Assert.That(logData.Text == text);
-                Assert.That(logData.Tags == tags);
-                Assert.That(logData.LogTimeUtc == logTimeUtc);
-            }
+
+            Assert.That(logData.Level == logLevel);
+            Assert.That(logData.Text == text);
+            Assert.That(logData.Tags == tags);
+            Assert.That(logData.LogTimeUtc == logTimeUtc);
         }
 
         [Test]
@@ -108,7 +61,7 @@ namespace CiView.Recorder.Tests
                 saveMemory = memory.ToArray();
             }
             using (MemoryStream memory = new MemoryStream(saveMemory))
-            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            using (LogReader logReader = new LogReader(memory, LogWriter.VERSION, true))
             {
                 RealLogData logData = logReader.ReadOneLog();
                 Assert.That(logData.Level == fakeLogGroup.GroupLevel);
@@ -135,10 +88,11 @@ namespace CiView.Recorder.Tests
             using (LogWriter logWriter = new LogWriter(memory, true))
             {
                 logWriter.OnOpenGroup(fakeLogGroup);
+                memory.Seek(0, SeekOrigin.Begin);
                 saveMemory = memory.ToArray();
             }
             using (MemoryStream memory = new MemoryStream(saveMemory))
-            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            using (LogReader logReader = new LogReader(memory, LogWriter.VERSION, true))
             {
                 RealLogData logData = logReader.ReadOneLog();
                 Assert.That(logData.Level == fakeLogGroup.GroupLevel);
@@ -172,7 +126,7 @@ namespace CiView.Recorder.Tests
                 saveMemory = memory.ToArray();
             }
             using (MemoryStream memory = new MemoryStream(saveMemory))
-            using (RealLogReader logReader = new RealLogReader(memory, LogWriter.VERSION, true))
+            using (LogReader logReader = new LogReader(memory, LogWriter.VERSION, true))
             {
                 RealLogData logData = logReader.ReadOneLog();
                 Assert.That(logData.Level == fakeLogGroup.GroupLevel);

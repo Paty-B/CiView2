@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CK.Core;
 
 namespace CiView.Recorder.Reader
 {
-    public class RealLogDataException : RealLogData
+    public class LogEntryException: LogEntry
     {
-        internal RealLogDataException() { }
-        public Exception LogException { get; internal set; }
+        internal LogEntryException() { }
+
+        public new Exception Exception { get; internal set; }
     }
 }

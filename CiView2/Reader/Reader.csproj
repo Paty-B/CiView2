@@ -42,17 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogData.cs" />
-    <Compile Include="LogDataCloseGroup.cs" />
-    <Compile Include="LogDataOpenGroup.cs" />
-    <Compile Include="LogReader.cs" />
+    <Compile Include="ILogEntry.cs" />
+    <Compile Include="LogEntry.cs" />
+    <Compile Include="LogEntryCloseGroup.cs" />
+    <Compile Include="LogEntryException.cs" />
     <Compile Include="LogPlayer.cs" />
+    <Compile Include="LogReaderEnum.cs" />
     <Compile Include="LogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RealLogData.cs" />
-    <Compile Include="RealLogDataConclusions.cs" />
-    <Compile Include="RealLogDataException.cs" />
-    <Compile Include="RealLogReader.cs" />
+    <Compile Include="LogReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Writer\Writer.csproj">
