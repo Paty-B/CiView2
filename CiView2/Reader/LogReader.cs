@@ -107,6 +107,11 @@ namespace CiView.Recorder.Reader
 
         #endregion
 
+        public static IEnumerable<ILogEntry> Open(string filePath)
+        {
+            return new LogReader(File.Open(filePath, FileMode.Open, FileAccess.Read));
+        }
+
         public void Dispose()
         {
             Close();
@@ -127,7 +132,7 @@ namespace CiView.Recorder.Reader
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new LogReaderEnum(this);
+            return GetEnumerator();
         }
     }
 }
