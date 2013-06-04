@@ -57,6 +57,7 @@ namespace Viewer.Model
         public void RemoveChild( ILineItem child )
         {
             RemoveChild( child, this, ref _firstChild, ref _lastChild );
+            Host.OnItemDeleted(child, EventArgs.Empty);
         }
 
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
@@ -129,5 +130,7 @@ namespace Viewer.Model
         {
             _absoluteY += delta;
         }
+
+        public event EventHandler ChildInserted;
     }
 }

@@ -84,5 +84,7 @@ namespace Viewer.Model
         {
             LineItemBase.RemoveChild( child, this, ref _firstChild, ref _lastChild );
         }
+
+        public event EventHandler ChildInserted;
     }
 }

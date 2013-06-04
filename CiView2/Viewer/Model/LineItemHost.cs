@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Viewer.Model
 {
-    public delegate void ChildInsertedEventHandler(ILineItem sender, EventArgs e);
+    
+    
 
     class LineItemHost : ILineItemHost
     {
         internal readonly LineItemRoot Root;
-        public event ChildInsertedEventHandler ChildInserted;
+        
+        
 
         public LineItemHost()
         {
@@ -23,17 +25,46 @@ namespace Viewer.Model
             get { return Root; }
         }
 
-        internal virtual void OnChildInserted(LineItem sender, EventArgs e)
+        #region event
+
+        public delegate void HiddenEventHandler(ILineItem sender, EventArgs e);
+        public event HiddenEventHandler ItemHidden;
+        internal void OnItemHidden(ILineItem item, EventArgs e)
         {
-            
+            // item caché
         }
 
+        public delegate void CollaspedEventHandler(ILineItem sender, EventArgs e);
+        public event CollaspedEventHandler ItemCollasped;
+        internal void OnCollasped(ILineItem item, EventArgs e)
+        {
+            // item collapse
+        }
 
+        public delegate void ExpandedEventHandler(ILineItem sender, EventArgs e);
+        public event ExpandedEventHandler ItemExpanded;
+        internal void OnExpended(ILineItem item, EventArgs e)
+        {
+            //expand
+        }
 
-        internal void OnChildInserted(ILineItem child, EventArgs eventArgs)
+        public delegate void ChildInsertedEventHandler(ILineItem sender, EventArgs e);
+        public event ChildInsertedEventHandler ChildInserted;
+        internal void OnChildInserted(ILineItem child, EventArgs e)
         {
             if (ChildInserted != null)
-                ChildInserted(child, eventArgs);
+                ChildInserted(child, e);
         }
+
+        public delegate void ItemDeletedEventHandler(ILineItem sender, EventArgs e);
+        public event ItemDeletedEventHandler ItemDeleted;
+        internal void OnItemDeleted(ILineItem sender, EventArgs e)
+        {
+            if (ItemDeleted != null)
+                ItemDeleted(sender, e);
+        }
+
+
+        #endregion
     }
 }
