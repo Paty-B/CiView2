@@ -18,7 +18,7 @@ namespace CiView.Recorder.Tests
         public void OnUnfilteredLogSampleTestWriteRead()
         {
             ActivityLogger logger = new ActivityLogger();
-            
+
             CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
             string text = "I'm a log who do nothing but i exist";
 
@@ -29,7 +29,7 @@ namespace CiView.Recorder.Tests
                 using (LogWriter logWriter = new LogWriter(memory))
                 {
                     logger.Output.RegisterClient(logWriter);
-                    logger.Trace(text, tags);
+                    logger.Trace(tags,text);
                 }
                 memory.Seek(0, SeekOrigin.Begin);
                 using (LogReader logReader = new LogReader(memory))
@@ -38,8 +38,42 @@ namespace CiView.Recorder.Tests
                 }
             }
 
-            //Assert.That(logEntry.Tags == tags);
+            Assert.That(logEntry.Tags == tags);
+            Assert.That(logEntry.LogType == Reader.LogType.OnUnfilteredLog);
             Assert.That(logEntry.Text == text);
+            Assert.That(logEntry.LogLevel == LogLevel.Trace);
+        }
+
+        [Test]
+        public void OnOpenGroupWithExceptionSampleTestWriteRead()
+        {
+            ActivityLogger logger = new ActivityLogger();
+
+            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
+            string text = "I'm a log who do nothing but i exist";
+            Exception ex = new Exception("innopiné");
+
+            ILogEntry logEntry;
+
+            using (MemoryStream memory = new MemoryStream())
+            {
+                using (LogWriter logWriter = new LogWriter(memory))
+                {
+                    logger.Output.RegisterClient(logWriter);
+                    logger.OpenGroup(tags, LogLevel.Fatal, ex, text);
+                }
+                memory.Seek(0, SeekOrigin.Begin);
+                using (LogReader logReader = new LogReader(memory))
+                {
+                    logEntry = logReader.ReadOneLog();
+                }
+            }
+
+            Assert.That(logEntry.LogType == Reader.LogType.OnOpenGroupWithException);
+            Assert.That(logEntry.Text == text);
+            Assert.That(logEntry.Tags == tags);
+            Assert.That(logEntry.LogLevel == LogLevel.Fatal);
+            //Assert.That(logEntry.Exception.ToString() == ex.ToString());
         }
         /*
         [Test]
