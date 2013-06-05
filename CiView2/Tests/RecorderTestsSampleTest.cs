@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using CK.Core;
 using CiView.Recorder.Writer;
-using CiView.Recorder.Reader;
+using CiView.Recorder;
 
 namespace CiView.Recorder.Tests
 {
@@ -19,29 +19,30 @@ namespace CiView.Recorder.Tests
         {
             ActivityLogger logger = new ActivityLogger();
 
-            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
+            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate( "Tag" );
             string text = "I'm a log who do nothing but i exist";
 
             ILogEntry logEntry;
 
-            using (MemoryStream memory = new MemoryStream())
+            using( MemoryStream memory = new MemoryStream() )
             {
-                using (LogWriter logWriter = new LogWriter(memory))
+                using( LogWriter logWriter = new LogWriter( memory, true, mustClose: false ) )
                 {
-                    logger.Output.RegisterClient(logWriter);
-                    logger.Trace(tags,text);
+                    logger.Output.RegisterClient( logWriter );
+                    logger.Trace( tags, text );
                 }
-                memory.Seek(0, SeekOrigin.Begin);
-                using (LogReader logReader = new LogReader(memory))
+                memory.Seek( 0, SeekOrigin.Begin );
+                using( LogReader logReader = new LogReader( memory ) )
                 {
-                    logEntry = logReader.ReadOneLog();
+                    logReader.MoveNext();
+                    logEntry = logReader.Current;
                 }
             }
 
-            Assert.That(logEntry.Tags == tags);
-            Assert.That(logEntry.LogType == Reader.LogType.OnUnfilteredLog);
-            Assert.That(logEntry.Text == text);
-            Assert.That(logEntry.LogLevel == LogLevel.Trace);
+            Assert.That( logEntry.Tags == tags );
+            Assert.That( logEntry.LogType == LogType.Log );
+            Assert.That( logEntry.Text == text );
+            Assert.That( logEntry.LogLevel == LogLevel.Trace );
         }
 
         [Test]
@@ -49,32 +50,34 @@ namespace CiView.Recorder.Tests
         {
             ActivityLogger logger = new ActivityLogger();
 
-            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("Tag");
+            CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate( "Tag" );
             string text = "I'm a log who do nothing but i exist";
-            Exception ex = new Exception("innopiné");
+            Exception ex = new Exception( "Bug..." );
 
             ILogEntry logEntry;
 
-            using (MemoryStream memory = new MemoryStream())
+            using( MemoryStream memory = new MemoryStream() )
             {
-                using (LogWriter logWriter = new LogWriter(memory))
+                using( LogWriter logWriter = new LogWriter( memory, true, mustClose: false ) )
                 {
-                    logger.Output.RegisterClient(logWriter);
-                    logger.OpenGroup(tags, LogLevel.Fatal, ex, text);
+                    logger.Output.RegisterClient( logWriter );
+                    logger.OpenGroup( tags, LogLevel.Fatal, ex, text );
                 }
-                memory.Seek(0, SeekOrigin.Begin);
-                using (LogReader logReader = new LogReader(memory))
+                memory.Seek( 0, SeekOrigin.Begin );
+                using( LogReader logReader = new LogReader( memory ) )
                 {
-                    logEntry = logReader.ReadOneLog();
+                    logReader.MoveNext();
+                    logEntry = logReader.Current;
                 }
             }
 
-            Assert.That(logEntry.LogType == Reader.LogType.OnOpenGroupWithException);
-            Assert.That(logEntry.Text == text);
-            Assert.That(logEntry.Tags == tags);
-            Assert.That(logEntry.LogLevel == LogLevel.Fatal);
-            //Assert.That(logEntry.Exception.ToString() == ex.ToString());
+            Assert.That( logEntry.LogType == LogType.OpenGroup );
+            Assert.That( logEntry.Text == text );
+            Assert.That( logEntry.Tags == tags );
+            Assert.That( logEntry.LogLevel == LogLevel.Fatal );
+            Assert.That( logEntry.Exception.ToString() == ex.ToString() );
         }
+
         /*
         [Test]
         public void OnUnfilteredLogSampleTestWriteRead()

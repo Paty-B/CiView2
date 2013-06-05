@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using CK.Core;
 using CiView.Recorder.Writer;
 using System.IO;
+using CiView.Recorder;
 
 namespace GenerateBinaryLogFileApp
 {
@@ -56,7 +57,7 @@ namespace GenerateBinaryLogFileApp
         {
             try
             {
-                _logWriter = LogWriter.LogWriterInFile(saveFileDialog.FileName, null);
+                _logWriter = LogWriter.Create(saveFileDialog.FileName, null);
                 buttonAdd.Enabled = true;
                 buttonClose.Enabled = true;
                 buttonStart.Enabled = false;
@@ -86,12 +87,12 @@ namespace GenerateBinaryLogFileApp
             tags = tags.Substring(0, tags.Length - 1);
             switch ((LogType)comboBoxLogType.SelectedIndex)
             {
-                case LogType.OnUnfilteredLog :
+                case LogType.Log :
                     _logWriter.OnUnfilteredLog(ActivityLogger.RegisteredTags.FindOrCreate(tags), (LogLevel)comboBoxLogLevel.SelectedIndex, textBoxText.Text, DateTime.UtcNow);
                     MessageBox.Show("log is add in binary file"
                         , "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 break;
-                case LogType.OnOpenGroup :
+                case LogType.OpenGroup :
                     FakeLogGroup fakeLogGroup = new FakeLogGroup()
                     {
                         GroupLevel = (LogLevel)comboBoxLogLevel.SelectedIndex,

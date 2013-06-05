@@ -1,13 +1,38 @@
-﻿namespace CiView.Recorder.Writer
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CiView.Recorder
 {
+
     public enum LogType
     {
-        OnUnfilteredLog             = 0,
+        /// <summary>
+        /// Non applicable.
+        /// </summary>
+        None,
 
-        OnOpenGroup                 = 1,
+        /// <summary>
+        /// A standard log entry.
+        /// Except <see cref="ILogEntry.Conclusions"/> (reserved to <see cref="CloseGroup"/>) and <see cref="ILogEntry.Exception"/> (only <see cref="OpenGroup"/> can carry
+        /// an exception), all other properties of the <see cref="ILogEntry"/> may be set.
+        /// </summary>
+        Log,
 
-        OnOpenGroupWithException    = 2,
+        /// <summary>
+        /// Group is opened.
+        /// Except <see cref="ILogEntry.Conclusions"/>, all other properties of the <see cref="ILogEntry"/> may be set.
+        /// </summary>
+        OpenGroup,
 
-        OnGroupClosed               = 3
+        /// <summary>
+        /// Group is closed. 
+        /// Note that the only available information are its <see cref="ILogEntry.Conclusions"/> and its <see cref="ILogEntry.LogTimeUtc"/>.
+        /// All other properties are set to their default: <see cref="ILogEntry.LogLevel"/> for instance 
+        /// is <see cref="LogLevel.None"/>.
+        /// </summary>
+        CloseGroup
     }
 }

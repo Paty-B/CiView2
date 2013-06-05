@@ -37,3 +37,5 @@ CK.Interop.nuspec
 CK.Reflection.nuspec
 CK.Storage.nuspec
 
+*.suo
+packages/
