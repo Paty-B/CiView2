@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="CK.Core, Version=2.8.10.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Core.2.8.10\lib\net45\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\ck-core\CK.Core\bin\Debug\NET45\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,6 +50,7 @@
     <Compile Include="Impl\LEOpenGroup.cs" />
     <Compile Include="Impl\LELogWithTrait.cs" />
     <Compile Include="Impl\LELog.cs" />
+    <Compile Include="LogPlayer.cs" />
     <Compile Include="LogType.cs" />
     <Compile Include="Impl\FileLogType.cs" />
     <Compile Include="LogWriter.cs" />
