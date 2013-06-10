@@ -14,14 +14,19 @@ namespace Viewer.Model
             return new LineItemHost();
         }
 
-        public static ILineItem CreateLogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
+        public static ILineItem CreateLogLineItem(String text, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
         {
-            return new LogLineItem(content,loglevel,tag,logTimeUtc);
+            return new LogLineItem(text,loglevel,tag,logTimeUtc);
         }
 
         public static ILineItem CreateFilteredLineItem()
         {
             return new FilteredLineItem();
+        }
+
+        internal static ILineItem CreateExceptionLineItem(String text, LogLevel logLevel, CKTrait tag, DateTime logTimeUtc, Exception exception)
+        {
+            return new ExceptionLineItem(text, logLevel, tag, logTimeUtc, exception);
         }
     }
 }

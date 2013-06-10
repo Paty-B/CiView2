@@ -18,7 +18,6 @@ namespace Viewer.Model
         ILineItemImpl _nextSibling;
         int _absoluteY;
         int _totalHeight;
-        public event EventHandler ChildInserted;
 
 
         internal LineItemBase()
@@ -56,6 +55,10 @@ namespace Viewer.Model
         public int AbsoluteY { get { return _absoluteY; } }
 
         public int TotalLineHeight { get { return _totalHeight; } }
+
+        public int followingNumberWarning;
+        public int followingNumberError;
+        public int followingNumberFatal;
 
         public void RemoveChild( ILineItem child )
         {

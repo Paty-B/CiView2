@@ -25,7 +25,14 @@ namespace Viewer
         
         public void OnOpenGroup(IActivityLogGroup group)
         {
-            currentLineItem.InsertChild(LineItem.CreateLogLineItem(group.GroupText,group.GroupLevel,group.GroupTags,group.LogTimeUtc));
+            if (group.Exception != null)
+            {
+                currentLineItem.InsertChild(LineItem.CreateExceptionLineItem(group.GroupText, group.GroupLevel, group.GroupTags, group.LogTimeUtc, group.Exception));
+            }
+            else
+            {
+                currentLineItem.InsertChild(LineItem.CreateLogLineItem(group.GroupText, group.GroupLevel, group.GroupTags, group.LogTimeUtc));
+            }
             currentLineItem = currentLineItem.LastChild;
         }
 

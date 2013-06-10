@@ -66,6 +66,7 @@
     </ApplicationDefinition>
     <Compile Include="EnvironmentCreator.cs" />
     <Compile Include="Model\Events\LineItemEventArgs.cs" />
+    <Compile Include="Model\ExceptionLineItem.cs" />
     <Compile Include="Model\ILineItem.cs" />
     <Compile Include="Model\ILineItemHost.cs" />
     <Compile Include="Model\ILineItemImpl.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Model\LineItem.cs" />
     <Compile Include="Model\LineItemRoot.cs" />
     <Compile Include="Model\Status.cs" />
+    <Compile Include="View\VisualExceptionLineItem.cs" />
     <Compile Include="userControl.xaml.cs">
       <DependentUpon>userControl.xaml</DependentUpon>
     </Compile>

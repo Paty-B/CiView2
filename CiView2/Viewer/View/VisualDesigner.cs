@@ -125,6 +125,11 @@ namespace Viewer.View
         internal static void CreateSimpleLine(DrawingContext dc, Status status, LogLevel logLevel, String text,int lineHeight, CKTrait tag)
         {
             Point pt = new Point(0, 0);
+            CreateSimpleLine(dc,status,logLevel,text, lineHeight, tag, pt);
+                
+        }
+        internal static void CreateSimpleLine(DrawingContext dc, Status status, LogLevel logLevel, String text,int lineHeight, CKTrait tag, Point pt)
+        {
             CreateExpander(dc, pt, status);
             pt.X += frontSize;
             CreateSymbol(dc, pt, logLevel);
@@ -136,7 +141,14 @@ namespace Viewer.View
             int logLovelContent = text.Length;
             pt.X += logLovelContent * frontSize;
             
-            CreateTag(dc, pt, tag);    
+            CreateTag(dc, pt, tag);
+        }
+
+        internal static void CreateException(DrawingContext dc, Status status, LogLevel logLevel, String text, int lineHeight, CKTrait tag, Exception exception)
+        {
+            Point pt = new Point(0, 0);
+            CreateSimpleLine(dc, status, logLevel, text, lineHeight, tag, pt);
+
         }
     }
 }

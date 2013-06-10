@@ -26,11 +26,10 @@ namespace Viewer.View
             IDefaultActivityLogger logger = new DefaultActivityLogger();
             ILineItemHost host = LineItem.CreateLineItemHost();
             EnvironmentCreator ec = new EnvironmentCreator(host);
+            
             _children = new VisualCollection(this);
             
-
-            host.ItemChanged += CreateVisual;
-
+            host.ItemChanged += CheckEvents;
             logger.Output.Register(ec);
 
             #region generation log
@@ -82,7 +81,7 @@ namespace Viewer.View
 
         }
 
-        private void CreateVisual(object sender, LineItemChangedEventArgs e)
+        private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
             VisualLineItem Vl;
 
@@ -98,6 +97,7 @@ namespace Viewer.View
                     break;
                 case LineItemChangedStatus.Inserted:
                     Vl = e.LineItem.CreateVisualLine();
+
                     _children.Add(Vl);
                     break;
             }
@@ -130,47 +130,6 @@ namespace Viewer.View
             _children.Add(CreateDrawingVisualText("groupe 1.2", LogLevel.Warn, pt));
             _children.Add(CreateDrawingVisualSymbol(LogLevel.Warn, new Point(pt.X - fontSize, pt.Y)));
     
-        }
-
-        private void fakeLog(IDefaultActivityLogger logger)
-        {
-
-
-            var tag1 = ActivityLogger.RegisteredTags.FindOrCreate("Product");
-            var tag2 = ActivityLogger.RegisteredTags.FindOrCreate("Sql");
-            var tag3 = ActivityLogger.RegisteredTags.FindOrCreate("Combined Tag|Sql|Engine V2|Product");
-
-            using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
-            {
-                using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
-                {
-                    logger.Trace(tag1, "First");
-                    using (logger.AutoTags(tag1))
-                    {
-                        logger.Trace("Second");
-                        logger.Trace(tag3, "Third");
-                        using (logger.AutoTags(tag2))
-                        {
-                            logger.Info("First");
-                        }
-                    }
-                    using (logger.OpenGroup(LogLevel.Info, () => "Conclusion of Info Group (no newline).", "InfoGroup"))
-                    {
-                        logger.Info("Second");
-                        logger.Trace("Fourth");
-
-                        string warnConclusion = "Conclusion of Warn Group" + Environment.NewLine + "with more than one line int it.";
-                        using (logger.OpenGroup(LogLevel.Warn, () => warnConclusion, "WarnGroup {0} - Now = {1}", 4, DateTime.UtcNow))
-                        {
-                            logger.Info("Warn!");
-                            logger.CloseGroup("User conclusion with multiple lines."
-                                + Environment.NewLine + "It will be displayed on "
-                                + Environment.NewLine + "multiple lines.");
-                        }
-                        logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
-                    }
-                }
-            }
         }
 
         private Point incrementOnce(Point pt)
@@ -256,41 +215,6 @@ namespace Viewer.View
             System.Windows.Point pt = e.GetPosition(this);
         }
 
-/*
-        private DrawingVisual DrawLogLineItem(ILineItem logLineItem)
-        {
-            DrawingVisual drawingLogLineItem = new DrawingVisual();
-            DrawingContext drawingContext = drawingLogLineItem.RenderOpen();
-            Point drawingPosition = new Point(logLineItem.Depth-position.X, Math.Round((double)((logLineItem.AbsoluteY-position.Y) * fontSize)));
-
-
-            VisualDesigner.CreateExpander(drawingContext, drawingPosition, logLineItem.Status);
-            drawingPosition.X += fontSize;
-            VisualDesigner.CreateSymbol(drawingContext, drawingPosition, logLineItem.LogLevel);
-            drawingPosition.X += fontSize;
-            VisualDesigner.CreateContent(drawingContext, drawingPosition, logLineItem.Content);
-            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Content.Length);
-            VisualDesigner.CreateTag(drawingContext, drawingPosition, logLineItem.Tag);
-            drawingPosition.X += Math.Round((double)fontSize * logLineItem.Tag.ToString().Length);
-            VisualDesigner.CreateNextLogIndicator(drawingContext, drawingPosition, logLineItem.NbWarning, logLineItem.NbError, logLineItem.NbFatal);
-
-
-            drawingContext.Close();
-            return drawingLogLineItem;
-        }
-
-        DrawingVisual DrawFiltredLineItem(ILineItem filtredLineItem)
-        {
-            DrawingVisual drawingFiltredLineItem = new DrawingVisual();
-            DrawingContext drawingContext = drawingFiltredLineItem.RenderOpen();
-            Point drawingPosition = new Point(filtredLineItem.Depth - position.X, Math.Round((double)((filtredLineItem.AbsoluteY - position.Y) * fontSize)));
-
-            VisualDesigner.CreateFiltredLogRepresentation(drawingContext, drawingPosition);
-
-            drawingContext.Close();
-            return drawingFiltredLineItem;
-        }
-         */   
 
         public void GoToLineItem(ILineItem lineItem)
         {
