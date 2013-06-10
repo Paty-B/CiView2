@@ -26,16 +26,84 @@ namespace Viewer.View
             IDefaultActivityLogger logger = new DefaultActivityLogger();
             ILineItemHost host = LineItem.CreateLineItemHost();
             EnvironmentCreator ec = new EnvironmentCreator(host);
+            _children = new VisualCollection(this);
+            
+
+            host.ItemChanged += CreateVisual;
+
             logger.Output.Register(ec);
 
-            _children = new VisualCollection(this);
-            CreateFakeLog();
+            #region generation log
+
+            var tag1 = ActivityLogger.RegisteredTags.FindOrCreate("Product");
+            var tag2 = ActivityLogger.RegisteredTags.FindOrCreate("Sql");
+            var tag3 = ActivityLogger.RegisteredTags.FindOrCreate("Combined Tag|Sql|Engine V2|Product");
+
+            using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
+            {
+                using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
+                {
+                    logger.Trace(tag1, "First");
+                    using (logger.AutoTags(tag1))
+                    {
+                        logger.Trace("Second");
+                        logger.Trace(tag3, "Third");
+                        using (logger.AutoTags(tag2))
+                        {
+                            logger.Info("First");
+                        }
+                    }
+                    using (logger.OpenGroup(LogLevel.Info, () => "Conclusion of Info Group (no newline).", "InfoGroup"))
+                    {
+                        logger.Info("Second");
+                        logger.Trace("Fourth");
+
+                        string warnConclusion = "Conclusion of Warn Group" + Environment.NewLine + "with more than one line int it.";
+                        using (logger.OpenGroup(LogLevel.Warn, () => warnConclusion, "WarnGroup {0} - Now = {1}", 4, DateTime.UtcNow))
+                        {
+                            logger.Info("Warn!");
+                            logger.CloseGroup("User conclusion with multiple lines."
+                                + Environment.NewLine + "It will be displayed on "
+                                + Environment.NewLine + "multiple lines.");
+                        }
+                        logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
+                    }
+                }
+            }
+
+            #endregion
+
+
+            //CreateFakeLog();
             
         
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
         }
+
+        private void CreateVisual(object sender, LineItemChangedEventArgs e)
+        {
+            VisualLineItem Vl;
+
+            switch(e.Status)
+            {
+                case LineItemChangedStatus.Collapsed:
+                    break;
+                case LineItemChangedStatus.Deleted :
+                    break;
+                case LineItemChangedStatus.Expanded:
+                    break;
+                case LineItemChangedStatus.Hidden:
+                    break;
+                case LineItemChangedStatus.Inserted:
+                    Vl = e.LineItem.CreateVisualLine();
+                    _children.Add(Vl);
+                    break;
+            }
+        }
+
+
         #region fake
 
         private void CreateFakeLog()
@@ -124,6 +192,8 @@ namespace Viewer.View
         }
         private DrawingVisual CreateDrawingVisualText(String text, LogLevel loglevel, Point pt)
         {
+            DrawingVisual dv;
+            
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
             SolidColorBrush logColor = System.Windows.Media.Brushes.Black;
@@ -143,6 +213,7 @@ namespace Viewer.View
         {
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
+            BitmapImage testImg = new BitmapImage();
             BitmapImage fatalImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\fatal15.png"));
             BitmapImage errorImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\error15.png"));
             BitmapImage warningImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\warning15.png"));
@@ -151,16 +222,21 @@ namespace Viewer.View
             switch (loglevel)
             {
                 case LogLevel.Warn:
-                    logLevelImg = warningImg;
+                    //logLevelImg = warningImg;
+                    logLevelImg = testImg;
                     break;
                 case LogLevel.Error:
-                    logLevelImg = errorImg;
+                    //logLevelImg = errorImg;
+                    logLevelImg = testImg;
                     break;
                 case LogLevel.Fatal:
-                    logLevelImg = fatalImg;
+                    //logLevelImg = fatalImg;
+                    logLevelImg = testImg;
                     break;
                 default:
-                    logLevelImg = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\no15.png"));
+
+                    logLevelImg = testImg;
+                    //new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\img\no15.png"));
                     break;
 
             }

@@ -65,6 +65,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnvironmentCreator.cs" />
+    <Compile Include="Model\Events\LineItemEventArgs.cs" />
     <Compile Include="Model\ILineItem.cs" />
     <Compile Include="Model\ILineItemHost.cs" />
     <Compile Include="Model\ILineItemImpl.cs" />
@@ -76,8 +77,11 @@
       <DependentUpon>userControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\VisualDesigner.cs" />
+    <Compile Include="View\VisualFilteredLineItem.cs" />
+    <Compile Include="View\VisualGroupLineItem.cs" />
     <Compile Include="View\VisualHost.cs" />
     <Compile Include="View\VisualLineItem.cs" />
+    <Compile Include="View\VisualSimpleLineItem.cs" />
     <Page Include="LogViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,7 +131,27 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="View\img\fatal.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\error.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\info.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\trace.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\noImage.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\img\expander.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
