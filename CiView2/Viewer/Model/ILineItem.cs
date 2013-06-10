@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Viewer.View;
 
 namespace Viewer.Model
 {
@@ -20,6 +21,6 @@ namespace Viewer.Model
         void InsertChild( ILineItem child, ILineItem nextChild = null );
         void RemoveChild( ILineItem child );
         event EventHandler ChildInserted;
-        //VisualLine CreateLine();
+        VisualLineItem CreateVisualLine();
     }
 }

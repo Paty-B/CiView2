@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Viewer.View;
 
 namespace Viewer.Model
 {
@@ -17,12 +18,14 @@ namespace Viewer.Model
         ILineItemImpl _nextSibling;
         int _absoluteY;
         int _totalHeight;
+        public event EventHandler ChildInserted;
+
 
         internal LineItemBase()
         {
         }
 
-        //public abstract VisualLine CreateLine();
+        
 
         ILineItemHost ILineItem.Host { get { return _parent != null ? _parent.Host : null; } }
 
@@ -57,13 +60,13 @@ namespace Viewer.Model
         public void RemoveChild( ILineItem child )
         {
             RemoveChild( child, this, ref _firstChild, ref _lastChild );
-            Host.OnItemDeleted(child, EventArgs.Empty);
+            Host.OnItemDeleted(child);
         }
 
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
         {
             InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
-            Host.OnChildInserted(child, EventArgs.Empty);
+            Host.OnChildInserted(child);
         }
 
         internal static void RemoveChild( ILineItem child, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -112,6 +115,7 @@ namespace Viewer.Model
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
             
+            
         }
 
         public void Grow( int delta )
@@ -131,6 +135,8 @@ namespace Viewer.Model
             _absoluteY += delta;
         }
 
-        public event EventHandler ChildInserted;
+        public abstract VisualLineItem CreateVisualLine();
+
+        
     }
 }

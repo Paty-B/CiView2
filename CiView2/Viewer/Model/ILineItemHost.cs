@@ -9,5 +9,7 @@ namespace Viewer.Model
     public interface ILineItemHost
     {
         ILineItem Root { get; }
+
+        event EventHandler<LineItemChangedEventArgs> ItemChanged;
     }
 }

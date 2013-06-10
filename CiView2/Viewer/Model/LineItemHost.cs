@@ -13,8 +13,6 @@ namespace Viewer.Model
     {
         internal readonly LineItemRoot Root;
         
-        
-
         public LineItemHost()
         {
             Root = new LineItemRoot( this );
@@ -25,46 +23,31 @@ namespace Viewer.Model
             get { return Root; }
         }
 
-        #region event
-
-        public delegate void HiddenEventHandler(ILineItem sender, EventArgs e);
-        public event HiddenEventHandler ItemHidden;
-        internal void OnItemHidden(ILineItem item, EventArgs e)
+        public event EventHandler<LineItemChangedEventArgs> ItemChanged;
+        
+        internal void OnCollapsed( ILineItem item )
         {
-            // item caché
+            var h = ItemChanged;
+            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Collapsed) );
+        }
+        
+        internal void OnExpended(ILineItem item)
+        {
+            var h = ItemChanged;
+            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Expanded) );
         }
 
-        public delegate void CollaspedEventHandler(ILineItem sender, EventArgs e);
-        public event CollaspedEventHandler ItemCollasped;
-        internal void OnCollasped(ILineItem item, EventArgs e)
+        internal void OnItemDeleted(ILineItem item)
         {
-            // item collapse
+            var h = ItemChanged;
+            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Deleted) );
         }
 
-        public delegate void ExpandedEventHandler(ILineItem sender, EventArgs e);
-        public event ExpandedEventHandler ItemExpanded;
-        internal void OnExpended(ILineItem item, EventArgs e)
+        internal void OnChildInserted(ILineItem inserted )
         {
-            //expand
+            var h = ItemChanged;
+            if (h != null) h( this, new LineItemChangedEventArgs(inserted,LineItemChangedStatus.Inserted) );
         }
 
-        public delegate void ChildInsertedEventHandler(ILineItem sender, EventArgs e);
-        public event ChildInsertedEventHandler ChildInserted;
-        internal void OnChildInserted(ILineItem child, EventArgs e)
-        {
-            if (ChildInserted != null)
-                ChildInserted(child, e);
-        }
-
-        public delegate void ItemDeletedEventHandler(ILineItem sender, EventArgs e);
-        public event ItemDeletedEventHandler ItemDeleted;
-        internal void OnItemDeleted(ILineItem sender, EventArgs e)
-        {
-            if (ItemDeleted != null)
-                ItemDeleted(sender, e);
-        }
-
-
-        #endregion
     }
 }

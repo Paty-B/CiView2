@@ -86,5 +86,11 @@ namespace Viewer.Model
         }
 
         public event EventHandler ChildInserted;
+
+
+        public View.VisualLineItem CreateVisualLine()
+        {
+            throw new System.ArgumentException("do not create a visual line for the root line");
+        }
     }
 }
