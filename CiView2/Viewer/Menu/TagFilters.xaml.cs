@@ -26,15 +26,33 @@ namespace Viewer
 
         private class CKTraitCheckboxInfo
         {
-            internal CKTraitCheckboxInfo(CheckBox cb)
+            internal CKTraitCheckboxInfo(string tagName)
             {
-                CheckBoxObj = cb;
-                Number = 1;
+                CheckBoxObj = new CheckBox();
+                Number = 0;
+
+                CheckBoxObj.Uid = tagName;
+                CheckBoxObj.IsChecked = true;
+                Rise();
             }
+
             internal int Number { get; private set; }
             internal CheckBox CheckBoxObj { get; private set; }
-            internal int Increment() {
-                return ++Number;
+
+            internal void Rise()
+            {
+                UpdateCheckBoxContent(1);
+            }
+
+            internal void decrease()
+            {
+                UpdateCheckBoxContent(-1);
+            }
+
+            private void UpdateCheckBoxContent(int value)
+            {
+                Number += value;
+                CheckBoxObj.Content = CheckBoxObj.Uid + " (" + Number + ")";
             }
         }
 
@@ -54,44 +72,61 @@ namespace Viewer
             CKtraitRise(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
+            CKtraitRise(tags);
+            CKtraitRise(tags);
+            tags = ActivityLogger.RegisteredTags.FindOrCreate("D|B");
+            CKTraitDecrease(tags);
+            CKTraitDecrease(tags);
 
             #endregion
         }
 
 
-        private void CKtraitRise(CKTrait ckTrait)
+        public void CKtraitRise(CKTrait ckTrait)
         {
-            foreach (CKTrait trait in ckTrait.AtomicTraits)
-                AddCheckbox(trait.ToString());
+            UpdateCKTrait(ckTrait);
         }
 
-        private void AddCheckbox(String traitName)
+        public void CKTraitDecrease(CKTrait ckTrait)
         {
-            CKTraitCheckboxInfo traitCBInfo;
-            if (_traitsCBInfo.TryGetValue(traitName, out traitCBInfo))
+            UpdateCKTrait(ckTrait, false);
+        }
+
+        private void UpdateCKTrait(CKTrait ckTrait, bool rise = true)
+        {
+            foreach (CKTrait trait in ckTrait.AtomicTraits)
             {
-                traitCBInfo.CheckBoxObj.Content = traitName + " (" + traitCBInfo.Increment() + ")";
-            }
-            else
-            {
-                traitCBInfo = new CKTraitCheckboxInfo(new CheckBox());
-                _traitsCBInfo.Add(traitName, traitCBInfo);
-                traitCBInfo.CheckBoxObj.Click += new RoutedEventHandler(CKTraitChecked);
-                traitCBInfo.CheckBoxObj.Uid = traitName;
-                traitCBInfo.CheckBoxObj.IsChecked = true;
-                IEnumerable<KeyValuePair<string, CKTraitCheckboxInfo>> query =
-                    _traitsCBInfo.OrderBy(tcbi => tcbi.Key);
-                ListBoxTag.Items.Add(traitCBInfo.CheckBoxObj);
-                traitCBInfo.CheckBoxObj.Content = traitName + " (1)";
-                ListBoxTag.Items.SortDescriptions.Add(
-                    new System.ComponentModel.SortDescription("Content",
-                        System.ComponentModel.ListSortDirection.Ascending));
+                string tagName = trait.ToString();
+                CKTraitCheckboxInfo traitCBInfo;
+                if (_traitsCBInfo.TryGetValue(tagName, out traitCBInfo))
+                {
+                    if (rise)
+                        traitCBInfo.Rise();
+                    else
+                    {
+                        traitCBInfo.decrease();
+                        if (traitCBInfo.Number == 0)
+                        {
+                            _traitsCBInfo.Remove(tagName);
+                            ListBoxTag.Items.Remove(traitCBInfo.CheckBoxObj);
+                        }
+                    }
+                }
+                else
+                {
+                    if (rise)
+                    {
+                        traitCBInfo = new CKTraitCheckboxInfo(tagName);
+                        _traitsCBInfo.Add(tagName, traitCBInfo);
+                        ListBoxTag.Items.Add(traitCBInfo.CheckBoxObj);
+                        ListBoxTag.Items.SortDescriptions.Add(
+                            new System.ComponentModel.SortDescription("Content",
+                                System.ComponentModel.ListSortDirection.Ascending));
+                    }
+                }
             }
         }
 
