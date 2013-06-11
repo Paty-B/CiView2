@@ -7,7 +7,7 @@ using CK.Core;
 
 namespace CiView.Recorder
 {
-    class LogPlayer
+    class LogPlayer : IDisposable
     {
         
         IEnumerator<ILogEntry> _readerEnum;
@@ -21,11 +21,11 @@ namespace CiView.Recorder
         bool _isPlayingOnTime;
         bool _playing;
 
-        int _maxCount ;
- 
+        
 
 
-        public LogPlayer(string filePath, int maxCount)
+
+        public LogPlayer(string filePath)
         {
             _readerEnum = LogReader.Open(filePath);
             _activityLogger = new ActivityLogger();
@@ -33,21 +33,21 @@ namespace CiView.Recorder
             _lastLogTimeUtc = DateTime.MinValue;
             _isPlayingOnTime = false;
             _playing = false;
-            _maxCount = maxCount;
+            
         }
 
-        public int Play(int maxCount = 1)
+        public int Play(int Count = 1)
         {
             _playing = true;
-            while (maxCount > 0 && _playing && _readerEnum.MoveNext())
+            while (Count > 0 && _playing && _readerEnum.MoveNext())
             {
                 Send(_readerEnum.Current);
-                maxCount--;
+                Count--;
             }
-            return maxCount;
+            return Count;
         }
 
-        public int PlayOnTime(int maxCount = 1)
+        public int PlayOnTime(int Count = 1)
         {
 
             _playing = true;
@@ -57,7 +57,7 @@ namespace CiView.Recorder
                 _isPlayingOnTime = true;
                 _lastSendTime = DateTime.Now;                
             }
-            while (maxCount>0 && _playing && _isPlayingOnTime && _readerEnum.MoveNext())
+            while (Count>0 && _playing && _isPlayingOnTime && _readerEnum.MoveNext())
             {
 
                 ILogEntry log = _readerEnum.Current;
@@ -69,10 +69,10 @@ namespace CiView.Recorder
                 if (_waitingTime < (_lastSendTime - DateTime.Now).Duration())
                 {
                     Send(_readerEnum.Current);
-                    maxCount--;
+                    Count--;
                 }
             }
-            return maxCount;  
+            return Count;  
         }
 
 
@@ -109,6 +109,12 @@ namespace CiView.Recorder
         {
             _playing = false;
             _isPlayingOnTime = false;
+            
+        }
+
+        public void Dispose()
+        {
+            _readerEnum.Dispose();
         }
     }
 }
