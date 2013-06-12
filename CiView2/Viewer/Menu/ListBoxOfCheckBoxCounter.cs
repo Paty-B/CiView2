@@ -34,7 +34,7 @@ namespace Viewer
         {
             CheckBoxCounter checkBoxCounter;
             if (!_dictionary.TryGetValue(uid, out checkBoxCounter))
-                checkBoxCounter = InsertNewCheckBoxCounter(uid, uid);
+                checkBoxCounter = InsertNewCheckBoxCounter(uid);
             checkBoxCounter.Counter++;
         }
 
@@ -46,13 +46,13 @@ namespace Viewer
                     RemoveCheckBoxCounter(checkBoxCounter);
         }
 
-        private CheckBoxCounter InsertNewCheckBoxCounter(string uid, string text)
+        private CheckBoxCounter InsertNewCheckBoxCounter(string uid)
         {
             CheckBoxCounter checkBoxCounter = new CheckBoxCounter();
             checkBoxCounter.Uid = uid;
             checkBoxCounter.Click += CKTraitClick;
             checkBoxCounter.IsChecked = DefaultChecked;
-            checkBoxCounter.Text = text;
+            checkBoxCounter.Text = uid;
             Items.Add(checkBoxCounter);
             _dictionary.Add(uid, checkBoxCounter);
             Sorting();
@@ -66,9 +66,9 @@ namespace Viewer
             Sorting();
         }
 
-        public CheckBoxCounter Add(string uid, string text)
+        public CheckBoxCounter Add(string uid)
         {
-            return InsertNewCheckBoxCounter(uid, text);
+            return InsertNewCheckBoxCounter(uid);
         }
 
         private void CKTraitClick(object sender, RoutedEventArgs e)

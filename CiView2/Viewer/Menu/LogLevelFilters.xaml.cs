@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CK.Core;
 
 namespace Viewer
 {
@@ -23,11 +24,21 @@ namespace Viewer
         public LogLevelFilters()
         {
             InitializeComponent();
-        }
+            _listBoxOfCheckBoxCounter.ForceDelete = false;
+            _listBoxOfCheckBoxCounter.Add("Trace");
+            _listBoxOfCheckBoxCounter.Add("Info");
+            _listBoxOfCheckBoxCounter.Add("Warn").Text = "Warning";
+            _listBoxOfCheckBoxCounter.Add("Error");
+            _listBoxOfCheckBoxCounter.Add("Fatal");
+            _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+       }
 
-        private void CheckBoxFiltersClick(object sender, RoutedEventArgs e)
+        private void CKTraitChecked(string uid, bool isChecked)
         {
-
+            /*
+            MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
+                    , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            //*/
         }
     }
 }

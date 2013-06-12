@@ -4,14 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:local="clr-namespace:Viewer">
     <Grid>
-        <ListBox BorderThickness="0">
-            <CheckBox Content="Trace" Click="CheckBoxFiltersClick"/>
-            <CheckBox Content="Info" Click="CheckBoxFiltersClick"/>
-            <CheckBox Content="Warning" Click="CheckBoxFiltersClick"/>
-            <CheckBox Content="Error" Click="CheckBoxFiltersClick"/>
-            <CheckBox Content="Fatal" Click="CheckBoxFiltersClick"/>
-        </ListBox>
+        <local:ListBoxOfCheckBoxCounter x:Name="_listBoxOfCheckBoxCounter" />
     </Grid>
 </UserControl>
