@@ -21,41 +21,6 @@ namespace Viewer
     /// </summary>
     public partial class TagFilters : UserControl
     {
-        private Dictionary<string, CKTraitCheckboxInfo> _traitsCBInfo =
-            new Dictionary<string, CKTraitCheckboxInfo>();
-
-        private class CKTraitCheckboxInfo
-        {
-            internal CKTraitCheckboxInfo(string tagName)
-            {
-                CheckBoxObj = new CheckBox();
-                Number = 0;
-
-                CheckBoxObj.Uid = tagName;
-                CheckBoxObj.IsChecked = true;
-                Rise();
-            }
-
-            internal int Number { get; private set; }
-            internal CheckBox CheckBoxObj { get; private set; }
-
-            internal void Rise()
-            {
-                UpdateCheckBoxContent(1);
-            }
-
-            internal void decrease()
-            {
-                UpdateCheckBoxContent(-1);
-            }
-
-            private void UpdateCheckBoxContent(int value)
-            {
-                Number += value;
-                CheckBoxObj.Content = CheckBoxObj.Uid + " (" + Number + ")";
-            }
-        }
-
         public TagFilters()
         {
             InitializeComponent();
@@ -82,6 +47,8 @@ namespace Viewer
             CKTraitDecrease(tags);
 
             #endregion
+
+            _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
         }
 
 
@@ -100,45 +67,19 @@ namespace Viewer
             foreach (CKTrait trait in ckTrait.AtomicTraits)
             {
                 string tagName = trait.ToString();
-                CKTraitCheckboxInfo traitCBInfo;
-                if (_traitsCBInfo.TryGetValue(tagName, out traitCBInfo))
-                {
-                    if (rise)
-                        traitCBInfo.Rise();
-                    else
-                    {
-                        traitCBInfo.decrease();
-                        if (traitCBInfo.Number == 0)
-                        {
-                            _traitsCBInfo.Remove(tagName);
-                            ListBoxTag.Items.Remove(traitCBInfo.CheckBoxObj);
-                        }
-                    }
-                }
+                if (rise)
+                    _listBoxOfCheckBoxCounter.Increase(tagName);
                 else
-                {
-                    if (rise)
-                    {
-                        traitCBInfo = new CKTraitCheckboxInfo(tagName);
-                        _traitsCBInfo.Add(tagName, traitCBInfo);
-                        ListBoxTag.Items.Add(traitCBInfo.CheckBoxObj);
-                        ListBoxTag.Items.SortDescriptions.Add(
-                            new System.ComponentModel.SortDescription("Content",
-                                System.ComponentModel.ListSortDirection.Ascending));
-                    }
-                }
+                    _listBoxOfCheckBoxCounter.Decrease(tagName);
             }
         }
 
-        private void CKTraitChecked(object sender, RoutedEventArgs e)
+        private void CKTraitChecked(string uid, bool isChecked)
         {
-            CheckBox cb = (CheckBox)sender;
-            bool isChecked = (bool)cb.IsChecked;
-            string tagName = cb.Uid;
             /*
-            MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + tagName
-                    , "Info", MessageBoxButton.OK, MessageBoxImage.Error);
-             * */
+            MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
+                    , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            //*/
         }
     }
 }
