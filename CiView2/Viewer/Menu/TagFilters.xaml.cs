@@ -21,23 +21,6 @@ namespace Viewer
     /// </summary>
     public partial class TagFilters : UserControl
     {
-        private Dictionary<string, CKTraitCheckboxInfo> _traitsCBInfo =
-            new Dictionary<string, CKTraitCheckboxInfo>();
-
-        private class CKTraitCheckboxInfo
-        {
-            internal CKTraitCheckboxInfo(CheckBox cb)
-            {
-                CheckBoxObj = cb;
-                Number = 1;
-            }
-            internal int Number { get; private set; }
-            internal CheckBox CheckBoxObj { get; private set; }
-            internal int Increment() {
-                return ++Number;
-            }
-        }
-
         public TagFilters()
         {
             InitializeComponent();
@@ -54,56 +37,49 @@ namespace Viewer
             CKtraitRise(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
-            tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
             CKtraitRise(tags);
+            CKtraitRise(tags);
+            CKtraitRise(tags);
+            tags = ActivityLogger.RegisteredTags.FindOrCreate("D|B");
+            CKTraitDecrease(tags);
+            CKTraitDecrease(tags);
 
             #endregion
+
+            _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
         }
 
 
-        private void CKtraitRise(CKTrait ckTrait)
+        public void CKtraitRise(CKTrait ckTrait)
+        {
+            UpdateCKTrait(ckTrait);
+        }
+
+        public void CKTraitDecrease(CKTrait ckTrait)
+        {
+            UpdateCKTrait(ckTrait, false);
+        }
+
+        private void UpdateCKTrait(CKTrait ckTrait, bool rise = true)
         {
             foreach (CKTrait trait in ckTrait.AtomicTraits)
-                AddCheckbox(trait.ToString());
-        }
-
-        private void AddCheckbox(String traitName)
-        {
-            CKTraitCheckboxInfo traitCBInfo;
-            if (_traitsCBInfo.TryGetValue(traitName, out traitCBInfo))
             {
-                traitCBInfo.CheckBoxObj.Content = traitName + " (" + traitCBInfo.Increment() + ")";
-            }
-            else
-            {
-                traitCBInfo = new CKTraitCheckboxInfo(new CheckBox());
-                _traitsCBInfo.Add(traitName, traitCBInfo);
-                traitCBInfo.CheckBoxObj.Click += new RoutedEventHandler(CKTraitChecked);
-                traitCBInfo.CheckBoxObj.Uid = traitName;
-                traitCBInfo.CheckBoxObj.IsChecked = true;
-                IEnumerable<KeyValuePair<string, CKTraitCheckboxInfo>> query =
-                    _traitsCBInfo.OrderBy(tcbi => tcbi.Key);
-                ListBoxTag.Items.Add(traitCBInfo.CheckBoxObj);
-                traitCBInfo.CheckBoxObj.Content = traitName + " (1)";
-                ListBoxTag.Items.SortDescriptions.Add(
-                    new System.ComponentModel.SortDescription("Content",
-                        System.ComponentModel.ListSortDirection.Ascending));
+                string tagName = trait.ToString();
+                if (rise)
+                    _listBoxOfCheckBoxCounter.Increase(tagName);
+                else
+                    _listBoxOfCheckBoxCounter.Decrease(tagName);
             }
         }
 
-        private void CKTraitChecked(object sender, RoutedEventArgs e)
+        private void CKTraitChecked(string uid, bool isChecked)
         {
-            CheckBox cb = (CheckBox)sender;
-            bool isChecked = (bool)cb.IsChecked;
-            string tagName = cb.Uid;
             /*
-            MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + tagName
-                    , "Info", MessageBoxButton.OK, MessageBoxImage.Error);
-             * */
+            MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
+                    , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            //*/
         }
     }
 }

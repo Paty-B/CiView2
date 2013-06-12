@@ -9,7 +9,11 @@
         <StackPanel HorizontalAlignment="Left" Height="558" Margin="10,10,0,0" VerticalAlignment="Top" Width="214">
             <Expander Header="LogLevel Filters" IsExpanded="True">
                 <StackPanel HorizontalAlignment="Left" Height="82" Width="187" Margin="25,0,0,0">
-                    <local:LogLevelFilters />
+                    <CheckBox Content="Trace"/>
+                    <CheckBox Content="Info"/>
+                    <CheckBox Content="Warning"/>
+                    <CheckBox Content="Error"/>
+                    <CheckBox Content="Fatal"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Tag Filters" IsExpanded="True">
