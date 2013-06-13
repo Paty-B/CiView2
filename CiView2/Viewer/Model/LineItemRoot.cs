@@ -78,11 +78,13 @@ namespace Viewer.Model
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
         {
             LineItemBase.InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
+            Host.OnChildInserted(child);
         }
 
         public void RemoveChild( ILineItem child )
         {
             LineItemBase.RemoveChild( child, this, ref _firstChild, ref _lastChild );
+            Host.OnItemDeleted(child);
         }
 
         public event EventHandler ChildInserted;

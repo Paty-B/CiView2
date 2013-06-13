@@ -1,6 +1,7 @@
 ﻿using CK.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ namespace Viewer.View
     public static class VisualDesigner
     {
         static int frontSize = 24;
-        public static System.Globalization.CultureInfo culture { get; set; }
 
         public static void CreateExpander(DrawingContext dc, Point pt, Status status)
         {
@@ -24,16 +24,16 @@ namespace Viewer.View
             switch (status)
             {
                 case Status.Collapsed:
-                    bi = new BitmapImage(new Uri(@"img\expander.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
                     break;
                 case Status.Expanded:
-                    bi = new BitmapImage(new Uri(@"img\expander.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
                     bi.Rotation = Rotation.Rotate270;
                     break;
                 //case Status.Hidden:
                   //  break;
                 default:
-                    bi = new BitmapImage(new Uri(@"img\noImage.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
                     break;
             }
             dc.DrawImage(bi, new Rect(pt, size));
@@ -47,25 +47,25 @@ namespace Viewer.View
             switch (logLevel)
             {
                 case LogLevel.Trace :
-                    bi = new BitmapImage(new Uri(@"img\trace.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\trace.ico"));
                     break;
                 case LogLevel.Info:
-                    bi = new BitmapImage(new Uri(@"img\info.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\info.ico"));
                     break;
                 case LogLevel.Warn:
-                    bi = new BitmapImage(new Uri(@"img\warning.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\warning.ico"));
                     break;
                 case LogLevel.Error:
-                    bi = new BitmapImage(new Uri(@"img\error.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\error.ico"));
                     break;
                 case LogLevel.Fatal:
-                    bi = new BitmapImage(new Uri(@"img\fatal.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\fatal.ico"));
                     break;
                 case LogLevel.None:
-                    bi = new BitmapImage(new Uri(@"img\noImage.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
                     break;
                 default:
-                    bi = new BitmapImage(new Uri(@"img\noImage.ico"));
+                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
                     break;
             } 
             dc.DrawImage(bi, new Rect(pt,size));
@@ -73,8 +73,8 @@ namespace Viewer.View
         public static void CreateContent(DrawingContext drawingContext, Point drawingPosition, String content, int lineHeight)
         {
             FormattedText ft = new FormattedText(
-                                content, 
-                                culture,   
+                                content,
+                                CultureInfo.GetCultureInfo("en-us"), 
                                 FlowDirection.LeftToRight, 
                                 new Typeface(new FontFamily("Consolas"), 
                                 FontStyles.Normal, 
@@ -87,7 +87,7 @@ namespace Viewer.View
         public static void CreateTag(DrawingContext dc, Point pt, CKTrait tag)
         {
             FormattedText ft = new FormattedText(tag.ToString(),
-                                culture,
+                                CultureInfo.GetCultureInfo("en-us"),
                                 FlowDirection.LeftToRight,
                                 new Typeface(new FontFamily("Consolas"),
                                 FontStyles.Normal,
@@ -108,7 +108,7 @@ namespace Viewer.View
             dc.DrawLine(new Pen(), pt, pt2);
            
             FormattedText ft = new FormattedText(model.TotalLineHeight.ToString(),
-                                culture,
+                                CultureInfo.GetCultureInfo("en-us"),
                                 FlowDirection.LeftToRight,
                                 new Typeface(new FontFamily("Consolas"),
                                 FontStyles.Normal,

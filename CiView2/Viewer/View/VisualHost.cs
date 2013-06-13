@@ -23,14 +23,15 @@ namespace Viewer.View
         public VisualHost()
         {
 
-            IDefaultActivityLogger logger = new DefaultActivityLogger();
+            ActivityLogger logger = new ActivityLogger();
             ILineItemHost host = LineItem.CreateLineItemHost();
             EnvironmentCreator ec = new EnvironmentCreator(host);
             
             _children = new VisualCollection(this);
             
             host.ItemChanged += CheckEvents;
-            logger.Output.Register(ec);
+            logger.Output.RegisterClient(ec);
+
 
             #region generation log
 
@@ -38,7 +39,11 @@ namespace Viewer.View
             var tag2 = ActivityLogger.RegisteredTags.FindOrCreate("Sql");
             var tag3 = ActivityLogger.RegisteredTags.FindOrCreate("Combined Tag|Sql|Engine V2|Product");
 
-            using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
+
+
+            logger.Trace("Second");
+
+            /*using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
             {
                 using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
                 {
@@ -68,14 +73,10 @@ namespace Viewer.View
                         logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
                     }
                 }
-            }
+            }*/
 
             #endregion
-
-
-            //CreateFakeLog();
             
-        
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
@@ -83,7 +84,8 @@ namespace Viewer.View
 
         private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
-            VisualLineItem Vl;
+            VisualLineItem vl;
+            Point pt = new Point(0, 0);
 
             switch(e.Status)
             {
@@ -96,9 +98,9 @@ namespace Viewer.View
                 case LineItemChangedStatus.Hidden:
                     break;
                 case LineItemChangedStatus.Inserted:
-                    Vl = e.LineItem.CreateVisualLine();
-
-                    _children.Add(Vl);
+                    vl = e.LineItem.CreateVisualLine();
+                    _children.Add(CreateDrawingVisualText("main log", LogLevel.Info, pt));
+                    _children.Add(vl);
                     break;
             }
         }
@@ -151,7 +153,6 @@ namespace Viewer.View
         }
         private DrawingVisual CreateDrawingVisualText(String text, LogLevel loglevel, Point pt)
         {
-            DrawingVisual dv;
             
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
@@ -222,6 +223,7 @@ namespace Viewer.View
             position.Y = lineItem.AbsoluteY;
             //mutiplicateur de position = position absolute de LineItem
         }
+        
         protected override int VisualChildrenCount
         {
             get { return _children.Count; }

@@ -26,12 +26,6 @@ namespace Viewer
 
         public LogViewer()
         {
-            host = new LineItemHost();
-            VisualHost visualHost = new VisualHost();
-        }
-        private void WindowLoaded(object sender, EventArgs e)
-        {
-            
         }
     }
 }
