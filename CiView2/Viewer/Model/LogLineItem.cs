@@ -25,7 +25,6 @@ namespace Viewer.Model
             Status = Status.Expanded;
             Tag = tag;
             LogtimeUtc = logTimeUtc;
-            LineHeight = 1;
         }
 
         public override VisualLineItem CreateVisualLine()

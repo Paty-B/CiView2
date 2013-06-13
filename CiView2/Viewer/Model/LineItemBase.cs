@@ -140,6 +140,6 @@ namespace Viewer.Model
 
         public abstract VisualLineItem CreateVisualLine();
 
-        public event EventHandler ChildInserted;
+        
     }
 }

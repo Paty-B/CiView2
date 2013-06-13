@@ -1,7 +1,6 @@
 ﻿using CK.Core;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ namespace Viewer.View
     public static class VisualDesigner
     {
         static int frontSize = 24;
-        public static CultureInfo culture = new CultureInfo(0x000C);
+        public static System.Globalization.CultureInfo culture { get; set; }
 
         public static void CreateExpander(DrawingContext dc, Point pt, Status status)
         {
@@ -25,16 +24,16 @@ namespace Viewer.View
             switch (status)
             {
                 case Status.Collapsed:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
+                    bi = new BitmapImage(new Uri(@"img\expander.ico"));
                     break;
                 case Status.Expanded:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
+                    bi = new BitmapImage(new Uri(@"img\expander.ico"));
                     bi.Rotation = Rotation.Rotate270;
                     break;
                 //case Status.Hidden:
                   //  break;
                 default:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
+                    bi = new BitmapImage(new Uri(@"img\noImage.ico"));
                     break;
             }
             dc.DrawImage(bi, new Rect(pt, size));
@@ -48,22 +47,22 @@ namespace Viewer.View
             switch (logLevel)
             {
                 case LogLevel.Trace :
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\trace.ico"));
+                    bi = new BitmapImage(new Uri(@"img\trace.ico"));
                     break;
                 case LogLevel.Info:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\info.ico"));
+                    bi = new BitmapImage(new Uri(@"img\info.ico"));
                     break;
                 case LogLevel.Warn:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\warning.ico"));
+                    bi = new BitmapImage(new Uri(@"img\warning.ico"));
                     break;
                 case LogLevel.Error:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\error.ico"));
+                    bi = new BitmapImage(new Uri(@"img\error.ico"));
                     break;
                 case LogLevel.Fatal:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\fatal.ico"));
+                    bi = new BitmapImage(new Uri(@"img\fatal.ico"));
                     break;
                 case LogLevel.None:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
+                    bi = new BitmapImage(new Uri(@"img\noImage.ico"));
                     break;
                 default:
                     bi = new BitmapImage(new Uri(@"img\noImage.ico"));
