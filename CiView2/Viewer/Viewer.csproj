@@ -65,7 +65,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Menu\ListBoxOfCheckBoxCounter.cs" />
+    <Compile Include="Menu\CheckBoxCounter.cs" />
     <Compile Include="EnvironmentCreator.cs" />
+    <Compile Include="Menu\LogLevelFilters.xaml.cs">
+      <DependentUpon>LogLevelFilters.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Events\LineItemEventArgs.cs" />
     <Compile Include="Model\ExceptionLineItem.cs" />
     <Compile Include="Model\ILineItem.cs" />
@@ -100,6 +105,10 @@
       <DependentUpon>LogViewer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Menu\LogLevelFilters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menu\TagFilters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
