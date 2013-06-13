@@ -141,5 +141,11 @@ namespace Viewer.Model
         public abstract VisualLineItem CreateVisualLine();
 
         public event EventHandler ChildInserted;
+<<<<<<< Updated upstream
+
+
+        public event EventHandler ChildInserted;
+=======
+>>>>>>> Stashed changes
     }
 }

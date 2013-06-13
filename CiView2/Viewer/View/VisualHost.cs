@@ -18,19 +18,20 @@ namespace Viewer.View
         private VisualCollection _children;
         private int fontSize = 16;
         private Point position = new Point(0,0);
+        internal int itemCount = 0;
 
 
         public VisualHost()
         {
 
-            IDefaultActivityLogger logger = new DefaultActivityLogger();
+            ActivityLogger logger = new ActivityLogger();
             ILineItemHost host = LineItem.CreateLineItemHost();
             EnvironmentCreator ec = new EnvironmentCreator(host);
             
             _children = new VisualCollection(this);
             
             host.ItemChanged += CheckEvents;
-            logger.Output.Register(ec);
+            logger.Output.RegisterClient(ec);
 
             #region generation log
 
@@ -74,16 +75,23 @@ namespace Viewer.View
 
 
             //CreateFakeLog();
-            
-        
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
         }
 
+        internal void CreateVisuals(ILineItem origin)
+        {
+            VisualLineItem vl;
+
+            vl = origin.CreateVisualLine();
+
+            _children.Add(vl);
+        }
+
         private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
-            VisualLineItem Vl;
+            //VisualLineItem Vl;
 
             switch(e.Status)
             {
@@ -96,9 +104,10 @@ namespace Viewer.View
                 case LineItemChangedStatus.Hidden:
                     break;
                 case LineItemChangedStatus.Inserted:
-                    Vl = e.LineItem.CreateVisualLine();
-
-                    _children.Add(Vl);
+                    //Vl = e.LineItem.CreateVisualLine();
+                    itemCount++;
+                    CreateVisuals(e.LineItem);
+                    //_children.Add(Vl);
                     break;
             }
         }
