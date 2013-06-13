@@ -9,7 +9,7 @@ using Viewer.Model;
 
 namespace Viewer.View
 {
-    public abstract class VisualLineItem : ContainerVisual
+    public abstract class VisualLineItem : DrawingVisual
     {
         readonly ILineItem _model;
 

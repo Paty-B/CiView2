@@ -41,9 +41,7 @@ namespace Viewer.View
 
 
 
-            logger.Trace("Second");
-
-            /*using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
+            using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
             {
                 using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
                 {
@@ -73,10 +71,9 @@ namespace Viewer.View
                         logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
                     }
                 }
-            }*/
+            }
 
             #endregion
-            
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
@@ -99,8 +96,7 @@ namespace Viewer.View
                     break;
                 case LineItemChangedStatus.Inserted:
                     vl = e.LineItem.CreateVisualLine();
-                    _children.Add(CreateDrawingVisualText("main log", LogLevel.Info, pt));
-                    _children.Add(vl);
+                    _children.Add(vl);                    
                     break;
             }
         }

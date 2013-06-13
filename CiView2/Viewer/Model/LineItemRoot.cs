@@ -94,5 +94,11 @@ namespace Viewer.Model
         {
             throw new System.ArgumentException("do not create a visual line for the root line");
         }
+
+
+        public void CountLogLevel(CK.Core.LogLevel loglevel, bool add)
+        {
+
+        }
     }
 }

@@ -14,10 +14,10 @@ namespace Viewer.View
         internal VisualLogLineItem(LogLineItem model)
             : base(model)
         {
-            DrawingVisual dv = new DrawingVisual();
-            DrawingContext dc = dv.RenderOpen();
+            DrawingContext dc = this.RenderOpen();
+            Point position = new Point(model.Depth*10, model.AbsoluteY);
 
-            VisualDesigner.CreateSimpleLine(dc, model.Status, model.LogLevel, model.Content, model.LineHeight, model.Tag);
+            VisualDesigner.CreateSimpleLine(dc, model.Status, model.LogLevel, model.Content, model.LineHeight, model.Tag, position);
             dc.Close();
         }
 
