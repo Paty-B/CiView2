@@ -70,6 +70,8 @@ namespace Viewer.Model
         {
             InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
             Host.OnChildInserted(child);
+
+            
         }
 
         internal static void RemoveChild( ILineItem child, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -78,6 +80,7 @@ namespace Viewer.Model
             if( child.Parent != parent ) throw new ArgumentException( "Parent mismatch.", "child" );
 
             ILineItemImpl c = (ILineItemImpl)child;
+            parent.CountLogLevel(((LogLineItem)c).LogLevel, false);
             if( lastChild == c ) lastChild = c.Prev;
             else c.Next.Prev = c.Prev;
             if( firstChild == c ) firstChild = c.Next;
@@ -86,6 +89,7 @@ namespace Viewer.Model
             c.Prev = c.Next = null;
             c.Parent = null;
             parent.Grow( -c.TotalLineHeight );
+
         }
 
         internal static void InsertChild( ILineItem child, ILineItem nextChild, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -117,9 +121,39 @@ namespace Viewer.Model
             }
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
+            parent.CountLogLevel(((LogLineItem)c).LogLevel,true);
             
             
         }
+
+        public void CountLogLevel(LogLevel loglevel,bool add)
+        {
+            switch (loglevel)
+            {
+                case LogLevel.Error:
+                    if (add)
+                       this.followingNumberError++;
+                    else
+                       this.followingNumberError--;
+                    break;
+                case LogLevel.Warn:
+                    if(add)
+                        this.followingNumberWarning++;
+                    else
+                        this.followingNumberWarning--;
+                    break;
+                case LogLevel.Fatal:
+                    if(add)
+                        this.followingNumberFatal++;
+                    else
+                        this.followingNumberFatal--;
+                    break;
+                default:
+                    break;
+            }
+            if (_parent != null) _parent.CountLogLevel(loglevel,add);
+        }
+        
 
         public void Grow( int delta )
         {
