@@ -209,8 +209,27 @@ namespace Viewer.View
         private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //capture la position de la sourie dans mon framwork element
-            System.Windows.Point pt = e.GetPosition(this);
+            System.Windows.Point pt = e.GetPosition((UIElement)sender);
+            VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
         }
+
+        public HitTestResultBehavior myCallback(HitTestResult result)
+        {
+            if (result.VisualHit.GetType() == typeof(VisualLogLineItem))
+            {
+                LogLineItem logLineItem = (LogLineItem)((VisualLogLineItem)result.VisualHit).Model;
+                if (logLineItem.Status == Status.Collapsed)
+                {
+                    logLineItem.Status = Status.Expanded;
+                }
+                else if (logLineItem.Status == Status.Expanded)
+                {
+                    logLineItem.Status = Status.Collapsed;
+                }
+            }
+            return HitTestResultBehavior.Stop;
+        }
+        
 
 
         public void GoToLineItem(ILineItem lineItem)
