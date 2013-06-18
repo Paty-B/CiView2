@@ -233,5 +233,11 @@ namespace Viewer.View
 
             return _children[index];
         }
+
+        protected void updateVisual(VisualLineItem vli)
+        {
+            int index = _children.IndexOf(vli);
+            
+        }
     }
 }

@@ -21,5 +21,6 @@ namespace Viewer.View
         public ILineItem Model { get { return _model; } }
 
         internal abstract void OnClick(Visual target, Point inTarget);
+        internal abstract void update();
     }
 }

@@ -70,7 +70,7 @@ namespace Viewer.View
             } 
             dc.DrawImage(bi, new Rect(pt,size));
         }
-        public static void CreateContent(DrawingContext drawingContext, Point drawingPosition, String content, int lineHeight)
+        public static void CreateContent(DrawingContext drawingContext, Point pt, String content, int lineHeight)
         {
             FormattedText ft = new FormattedText(
                                 content,
@@ -82,7 +82,7 @@ namespace Viewer.View
                                 FontStretches.Normal),
                                 frontSize,
                                 Brushes.Black);
-            drawingContext.DrawText(ft, drawingPosition);
+            drawingContext.DrawText(ft, pt);
         }
         public static void CreateTag(DrawingContext dc, Point pt, CKTrait tag)
         {
@@ -101,9 +101,8 @@ namespace Viewer.View
         public static void CreateNextImportantLogsIndicator(DrawingContext drawingContext, ILineItem model)
         {
         }
-        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
+        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model, Point pt)
         {
-            Point pt = new Point(0, 0);
             Point pt2 = new Point(200,0);
             dc.DrawLine(new Pen(), pt, pt2);
            

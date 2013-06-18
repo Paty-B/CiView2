@@ -24,5 +24,10 @@ namespace Viewer.View
         internal override void OnClick(Visual target, Point inTarget)
         {
         }
+
+        internal override void update()
+        {
+
+        }
     }
 }

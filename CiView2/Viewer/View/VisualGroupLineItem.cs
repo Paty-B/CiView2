@@ -24,5 +24,10 @@ namespace Viewer.View
         {
             throw new NotImplementedException();
         }
+
+        internal override void update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
