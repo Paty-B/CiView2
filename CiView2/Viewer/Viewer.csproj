@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EventManager.cs" />
     <Compile Include="Menu\ListBoxOfCheckBoxCounter.cs" />
     <Compile Include="Menu\CheckBoxCounter.cs" />
     <Compile Include="EnvironmentCreator.cs" />

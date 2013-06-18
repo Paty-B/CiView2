@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CK.Core;
+using Viewer.Model;
 
 namespace Viewer
 {
@@ -26,33 +27,34 @@ namespace Viewer
             InitializeComponent();
 
             #region faketags
-
+            /*
             CKTrait tags = ActivityLogger.RegisteredTags.FindOrCreate("D|Z");
-            CKtraitRise(tags);
+            CKtraitIncrease(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("Z|B");
-            CKtraitRise(tags);
+            CKtraitIncrease(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("A|D");
-            CKtraitRise(tags);
+            CKtraitIncrease(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("C");
-            CKtraitRise(tags);
+            CKtraitIncrease(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("A|B|C");
-            CKtraitRise(tags);
-            CKtraitRise(tags);
-            CKtraitRise(tags);
-            CKtraitRise(tags);
-            CKtraitRise(tags);
-            CKtraitRise(tags);
+            CKtraitIncrease(tags);
+            CKtraitIncrease(tags);
+            CKtraitIncrease(tags);
+            CKtraitIncrease(tags);
+            CKtraitIncrease(tags);
+            CKtraitIncrease(tags);
             tags = ActivityLogger.RegisteredTags.FindOrCreate("D|B");
             CKTraitDecrease(tags);
             CKTraitDecrease(tags);
-
+            //*/
             #endregion
 
             _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+            EventManager.Instance.InsertChild += InsertChild;
         }
 
 
-        public void CKtraitRise(CKTrait ckTrait)
+        public void CKtraitIncrease(CKTrait ckTrait)
         {
             UpdateCKTrait(ckTrait);
         }
@@ -80,6 +82,15 @@ namespace Viewer
             MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
                     , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             //*/
+        }
+
+        private void InsertChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            CKtraitIncrease(item.Tag);
+        }
+        private void RemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            CKTraitDecrease(item.Tag);
         }
     }
 }

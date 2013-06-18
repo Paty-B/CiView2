@@ -76,6 +76,8 @@ namespace Viewer.Model
         public int followingNumberWarning;
         public int followingNumberError;
         public int followingNumberFatal;
+        public int followingNumberInfo;
+        public int followingNumberTrace;
 
         public void RemoveChild( ILineItem child )
         {
@@ -106,6 +108,7 @@ namespace Viewer.Model
             c.Prev = c.Next = null;
             c.Parent = null;
             parent.Grow( -c.TotalLineHeight );
+            EventManager.Instance.OnRemoveChild(c, (LogLineItem)c);
 
         }
 
@@ -139,8 +142,8 @@ namespace Viewer.Model
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
             parent.CountLogLevel(((LogLineItem)c).LogLevel,true);
-            
-            
+
+            EventManager.Instance.OnInsertChild(c, (LogLineItem)c);
         }
 
         public void CountLogLevel(LogLevel loglevel,bool add)
@@ -164,6 +167,18 @@ namespace Viewer.Model
                         this.followingNumberFatal++;
                     else
                         this.followingNumberFatal--;
+                    break;
+                case LogLevel.Trace:
+                    if (add)
+                        this.followingNumberTrace++;
+                    else
+                        this.followingNumberTrace--;
+                    break;
+                case LogLevel.Info:
+                    if (add)
+                        this.followingNumberInfo++;
+                    else
+                        this.followingNumberInfo--;
                     break;
                 default:
                     break;
