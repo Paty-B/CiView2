@@ -124,8 +124,8 @@ namespace Viewer.Model
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
             parent.CountLogLevel(((LogLineItem)c).LogLevel,true);
-            
-            
+
+            EventManager.Instance.OnInsertChild(c, (LogLineItem)c);
         }
 
         public void CountLogLevel(LogLevel loglevel,bool add)

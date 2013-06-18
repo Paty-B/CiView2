@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CK.Core;
+using Viewer.Model;
 
 namespace Viewer
 {
@@ -31,6 +32,8 @@ namespace Viewer
             _listBoxOfCheckBoxCounter.Add("Error");
             _listBoxOfCheckBoxCounter.Add("Fatal");
             _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+
+            EventManager.Instance.InsertChild += InsertChild;
        }
 
         private void CKTraitChecked(string uid, bool isChecked)
@@ -39,6 +42,11 @@ namespace Viewer
             MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
                     , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             //*/
+        }
+
+        private void InsertChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            _listBoxOfCheckBoxCounter.Increase(item.LogLevel.ToString());
         }
     }
 }
