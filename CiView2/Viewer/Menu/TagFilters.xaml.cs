@@ -88,5 +88,9 @@ namespace Viewer
         {
             CKtraitIncrease(item.Tag);
         }
+        private void RemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            CKTraitDecrease(item.Tag);
+        }
     }
 }

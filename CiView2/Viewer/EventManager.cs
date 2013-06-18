@@ -32,5 +32,13 @@ namespace Viewer
             if (InsertChild != null)
                 InsertChild(itemImpl, item);
         }
+
+        public delegate void EventRemoveChild(ILineItemImpl itemImpl, LogLineItem item);
+        public event EventRemoveChild RemoveChild;
+        public void OnRemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            if (RemoveChild != null)
+                RemoveChild(itemImpl, item);
+        }
     }
 }

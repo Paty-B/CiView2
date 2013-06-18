@@ -34,6 +34,7 @@ namespace Viewer
             _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
 
             EventManager.Instance.InsertChild += InsertChild;
+            EventManager.Instance.RemoveChild += RemoveChild;
        }
 
         private void CKTraitChecked(string uid, bool isChecked)
@@ -47,6 +48,10 @@ namespace Viewer
         private void InsertChild(ILineItemImpl itemImpl, LogLineItem item)
         {
             _listBoxOfCheckBoxCounter.Increase(item.LogLevel.ToString());
+        }
+        private void RemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        {
+            _listBoxOfCheckBoxCounter.Decrease(item.LogLevel.ToString());
         }
     }
 }

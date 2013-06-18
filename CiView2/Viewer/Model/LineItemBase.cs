@@ -91,6 +91,7 @@ namespace Viewer.Model
             c.Prev = c.Next = null;
             c.Parent = null;
             parent.Grow( -c.TotalLineHeight );
+            EventManager.Instance.OnRemoveChild(c, (LogLineItem)c);
 
         }
 
