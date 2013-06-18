@@ -87,10 +87,12 @@ namespace Viewer.Model
 
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
         {
-            InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
+            InsertChild(child, nextChild, this, ref _firstChild, ref _lastChild);
             Host.OnChildInserted(child);
-
-            
+            if (child.GetType() != typeof(FilteredLineItem))
+            {
+                EventManager.Instance.OnInsertChild(child, (LogLineItem)child);
+            }
         }
 
         internal static void RemoveChild( ILineItem child, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -141,9 +143,6 @@ namespace Viewer.Model
             }
             c.Parent = parent;
             parent.Grow( c.TotalLineHeight );
-            parent.CountLogLevel(((LogLineItem)c).LogLevel,true);
-
-            EventManager.Instance.OnInsertChild(c, (LogLineItem)c);
         }
 
         public void CountLogLevel(LogLevel loglevel,bool add)

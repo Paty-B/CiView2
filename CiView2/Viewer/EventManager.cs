@@ -25,20 +25,28 @@ namespace Viewer
             }
         }
 
-        public delegate void EventInsertChild(ILineItemImpl itemImpl, LogLineItem item);
+        public delegate void EventInsertChild(ILineItem itemImpl, LogLineItem item);
         public event EventInsertChild InsertChild;
-        public void OnInsertChild(ILineItemImpl itemImpl, LogLineItem item)
+        public void OnInsertChild(ILineItem itemImpl, LogLineItem item)
         {
             if (InsertChild != null)
                 InsertChild(itemImpl, item);
         }
 
-        public delegate void EventRemoveChild(ILineItemImpl itemImpl, LogLineItem item);
+        public delegate void EventRemoveChild(ILineItem itemImpl, LogLineItem item);
         public event EventRemoveChild RemoveChild;
-        public void OnRemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        public void OnRemoveChild(ILineItem itemImpl, LogLineItem item)
         {
             if (RemoveChild != null)
                 RemoveChild(itemImpl, item);
+        }
+
+        public delegate void EventCheckBoxFilterTagClick(string uid, bool isChecked);
+        public event EventCheckBoxFilterTagClick CheckBoxFilterTagClick;
+        public void OnCheckBoxFilterTagClick(string uid, bool isChecked)
+        {
+            if (CheckBoxFilterTagClick != null)
+                CheckBoxFilterTagClick(uid, isChecked);
         }
     }
 }

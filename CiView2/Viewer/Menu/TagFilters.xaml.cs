@@ -49,8 +49,9 @@ namespace Viewer
             //*/
             #endregion
 
-            _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+            _listBoxOfCheckBoxCounter.CheckBoxClick += EventManager.Instance.OnCheckBoxFilterTagClick;
             EventManager.Instance.InsertChild += InsertChild;
+            EventManager.Instance.RemoveChild += RemoveChild;
         }
 
 
@@ -84,11 +85,11 @@ namespace Viewer
             //*/
         }
 
-        private void InsertChild(ILineItemImpl itemImpl, LogLineItem item)
+        private void InsertChild(ILineItem itemImpl, LogLineItem item)
         {
             CKtraitIncrease(item.Tag);
         }
-        private void RemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        private void RemoveChild(ILineItem itemImpl, LogLineItem item)
         {
             CKTraitDecrease(item.Tag);
         }

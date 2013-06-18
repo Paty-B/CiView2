@@ -46,11 +46,11 @@ namespace Viewer
             //*/
         }
 
-        private void InsertChild(ILineItemImpl itemImpl, LogLineItem item)
+        private void InsertChild(ILineItem itemImpl, LogLineItem item)
         {
             _listBoxOfCheckBoxCounter.Increase(item.LogLevel.ToString());
         }
-        private void RemoveChild(ILineItemImpl itemImpl, LogLineItem item)
+        private void RemoveChild(ILineItem itemImpl, LogLineItem item)
         {
             _listBoxOfCheckBoxCounter.Decrease(item.LogLevel.ToString());
         }
