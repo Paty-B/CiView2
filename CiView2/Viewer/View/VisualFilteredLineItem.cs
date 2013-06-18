@@ -14,12 +14,10 @@ namespace Viewer.View
         internal VisualFilteredLineItem(ILineItem model)
             : base(model)
         {
-            DrawingVisual dv = new DrawingVisual();
-            DrawingContext dc = dv.RenderOpen();
-            Point pt = new Point(model.Depth * 10, model.AbsoluteY);
-
-            VisualDesigner.CreateFiltredLogRepresentation(dc, model, pt);
+            DrawingContext dc = this.RenderOpen();
+            VisualDesigner.CreateFiltredLogRepresentation(dc, model);
             dc.Close();
+            this.Offset = new Vector(0, model.AbsoluteY*25);
         }
 
         internal override void OnClick(Visual target, Point inTarget)

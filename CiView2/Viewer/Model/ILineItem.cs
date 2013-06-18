@@ -18,6 +18,7 @@ namespace Viewer.Model
         int Depth { get; }
         int AbsoluteY { get; }
         int TotalLineHeight { get; }
+        int LineHeight { get; }
         void InsertChild( ILineItem child, ILineItem nextChild = null );
         void RemoveChild( ILineItem child );
         event EventHandler ChildInserted;

@@ -16,7 +16,6 @@ namespace Viewer.Model
         internal CKTrait Tag;
         internal Status Status;
         internal DateTime LogtimeUtc;
-        internal int LineHeight;
         internal bool group;
 
         public LogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc, bool group)

@@ -14,7 +14,7 @@ namespace Viewer.View
 {
     public static class VisualDesigner
     {
-        static int frontSize = 24;
+        static int frontSize = 14;
 
         public static void CreateExpander(DrawingContext dc, Point pt, Status status)
         {
@@ -101,8 +101,9 @@ namespace Viewer.View
         public static void CreateNextImportantLogsIndicator(DrawingContext drawingContext, ILineItem model)
         {
         }
-        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model, Point pt)
+        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
+            Point pt = new Point(0,0);
             Point pt2 = new Point(200,0);
             dc.DrawLine(new Pen(), pt, pt2);
            

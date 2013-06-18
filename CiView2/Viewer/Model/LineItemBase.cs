@@ -18,13 +18,14 @@ namespace Viewer.Model
         ILineItemImpl _nextSibling;
         int _absoluteY;
         int _totalHeight;
+        int _lineHeight;
 
 
         internal LineItemBase()
         {
+            _lineHeight = _totalHeight = 1;
         }
-
-        
+              
 
         ILineItemHost ILineItem.Host { get { return _parent != null ? _parent.Host : null; } }
 
@@ -40,7 +41,21 @@ namespace Viewer.Model
 
         public LineItemHost Host { get { return _parent != null ? _parent.Host : null; } }
 
-        public ILineItemParentImpl Parent { get { return _parent; } set { _parent = value; } }
+        public ILineItemParentImpl Parent 
+        { 
+            get { return _parent; } 
+            set 
+            { 
+                _parent = value;
+                if (_parent != null)
+                {
+                    _absoluteY = _prevSibling != null
+                        ? _prevSibling.AbsoluteY + _prevSibling.TotalLineHeight
+                        : _parent.AbsoluteY + _parent.TotalLineHeight;
+                }
+                else _absoluteY = 0;
+            } 
+        }
 
         public ILineItemImpl Next { get { return _nextSibling; } set { _nextSibling = value; } }
 
@@ -52,9 +67,11 @@ namespace Viewer.Model
 
         public int Depth { get { return _parent == null ? -2 : _parent.Depth + 1; } }
 
-        public int AbsoluteY { get { return _absoluteY; } }
+        public int AbsoluteY { get { return _absoluteY;}}
 
         public int TotalLineHeight { get { return _totalHeight; } }
+
+        public int LineHeight { get { return _lineHeight; }}
 
         public int followingNumberWarning;
         public int followingNumberError;

@@ -13,10 +13,10 @@ namespace Viewer.View
         internal VisualExceptionLineItem(ExceptionLineItem model)
             :base(model)
         {
-            DrawingVisual dv = new DrawingVisual();
-            DrawingContext dc = dv.RenderOpen();
+            DrawingContext dc = this.RenderOpen();
 
             VisualDesigner.CreateException(dc, model.Status, model.LogLevel, model.Content, model.LineHeight, model.Tag, model.exception);
+            this.Offset = new Vector(0, model.AbsoluteY*25);
         }
 
         internal override void OnClick(Visual target, Point inTarget)
