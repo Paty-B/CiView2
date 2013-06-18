@@ -17,7 +17,7 @@ namespace Viewer.View
      
             DrawingContext dc = this.RenderOpen();
 
-            VisualDesigner.CreateSimpleLine(dc, model.Status, model.LogLevel, model.Content,model.LineHeight, model.Tag);
+            VisualDesigner.CreateGroupeLine(dc, model.Status, model.LogLevel, model.Content,model.LineHeight, model.Tag, model.followingNumberWarning, model.followingNumberError, model.followingNumberFatal);
             //VisualDesigner.CreateNextImportantLogsIndicator(dc,model);
             dc.Close();
             this.Offset = new Vector(model.Depth*14, model.AbsoluteY*14);

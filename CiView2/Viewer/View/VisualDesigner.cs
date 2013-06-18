@@ -98,8 +98,15 @@ namespace Viewer.View
             dc.DrawText(ft, pt);
 
         }
-        public static void CreateNextImportantLogsIndicator(DrawingContext drawingContext, ILineItem model)
+        public static void CreateNextImportantLogsIndicator(DrawingContext dc, Point pt, int warn, int error, int fatal)
         {
+            CreateSymbol(dc, pt, LogLevel.Warn);
+            CreateContent(dc, pt, warn.ToString(), 1);
+            CreateSymbol(dc, pt, LogLevel.Error);
+            CreateContent(dc, pt, error.ToString(), 1);
+            CreateSymbol(dc, pt, LogLevel.Fatal);
+            CreateContent(dc, pt, fatal.ToString(), 1);
+
         }
         public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
@@ -149,6 +156,14 @@ namespace Viewer.View
             Point pt = new Point(0, 0);
             CreateSimpleLine(dc, status, logLevel, text, lineHeight, tag, pt);
 
+        }
+
+
+        internal static void CreateGroupeLine(DrawingContext dc, Status status, LogLevel logLevel, string text, int lineHeight, CKTrait tag, int warn, int error, int fatal)
+        {
+            Point pt = new Point(0, 0);
+            CreateSimpleLine(dc, status, logLevel, text, lineHeight, tag, pt);
+            CreateNextImportantLogsIndicator(dc, pt, warn, error, fatal);
         }
     }
 }
