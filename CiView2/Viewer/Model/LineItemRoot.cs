@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CK.Core;
 
 namespace Viewer.Model
 {
@@ -70,9 +71,42 @@ namespace Viewer.Model
             get { return _host; }
         }
 
+        public int followingNumberWarning;
+        public int followingNumberError;
+        public int followingNumberFatal;
+
+
+
         public void Grow( int delta )
         {
             _totalHeight += delta;
+        }
+
+        void CountLogLevel(LogLevel loglevel, bool add)
+        {
+            switch (loglevel)
+            {
+                case LogLevel.Error:
+                    if (add)
+                        this.followingNumberError++;
+                    else
+                        this.followingNumberError--;
+                    break;
+                case LogLevel.Warn:
+                    if (add)
+                        this.followingNumberWarning++;
+                    else
+                        this.followingNumberWarning--;
+                    break;
+                case LogLevel.Fatal:
+                    if (add)
+                        this.followingNumberFatal++;
+                    else
+                        this.followingNumberFatal--;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
