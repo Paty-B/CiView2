@@ -25,6 +25,7 @@ namespace Viewer
         public LogLevelFilters()
         {
             InitializeComponent();
+            _listBoxOfCheckBoxCounter.Sort = false;
             _listBoxOfCheckBoxCounter.ForceDelete = false;
             _listBoxOfCheckBoxCounter.Add("Trace");
             _listBoxOfCheckBoxCounter.Add("Info");
