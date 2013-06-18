@@ -132,7 +132,7 @@ namespace Viewer.Model
 
         void ILineItemParentImpl.CountLogLevel(LogLevel loglevel, bool add)
         {
-            throw new NotImplementedException();
+            CountLogLevel(loglevel, add);
         }
     }
 }
