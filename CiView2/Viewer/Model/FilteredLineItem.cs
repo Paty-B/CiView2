@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Viewer.View;
+
+namespace Viewer.Model
+{
+    class FilteredLineItem : LineItemBase
+    {
+        int height;
+
+
+        public override VisualLineItem CreateVisualLine()
+        {
+
+            VisualFilteredLineItem Vl = new VisualFilteredLineItem(this);
+
+            return Vl;
+        }
+    }
+}

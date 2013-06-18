@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Akir\Documents\Dev\CiView2\CiView2\Viewer\obj\Debug\
+C:\Users\Ben\Desktop\intech\S4\pi\CiView2\CiView2\Viewer\obj\Debug\
 Viewer
 none
 false
 DEBUG;TRACE
-C:\Users\Akir\Documents\Dev\CiView2\CiView2\Viewer\App.xaml
-11151548125
+C:\Users\Ben\Desktop\intech\S4\pi\CiView2\CiView2\Viewer\App.xaml
+41492835941
 
-915117868
-121886138872
-MainWindow.xaml;
+36980853221
+19-628191442
+LogViewer.xaml;Menu\LogLevelFilters.xaml;Menu\TagFilters.xaml;userControl.xaml;
 
-False
+True
 

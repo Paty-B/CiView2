@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Viewer.userControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="577.674" Width="234.419"
+             xmlns:local="clr-namespace:Viewer">
+    <Grid>
+        <StackPanel HorizontalAlignment="Left" Height="558" Margin="10,10,0,0" VerticalAlignment="Top" Width="214">
+            <Expander Header="LogLevel Filters" IsExpanded="True">
+                <StackPanel HorizontalAlignment="Left" Width="187" Margin="25,0,0,0">
+                    <local:LogLevelFilters />
+                </StackPanel>
+            </Expander>
+            <Expander Header="Tag Filters" IsExpanded="True">
+                <StackPanel HorizontalAlignment="Left" Width="188" Margin="24,0,0,0">
+                    <local:TagFilters />
+                </StackPanel>
+            </Expander>
+            <Expander Header="Reading option" IsExpanded="True">
+                <Grid HorizontalAlignment="Left" Height="100" Width="212">
+                    <Button Content="Read All" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="192"/>
+                    <Button Content="Read same as original activity" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="192"/>
+                    <Button Content="Read Next Log" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="192"/>
+                </Grid>
+            </Expander>
+            <Expander Header="Writing option">
+                <Grid Background="#FFE5E5E5"/>
+            </Expander>
+            <Expander Header="Randomizing option">
+                <Grid Background="#FFE5E5E5"/>
+            </Expander>
+        </StackPanel>
+    </Grid>
+</UserControl>
