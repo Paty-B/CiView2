@@ -229,7 +229,22 @@ namespace Viewer.View
             }
             return HitTestResultBehavior.Stop;
         }
-        
+
+
+        public void UpdateFromTagFilter(CKTrait tag)
+        {
+            LogLineItem logLineItem;
+            foreach (VisualLogLineItem child in _children)
+            {
+                logLineItem = (LogLineItem)child.Model;
+                if (logLineItem.Tag == tag)
+                {
+                    logLineItem.Parent.InsertChild(new FilteredLineItem());
+                }
+            }
+        }
+
+
 
 
         public void GoToLineItem(ILineItem lineItem)
