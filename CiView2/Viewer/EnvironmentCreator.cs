@@ -31,14 +31,14 @@ namespace Viewer
             }
             else
             {
-                currentLineItem.InsertChild(LineItem.CreateLogLineItem(group.GroupText, group.GroupLevel, group.GroupTags, group.LogTimeUtc));
+                currentLineItem.InsertChild(LineItem.CreateLogLineItem(group.GroupText, group.GroupLevel, group.GroupTags, group.LogTimeUtc, true));
             }
             currentLineItem = currentLineItem.LastChild;
         }
 
         public void OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
         {
-            currentLineItem.InsertChild(LineItem.CreateLogLineItem(text,level,tags,logTimeUtc));
+            currentLineItem.InsertChild(LineItem.CreateLogLineItem(text,level,tags,logTimeUtc, false));
         }
 
         #region useless function

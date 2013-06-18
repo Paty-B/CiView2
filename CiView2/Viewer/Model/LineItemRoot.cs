@@ -130,9 +130,9 @@ namespace Viewer.Model
         }
 
 
-        public void CountLogLevel(CK.Core.LogLevel loglevel, bool add)
+        void ILineItemParentImpl.CountLogLevel(LogLevel loglevel, bool add)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

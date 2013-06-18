@@ -14,9 +14,9 @@ namespace Viewer.Model
             return new LineItemHost();
         }
 
-        public static ILineItem CreateLogLineItem(String text, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
+        public static ILineItem CreateLogLineItem(String text, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc, bool group)
         {
-            return new LogLineItem(text,loglevel,tag,logTimeUtc);
+            return new LogLineItem(text,loglevel,tag,logTimeUtc, group);
         }
 
         public static ILineItem CreateFilteredLineItem()

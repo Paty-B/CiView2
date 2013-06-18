@@ -13,7 +13,7 @@ namespace Viewer.Model
         internal Exception exception;
 
         public ExceptionLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc, Exception ex)
-            :base(content, loglevel, tag, logTimeUtc)
+            :base(content, loglevel, tag, logTimeUtc, true)
         {
             exception = ex;
         }

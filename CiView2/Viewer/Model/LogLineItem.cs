@@ -17,27 +17,29 @@ namespace Viewer.Model
         internal Status Status;
         internal DateTime LogtimeUtc;
         internal int LineHeight;
+        internal bool group;
 
-        public LogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc)
+        public LogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc, bool group)
         {
             Content = content;
             LogLevel = loglevel;
             Status = Status.Expanded;
             Tag = tag;
             LogtimeUtc = logTimeUtc;
+            this.group = group;
         }
 
         public override VisualLineItem CreateVisualLine()
         {
             VisualLineItem Vl;
 
-            if (this.FirstChild == null)
+            if (group)
             {
-                Vl = new VisualLogLineItem(this);
+                Vl = new VisualGroupLineItem(this);
             }
             else
             {
-                Vl = new VisualGroupLineItem(this);
+                Vl = new VisualLogLineItem(this);
             }
             return Vl;
         }
