@@ -44,6 +44,7 @@ namespace Viewer.View
                 bitmapImage.StreamSource = stream;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
+                _dictionary.Add(imageName, bitmapImage);
             }
             return bitmapImage;
         }
