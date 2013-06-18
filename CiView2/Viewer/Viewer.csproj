@@ -80,6 +80,7 @@
     <Compile Include="Model\LineItem.cs" />
     <Compile Include="Model\LineItemRoot.cs" />
     <Compile Include="Model\Status.cs" />
+    <Compile Include="View\ImageRequest.cs" />
     <Compile Include="View\VisualExceptionLineItem.cs" />
     <Compile Include="Menu\TagFilters.xaml.cs">
       <DependentUpon>TagFilters.xaml</DependentUpon>
@@ -151,25 +152,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\fatal.ico" />
+    <EmbeddedResource Include="View\img\fatal.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\error.ico" />
+    <EmbeddedResource Include="View\img\error.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\warning.ico" />
+    <EmbeddedResource Include="View\img\warning.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\info.ico" />
+    <EmbeddedResource Include="View\img\info.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\trace.ico" />
+    <EmbeddedResource Include="View\img\trace.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\noImage.ico" />
+    <EmbeddedResource Include="View\img\noImage.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\img\expander.ico" />
+    <EmbeddedResource Include="View\img\expander.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

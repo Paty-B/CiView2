@@ -24,16 +24,16 @@ namespace Viewer.View
             switch (status)
             {
                 case Status.Collapsed:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
+                    bi = ImageRequest.Instance.GetImage("expander.ico");
                     break;
                 case Status.Expanded:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\expander.ico"));
+                    bi = ImageRequest.Instance.GetImage("expander.ico");
                     bi.Rotation = Rotation.Rotate270;
                     break;
                 //case Status.Hidden:
                   //  break;
                 default:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
+                    bi = ImageRequest.Instance.GetImage("noImage.ico");
                     break;
             }
             dc.DrawImage(bi, new Rect(pt, size));
@@ -47,25 +47,25 @@ namespace Viewer.View
             switch (logLevel)
             {
                 case LogLevel.Trace :
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\trace.ico"));
+                    bi = ImageRequest.Instance.GetImage("trace.ico");
                     break;
                 case LogLevel.Info:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\info.ico"));
+                    bi = ImageRequest.Instance.GetImage("info.ico");
                     break;
                 case LogLevel.Warn:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\warning.ico"));
+                    bi = ImageRequest.Instance.GetImage("warning.ico");
                     break;
                 case LogLevel.Error:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\error.ico"));
+                    bi = ImageRequest.Instance.GetImage("error.ico");
                     break;
                 case LogLevel.Fatal:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\fatal.ico"));
+                    bi = ImageRequest.Instance.GetImage("fatal.ico");
                     break;
                 case LogLevel.None:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
+                    bi = ImageRequest.Instance.GetImage("noImage.ico");
                     break;
                 default:
-                    bi = new BitmapImage(new Uri(@"C:\Users\Paty\Documents\Dev\CiView2\CiView2\Viewer\View\img\noImage.ico"));
+                    bi = ImageRequest.Instance.GetImage("noImage.ico");
                     break;
             } 
             dc.DrawImage(bi, new Rect(pt,size));
