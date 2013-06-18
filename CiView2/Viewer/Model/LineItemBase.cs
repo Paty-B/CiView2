@@ -59,6 +59,8 @@ namespace Viewer.Model
         public int followingNumberWarning;
         public int followingNumberError;
         public int followingNumberFatal;
+        public int followingNumberInfo;
+        public int followingNumberTrace;
 
         public void RemoveChild( ILineItem child )
         {
@@ -147,6 +149,18 @@ namespace Viewer.Model
                         this.followingNumberFatal++;
                     else
                         this.followingNumberFatal--;
+                    break;
+                case LogLevel.Trace:
+                    if (add)
+                        this.followingNumberTrace++;
+                    else
+                        this.followingNumberTrace--;
+                    break;
+                case LogLevel.Info:
+                    if (add)
+                        this.followingNumberInfo++;
+                    else
+                        this.followingNumberInfo--;
                     break;
                 default:
                     break;
