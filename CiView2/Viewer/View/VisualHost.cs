@@ -306,6 +306,8 @@ namespace Viewer.View
         private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
         {
 
+            if (LogLineItem.Tag.IsEmpty)
+                return false;
                foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
                 {
                     if (trait.ToString() == tag)

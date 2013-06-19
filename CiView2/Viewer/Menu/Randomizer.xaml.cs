@@ -27,6 +27,8 @@ namespace Viewer
         bool _play = false;
         Task _task;
 
+        int _depth;
+
         public Randomizer()
         {
             InitializeComponent();
@@ -48,9 +50,9 @@ namespace Viewer
                         _app.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
                         (Action)delegate
                         {
-                            _randomPlayer.One(5);
+                            _randomPlayer.One(Convert.ToInt32(slider.Value));
                         });
-                        Thread.Sleep(1000);
+                        Thread.Sleep(50);
                     }
                     _task = null;
                 });
