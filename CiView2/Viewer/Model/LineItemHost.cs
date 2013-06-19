@@ -13,8 +13,8 @@ namespace Viewer.Model
 
         #region fast working method
 
-        //private Dictionary<string, List<ILineItem>> _indexILineItemByTag;
-        //private Dictionary<LogLevel, List<ILineItem>> _indexILineItemByLogLevel;
+        private Dictionary<string, List<ILineItem>> _indexILineItemByTag;
+        private Dictionary<LogLevel, List<ILineItem>> _indexILineItemByLogLevel;
         private int lineItemCount = 0;
 
         #endregion
@@ -25,9 +25,10 @@ namespace Viewer.Model
 
             #region fast working method
 
-            //_indexILineItemByTag = new Dictionary<string, List<ILineItem>>();
-            //_indexILineItemByLogLevel = new Dictionary<LogLevel, List<ILineItem>>();
+            _indexILineItemByTag = new Dictionary<string, List<ILineItem>>();
+            _indexILineItemByLogLevel = new Dictionary<LogLevel, List<ILineItem>>();
 
+            EventManager.Instance.CheckBoxFilterTagClick += CheckBoxFilterTagClick;
             #endregion
 
         }
@@ -66,7 +67,7 @@ namespace Viewer.Model
 
         internal void OnItemDeleted(ILineItem item)
         {
-            /*
+            //*
             List<ILineItem> items;
             string tagName;
 
@@ -95,7 +96,7 @@ namespace Viewer.Model
             }
 
             #endregion
-           */
+           //*/
             lineItemCount--;
 
             var h = ItemChanged;
@@ -106,7 +107,7 @@ namespace Viewer.Model
         {
             if (inserted.GetType() != typeof(FilteredLineItem))
             {
-                /*
+                //*
                 List<ILineItem> items;
                 string tagName;
 
@@ -136,7 +137,7 @@ namespace Viewer.Model
                 items.Add(inserted);
 
                 #endregion
-                */
+                //*/
                 lineItemCount++;
             }
 
@@ -144,23 +145,20 @@ namespace Viewer.Model
             if (h != null) h(this, new LineItemChangedEventArgs(inserted, LineItemChangedStatus.Inserted));
         }
 
-        /*private void CheckBoxFilterTagClick(string uid, bool isChecked)
-          {
-               foreach (CKTrait tag in ((LogLineItem)inserted).Tag.AtomicTraits)
-                     tag.ToString() == uid;*/
-        #region
-        /*
+        private void CheckBoxFilterTagClick(string uid, bool isChecked)
+        {
+            #region
             List<ILineItem> items;
             if (_indexILineItemByTag.TryGetValue(uid, out items))
             {
                 foreach (ILineItem item in items)
                 {
-                    if(!isChecked)
+                    if (!isChecked)
                         item.Parent.InsertChild(new FilteredLineItem());
                 }
             }
-             */
-        #endregion
+            #endregion
+        }
     }
 }
 

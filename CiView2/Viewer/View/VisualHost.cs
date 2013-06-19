@@ -96,7 +96,7 @@ namespace Viewer.View
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
             //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
 
-            EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
+            //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
         }
