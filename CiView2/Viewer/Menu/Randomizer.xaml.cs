@@ -41,6 +41,7 @@ namespace Viewer
             if(!_play && _task==null)
             {
                 _play = true;
+                int sleepTime = 1000;
                 ButtonPlay.Content = "Stop";
                 EventManager.Instance.OnRegisterClient(_randomPlayer.GetRandomLog().Logger);
                 _task = Task.Factory.StartNew((Action)delegate
@@ -51,8 +52,9 @@ namespace Viewer
                         (Action)delegate
                         {
                             _randomPlayer.One(Convert.ToInt32(slider.Value));
+                            sleepTime = Convert.ToInt32(slider2.Value);
                         });
-                        Thread.Sleep(50);
+                        Thread.Sleep(sleepTime);
                     }
                     _task = null;
                 });

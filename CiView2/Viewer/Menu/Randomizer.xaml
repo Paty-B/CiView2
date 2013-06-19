@@ -6,9 +6,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel HorizontalAlignment="Left">
-            <TextBox Name="textBox" Height="19" TextWrapping="Wrap" Width="120" Text="{Binding ElementName=slider, Path=Value}" />
-            <Slider Name="slider" Minimum="1"  Maximum="20"  IsSnapToTickEnabled="True" TickFrequency="2" Height="28" Value="{Binding Depth, Mode=TwoWay}"/>
+        <StackPanel HorizontalAlignment="Center">
+            <TextBox Name="textBox" Height="19" TextWrapping="Wrap" Width="120" Text="{Binding ElementName=slider, Path=Value}" IsEnabled="False" />
+            <Slider Name="slider" Minimum="1"  Maximum="20"  IsSnapToTickEnabled="True" TickFrequency="2" Height="28" Value="2"/>
+            <TextBox Name="textBox2" Height="19" TextWrapping="Wrap" Width="120" Text="{Binding ElementName=slider2, Path=Value}" IsEnabled="False" />
+            <Slider Name="slider2" Minimum="10"  Maximum="1000"  IsSnapToTickEnabled="True" TickFrequency="2" Height="28" Value="1000"/>
             <Button x:Name="ButtonPlay" Content="play" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.112,1.111" Click="Button_Click"/>
         </StackPanel>
     </Grid>
