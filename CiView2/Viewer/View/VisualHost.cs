@@ -135,6 +135,16 @@ namespace Viewer.View
                     vl = e.LineItem.CreateVisualLine();
                     _children.Add(vl);                    
                     break;
+                case LineItemChangedStatus.Update:
+                    if (e.LineItem.GetType() == typeof(LogLineItem))
+                    {
+                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        index = _children.IndexOf(logLineItem.vl);
+                        _children.RemoveAt(index);
+                        vl = e.LineItem.CreateVisualLine();
+                        _children.Insert(index, vl);
+                    }  
+                    break;
             }
         }
 
@@ -259,11 +269,6 @@ namespace Viewer.View
                 int vlliIndex = _children.IndexOf(vlli);
 
                 logLineItem.toogleCollapse();
-
-                //_children.RemoveAt(vlliIndex);
-                //VisualLineItem newVisualLine = logLineItem.CreateVisualLine();
-                //_children.Insert(vlliIndex, newVisualLine);
-
                 
             }
             return HitTestResultBehavior.Stop;

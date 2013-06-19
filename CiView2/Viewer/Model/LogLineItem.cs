@@ -48,6 +48,7 @@ namespace Viewer.Model
             if (Status == Model.Status.Expanded)
             {
                 Status = Model.Status.Collapsed;
+                Grow(-(TotalLineHeight-LineHeight));
                 Host.OnCollapsed(this);
 
                     var child = FirstChild;
@@ -73,6 +74,7 @@ namespace Viewer.Model
             else if (Status == Model.Status.Collapsed)
             {
                 Status = Model.Status.Expanded;
+                Grow(restoreTotalLineHeight()-LineHeight);
                 Host.OnExpended(this);
 
                 var child = FirstChild;
@@ -99,6 +101,18 @@ namespace Viewer.Model
             {
                 throw new NotImplementedException("toogleCollapse status = hidden");
             }
+        }
+
+        private int restoreTotalLineHeight()
+        {
+            int tlh = LineHeight;
+            var child = FirstChild;
+            while (child != null)
+            {
+                tlh += child.TotalLineHeight;
+                child = child.Next;
+            }
+            return tlh;
         }
 
         public override void toogleHidden()

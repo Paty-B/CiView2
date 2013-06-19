@@ -193,6 +193,7 @@ namespace Viewer.Model
             while( next != null )
             {
                 next.AdjustAbsoluteY( delta );
+                Host.OnPositionChange(next);
                 next = next.Next;
             }
             if( _parent != null ) _parent.Grow( delta );

@@ -13,7 +13,8 @@ namespace Viewer.Model
         Expanded,
         Collapsed,
         Deleted,
-        Inserted
+        Inserted,
+        Update
     }
 
     public class LineItemChangedEventArgs : EventArgs
