@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CK.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,14 @@ namespace Viewer
         {
             if (CheckBoxFilterLogLevelClick != null)
                 CheckBoxFilterLogLevelClick(uid, isChecked);
+        }
+
+        public delegate void EventRegisterClient(ActivityLogger logger);
+        public event EventRegisterClient RegisterClient;
+        public void OnRegisterClient(ActivityLogger logger)
+        {
+            if (RegisterClient != null)
+                RegisterClient(logger);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Viewer.View
         private int fontSize = 16;
         private Point position = new Point(0,0);
         private ILineItemHost _host;
+        private EnvironmentCreator ec;
 
 
         public VisualHost()
@@ -26,7 +27,7 @@ namespace Viewer.View
 
             ActivityLogger logger = new ActivityLogger();
             _host = LineItem.CreateLineItemHost();
-            EnvironmentCreator ec = new EnvironmentCreator(_host);
+            ec = new EnvironmentCreator(_host);
             
             _children = new VisualCollection(this);
             
@@ -72,6 +73,9 @@ namespace Viewer.View
                         logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
                     }
                 }
+
+
+                EventManager.Instance.RegisterClient += RegisterClient;
             }
 
             #endregion
@@ -361,6 +365,12 @@ namespace Viewer.View
         {
             int index = _children.IndexOf(vli);
             
+        }
+
+        public void RegisterClient(ActivityLogger logger)
+        {
+            logger.Output.UnregisterClient(ec);
+            logger.Output.RegisterClient(ec);
         }
     }
 }

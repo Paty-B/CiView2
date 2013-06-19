@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" Height="577.674" Width="234.419"
-             xmlns:local="clr-namespace:Viewer">
+             xmlns:local="clr-namespace:Viewer"
+             xmlns:rdz="clr-namespace:Randomizer;assembly=Randomizer">
     <Grid>
         <StackPanel HorizontalAlignment="Left" Height="558" Margin="10,10,0,0" VerticalAlignment="Top" Width="214">
             <Expander Header="LogLevel Filters" IsExpanded="True">
@@ -17,7 +18,7 @@
                     <local:TagFilters />
                 </StackPanel>
             </Expander>
-            <Expander Header="Reading option" IsExpanded="True">
+            <Expander Header="Reading option" IsExpanded="False">
                 <Grid HorizontalAlignment="Left" Height="100" Width="212">
                     <Button Content="Read All" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="192"/>
                     <Button Content="Read same as original activity" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="192"/>
@@ -27,8 +28,8 @@
             <Expander Header="Writing option">
                 <Grid Background="#FFE5E5E5"/>
             </Expander>
-            <Expander Header="Randomizing option">
-                <Grid Background="#FFE5E5E5"/>
+            <Expander Header="Randomizing option" IsExpanded="True">
+                <local:Randomizer />
             </Expander>
         </StackPanel>
     </Grid>
