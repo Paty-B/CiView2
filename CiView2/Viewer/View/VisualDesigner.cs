@@ -156,7 +156,7 @@ namespace Viewer.View
             }
             else
             {
-                CreateExpander(dc, pt, status);
+                //CreateExpander(dc, pt, status);
                 pt.X += frontSize;
                 CreateSymbol(dc, pt, logLevel);
 
