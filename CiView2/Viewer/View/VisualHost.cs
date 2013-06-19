@@ -200,31 +200,27 @@ namespace Viewer.View
         {
             
                 LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromTagFilterWhitoutRoot(FirstChild, tag,isChecked);
-           
+                var child = FirstChild;
+                while (child != null)
+                {
+                    HaveFindTag(child,tag,isChecked);
+                    var next = child.FirstChild;
+                    while (next != null)
+                    {
+                        HaveFindTag((LogLineItem)next, tag, isChecked);
+                        if (next.FirstChild == null)
+                        {
+                            next = next.Next;
+                        }
+                        else
+                        {
+                            next = next.FirstChild;
+                        }
+                    }
+                    child = (LogLineItem)child.Next;
+                }     
         }
 
-        private void UpdateFromTagFilterWhitoutRoot(LogLineItem FirstChild, string tag,bool isChecked)
-        {
-           
-            
-            if (FirstChild != null)
-            {
-               HaveFindTag( FirstChild,tag,isChecked);
-            }
-            
-            LogLineItem next=(LogLineItem)FirstChild.Next;
-            while( next != null )
-            {
-                HaveFindTag( next,tag,isChecked);
-                if(next.FirstChild!=null)
-                {
-                    UpdateFromTagFilterWhitoutRoot(FirstChild, tag, isChecked);
-                }
-                next=(LogLineItem)next.Next;
-            }
-            
-        }
         private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
         {
 
@@ -263,32 +259,30 @@ namespace Viewer.View
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
-            
-                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
 
-        }
-
-        private void UpdateFromLogLevelFilterWhitoutRoot(LogLineItem FirstChild, string loglevel,bool isChecked)
-        {
-
-            if (FirstChild != null)
+            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+            var child = FirstChild;
+            while (child != null)
             {
-                HaveFindLogLevel(FirstChild, loglevel,isChecked);
-            }
-
-            LogLineItem next = (LogLineItem)FirstChild.Next;
-            while (next != null)
-            {
-                HaveFindLogLevel(next, loglevel,isChecked);
-                if (next.FirstChild != null)
+                HaveFindLogLevel(child, loglevel, isChecked);
+                var next = child.FirstChild;
+                while (next != null)
                 {
-                    UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
+                    HaveFindLogLevel((LogLineItem)next, loglevel, isChecked);
+                    if (next.FirstChild == null)
+                    {
+                        next = next.Next;
+                    }
+                    else
+                    {
+                        next = next.FirstChild;
+                    }
                 }
-                next = (LogLineItem)next.Next;
+                child = (LogLineItem)child.Next;
             }
-
         }
+
+     
         private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel,bool isChecked)
         {
             if (LogLineItem.LogLevel.ToString() == loglevel)
