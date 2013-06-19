@@ -46,25 +46,25 @@ namespace Viewer.View
             {
                using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
                 {
-                    logger.Trace(tag1, "First");
+                    logger.Trace(tag1, "First2");
                     using (logger.AutoTags(tag1))
                     {
-                        logger.Trace("Second");
-                        logger.Trace(tag3, "Third");
+                        logger.Trace("Second2");
+                        logger.Trace(tag3, "Third2");
                         using (logger.AutoTags(tag2))
                         {
-                            logger.Info("First");
+                            logger.Info("First2");
                         }
                     }
                     using (logger.OpenGroup(LogLevel.Info, () => "Conclusion of Info Group (no newline).", "InfoGroup"))
                     {
-                        logger.Info("Second");
-                        logger.Trace("Fourth");
+                        logger.Info("Second3");
+                        logger.Trace("Fourth3");
 
                         string warnConclusion = "Conclusion of Warn Group" + Environment.NewLine + "with more than one line int it.";
                         using (logger.OpenGroup(LogLevel.Warn, () => warnConclusion, "WarnGroup {0} - Now = {1}", 4, DateTime.UtcNow))
                         {
-                            logger.Info("Warn!");
+                            logger.Info("Warn!4");
                             logger.CloseGroup("User conclusion with multiple lines."
                                 + Environment.NewLine + "It will be displayed on "
                                 + Environment.NewLine + "multiple lines.");
@@ -80,20 +80,18 @@ namespace Viewer.View
 
                             using (logger.OpenGroup(LogLevel.Warn, () => warnConclusion, "WarnGroup {0} - Now = {1}", 4, DateTime.UtcNow))
                             {
-                                logger.Error(new Exception("exeption message"));
-                                logger.CloseGroup("User conclusion with multiple lines."
-                                    + Environment.NewLine + "It will be displayed on "
-                                    + Environment.NewLine + "multiple lines.");
+                                logger.Error("error");
+                                logger.Fatal("fatal content");
+
                             }
                         }
                     }
                 }
-                
-
-                EventManager.Instance.RegisterClient += RegisterClient;
             }
-
+            
             #endregion
+
+            EventManager.Instance.RegisterClient += RegisterClient;
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
             //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
@@ -185,7 +183,17 @@ namespace Viewer.View
                 LogLineItem logLineItem = (LogLineItem)vlli.Model;
                 int vlliIndex = _children.IndexOf(vlli);
 
-                logLineItem.toogleCollapse();
+                if (logLineItem.Status == Status.Expanded)
+                {
+                    logLineItem.Collapse();
+                }
+                else if (logLineItem.Status == Status.Collapsed)
+                {
+                    logLineItem.UnCollapse();
+                }
+                else
+                {
+                }
                 
             }
             return HitTestResultBehavior.Stop;
@@ -290,12 +298,12 @@ namespace Viewer.View
                 if (isChecked)
                 {
                     LogLineItem.Status = Status.Expanded;
-                    LogLineItem.Host.OnExpended(LogLineItem);
+                    LogLineItem.UnCollapse();
                 }
                 else
                 {
                     LogLineItem.Status = Status.Collapsed;
-                    LogLineItem.Host.OnCollapsed(LogLineItem);
+                    LogLineItem.Collapse();
                 }
                 return true;
             }
@@ -305,14 +313,7 @@ namespace Viewer.View
 
         #endregion
         
-        
-        public void GoToLineItem(ILineItem lineItem)
-        {
-            position.X = lineItem.Depth;
-            position.Y = lineItem.AbsoluteY;
-            //mutiplicateur de position = position absolute de LineItem
-        }
-        
+                
         protected override int VisualChildrenCount
         {
             get { return _children.Count; }

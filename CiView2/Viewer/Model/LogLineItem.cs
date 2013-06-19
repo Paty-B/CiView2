@@ -43,36 +43,35 @@ namespace Viewer.Model
             return vl;
         }
 
-        internal void toogleCollapse()
+        internal void Collapse()
         {
-            if (Status == Model.Status.Expanded)
-            {
                 Status = Model.Status.Collapsed;
-                Grow(-(TotalLineHeight-LineHeight));
+                Grow(-(TotalLineHeight - LineHeight));
                 Host.OnCollapsed(this);
 
-                    var child = FirstChild;
-                    while (child != null)
+                var child = FirstChild;
+                while (child != null)
+                {
+                    child.Hidden();
+                    var next = child.FirstChild;
+                    while (next != null)
                     {
-                        child.toogleHidden();
-                        var next = child.FirstChild;
-                        while (next != null)
+                        next.Hidden();
+                        if (next.FirstChild == null)
                         {
-                            next.toogleHidden();
-                            if (next.FirstChild == null)
-                            {
-                                next = next.Next;
-                            }
-                            else
-                            {
-                                next = next.FirstChild;
-                            }             
+                            next = next.Next;
                         }
-                        child = child.Next;
+                        else
+                        {
+                            next = next.FirstChild;
+                        }
                     }
-            }
-            else if (Status == Model.Status.Collapsed)
-            {
+                    child = child.Next;
+                }
+        }
+
+        internal void UnCollapse()
+        {
                 Status = Model.Status.Expanded;
                 Grow(restoreTotalLineHeight()-LineHeight);
                 Host.OnExpended(this);
@@ -80,11 +79,11 @@ namespace Viewer.Model
                 var child = FirstChild;
                 while (child != null)
                 {
-                    child.toogleHidden();
+                    child.unHidden();
                     var next = child.FirstChild;
                     while (next != null)
                     {
-                        next.toogleHidden();
+                        next.unHidden();
                         if (next.FirstChild == null)
                         {
                             next = next.Next;
@@ -97,11 +96,6 @@ namespace Viewer.Model
                     child = child.Next;
                 }
             }
-            else
-            {
-                throw new NotImplementedException("toogleCollapse status = hidden");
-            }
-        }
 
         private int restoreTotalLineHeight()
         {
@@ -115,18 +109,16 @@ namespace Viewer.Model
             return tlh;
         }
 
-        public override void toogleHidden()
+        public override void Hidden()
         {
-            if (Status == Model.Status.Hidden)
-            {
-                Status = Model.Status.Expanded;
-                Host.OnExpended(this);
-            }
-            else
-            {
                 Status = Model.Status.Hidden;
                 Host.OnHiddened(this);
-            }
+        }
+
+        public override void unHidden()
+        {
+                Status = Model.Status.Expanded;
+                Host.OnExpended(this);
         }
     }
 }

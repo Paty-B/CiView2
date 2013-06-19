@@ -21,7 +21,6 @@ namespace Viewer.Model
         int LineHeight { get; }
         void InsertChild( ILineItem child, ILineItem nextChild = null );
         void RemoveChild( ILineItem child );
-        event EventHandler ChildInserted;
         VisualLineItem CreateVisualLine();
     }
 }

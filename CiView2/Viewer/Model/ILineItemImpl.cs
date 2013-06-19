@@ -15,6 +15,8 @@ namespace Viewer.Model
         new ILineItemImpl LastChild { get; }
         void AdjustAbsoluteY( int delta );
 
-        void toogleHidden();
+        void Hidden();
+
+        void unHidden();
     }
 }

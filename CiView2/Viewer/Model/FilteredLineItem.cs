@@ -18,9 +18,14 @@ namespace Viewer.Model
             return Vl;
         }
 
-        public override void toogleHidden()
+        public override void Hidden()
         {
-            throw new Exception("filteredLineItem was never hidden");
+            throw new NotImplementedException();
+        }
+
+        public override void unHidden()
+        {
+            throw new NotImplementedException();
         }
     }
 }

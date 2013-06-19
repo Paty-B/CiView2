@@ -207,11 +207,8 @@ namespace Viewer.Model
         public abstract VisualLineItem CreateVisualLine();
 
 
+        public abstract void Hidden();
 
-
-        public event EventHandler ChildInserted;
-
-
-        public abstract void toogleHidden();
+        public abstract void unHidden();
     }
 }
