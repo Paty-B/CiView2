@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomizer", "Randomizer\Ra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Recorder", "Recorder", "{833642BB-EFC0-43DE-86C0-5D4251F4024B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Writer", "Writer\Writer.csproj", "{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateBinaryLogFileApp", "GenerateBinaryLogFileApp\GenerateBinaryLogFileApp.csproj", "{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,8 +32,20 @@ Global
 		{FE73B87C-AEA7-4339-AB69-020178ED658F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE73B87C-AEA7-4339-AB69-020178ED658F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE73B87C-AEA7-4339-AB69-020178ED658F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729} = {833642BB-EFC0-43DE-86C0-5D4251F4024B}
+		{2468D068-0FFB-4CFD-BDDA-55DF622B04EA} = {833642BB-EFC0-43DE-86C0-5D4251F4024B}
 	EndGlobalSection
 EndGlobal
