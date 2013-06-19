@@ -16,7 +16,6 @@ namespace Viewer.View
     public class VisualHost : FrameworkElement
     {
         private VisualCollection _children;
-        private int fontSize = 16;
         private Point position = new Point(0,0);
         private ILineItemHost _host;
         private EnvironmentCreator ec;
@@ -45,7 +44,7 @@ namespace Viewer.View
 
             using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
             {
-                /*using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
+               using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
                 {
                     logger.Trace(tag1, "First");
                     using (logger.AutoTags(tag1))
@@ -74,9 +73,22 @@ namespace Viewer.View
 
                         logger.Info("T1");
                         logger.Trace("T2");
+                        using (logger.OpenGroup(LogLevel.Info, () => "Conclusion of Info Group (no newline).", "InfoGroup"))
+                        {
+                            logger.Info("Second");
+                            logger.Trace("Fourth");
+
+                            using (logger.OpenGroup(LogLevel.Warn, () => warnConclusion, "WarnGroup {0} - Now = {1}", 4, DateTime.UtcNow))
+                            {
+                                logger.Error(new Exception("exeption message"));
+                                logger.CloseGroup("User conclusion with multiple lines."
+                                    + Environment.NewLine + "It will be displayed on "
+                                    + Environment.NewLine + "multiple lines.");
+                            }
+                        }
                     }
                 }
-                */
+                
 
                 EventManager.Instance.RegisterClient += RegisterClient;
             }
@@ -84,6 +96,7 @@ namespace Viewer.View
             #endregion
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
+            //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
 
             EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
@@ -154,6 +167,15 @@ namespace Viewer.View
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
         }
+
+        /*private void VisualHost_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            int move = e.Delta;
+            foreach (VisualLineItem vl in _children)
+            {
+                vl.Offset = new Vector(0, move);
+            }
+        }*/
 
         public HitTestResultBehavior myCallback(HitTestResult result)
         {

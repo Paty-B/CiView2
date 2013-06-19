@@ -154,15 +154,6 @@ namespace Viewer.Model
         void ILineItemParentImpl.CountLogLevel(LogLevel loglevel, bool add)
         {
             CountLogLevel(loglevel, add);
-        }
-
-
-        public void UpdateVisual()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        
+        }       
     }
 }

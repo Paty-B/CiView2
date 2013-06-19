@@ -13,7 +13,7 @@
                     <local:LogLevelFilters />
                 </StackPanel>
             </Expander>
-            <Expander Header="Tag Filters" IsExpanded="True">
+            <Expander Header="Tag Filters" HorizontalAlignment="Left">
                 <StackPanel HorizontalAlignment="Left" Width="188" Margin="24,0,0,0">
                     <local:TagFilters />
                 </StackPanel>

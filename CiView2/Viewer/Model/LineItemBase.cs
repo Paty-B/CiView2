@@ -212,12 +212,6 @@ namespace Viewer.Model
         public event EventHandler ChildInserted;
 
 
-        public void UpdateVisual()
-        {
-            
-        }
-
-
         public abstract void toogleHidden();
     }
 }
