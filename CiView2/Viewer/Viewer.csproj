@@ -44,6 +44,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
@@ -183,6 +184,10 @@
     <ProjectReference Include="..\Randomizer\Randomizer.csproj">
       <Project>{fe73b87c-aea7-4339-ab69-020178ed658f}</Project>
       <Name>Randomizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Writer\Writer.csproj">
+      <Project>{F2F4A7B1-4A01-4A0D-8AF3-82613FA90729}</Project>
+      <Name>Writer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

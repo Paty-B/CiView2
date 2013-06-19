@@ -3,15 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Button Name="PlayButton" IsEnabled="False" Content="Play" HorizontalAlignment="Left" Margin="43,214,0,0" VerticalAlignment="Top" Width="46" Height="35" Click="PlayButton_Click"/>
-        <Button Name="PauseButton" IsEnabled="False" Content="Pause" HorizontalAlignment="Left" Margin="118,214,0,0" VerticalAlignment="Top" Width="46" Height="35" Click="PauseButton_Click"/>
-        <Button Name="StopButton" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="197,214,0,0" VerticalAlignment="Top" Width="42" Height="35" Click="StopButton_Click"/>
-        <CheckBox Name="OnTimeCheckBox" IsEnabled="False" Content="OnTime" HorizontalAlignment="Left" Margin="157,264,0,0" VerticalAlignment="Top" Width="98"/>
+             mc:Ignorable="d" Height="122.791" Width="241.395">
+    <Grid Margin="0,0,0,10">
+        <Button Name="PlayButton" IsEnabled="False" Content="Play" HorizontalAlignment="Left" Margin="31,48,0,0" VerticalAlignment="Top" Width="46" Height="35" Click="PlayButton_Click"/>
+        <Button Name="PauseButton" IsEnabled="False" Content="Pause" HorizontalAlignment="Left" Margin="102,48,0,0" VerticalAlignment="Top" Width="46" Height="35" Click="PauseButton_Click"/>
+        <Button Name="StopButton" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="164,48,0,0" VerticalAlignment="Top" Width="42" Height="35" Click="StopButton_Click"/>
+        <CheckBox Name="OnTimeCheckBox" IsEnabled="False" Content="OnTime" HorizontalAlignment="Left" Margin="108,88,0,0" VerticalAlignment="Top" Width="98"/>
         <Button Name="OpenButton" Content="Open a file" HorizontalAlignment="Left" Margin="31,21,0,0" VerticalAlignment="Top" Width="75" Click="OpenButton_Click"/>
-        <Button Name="DisposeButton" Content="Dispose" HorizontalAlignment="Left" Margin="197,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.467,-0.364" Click="DisposeButton_Click"/>
+        <Button Name="DisposeButton" Content="Dispose" HorizontalAlignment="Left" Margin="131,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.467,-0.364" Click="DisposeButton_Click"/>
 
     </Grid>
 </UserControl>
