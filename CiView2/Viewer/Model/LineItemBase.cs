@@ -73,11 +73,11 @@ namespace Viewer.Model
 
         public int LineHeight { get { return _lineHeight; }}
 
-        public int followingNumberWarning;
-        public int followingNumberError;
-        public int followingNumberFatal;
-        public int followingNumberInfo;
-        public int followingNumberTrace;
+        public int FollowingNumberWarning { get; set; }
+        public int FollowingNumberError { get; set; }
+        public int FollowingNumberFatal { get; set; }
+        public int FollowingNumberInfo { get; set; }
+        public int FollowingNumberTrace { get; set; }
 
         public void RemoveChild( ILineItem child )
         {
@@ -151,33 +151,33 @@ namespace Viewer.Model
             {
                 case LogLevel.Error:
                     if (add)
-                       this.followingNumberError++;
+                       this.FollowingNumberError++;
                     else
-                       this.followingNumberError--;
+                       this.FollowingNumberError--;
                     break;
                 case LogLevel.Warn:
                     if(add)
-                        this.followingNumberWarning++;
+                        this.FollowingNumberWarning++;
                     else
-                        this.followingNumberWarning--;
+                        this.FollowingNumberWarning--;
                     break;
                 case LogLevel.Fatal:
                     if(add)
-                        this.followingNumberFatal++;
+                        this.FollowingNumberFatal++;
                     else
-                        this.followingNumberFatal--;
+                        this.FollowingNumberFatal--;
                     break;
                 case LogLevel.Trace:
                     if (add)
-                        this.followingNumberTrace++;
+                        this.FollowingNumberTrace++;
                     else
-                        this.followingNumberTrace--;
+                        this.FollowingNumberTrace--;
                     break;
                 case LogLevel.Info:
                     if (add)
-                        this.followingNumberInfo++;
+                        this.FollowingNumberInfo++;
                     else
-                        this.followingNumberInfo--;
+                        this.FollowingNumberInfo--;
                     break;
                 default:
                     break;
@@ -209,5 +209,14 @@ namespace Viewer.Model
 
 
         public event EventHandler ChildInserted;
+
+
+        public void UpdateVisual()
+        {
+            
+        }
+
+
+        public abstract void toogleHidden();
     }
 }

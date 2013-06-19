@@ -148,5 +148,11 @@ namespace Viewer.Model
         {
             CountLogLevel(loglevel, add);
         }
+
+
+        public void UpdateVisual()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

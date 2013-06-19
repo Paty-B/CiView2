@@ -51,6 +51,12 @@ namespace Viewer.Model
             if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Expanded));
         }
 
+        internal void OnHiddened(ILineItem item)
+        {
+            var h = ItemChanged;
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Hidden));
+        }
+
         internal void OnItemDeleted(ILineItem item)
         {
             /*

@@ -9,8 +9,6 @@ namespace Viewer.Model
 {
     class FilteredLineItem : LineItemBase
     {
-        int height;
-
 
         public override VisualLineItem CreateVisualLine()
         {
@@ -18,6 +16,11 @@ namespace Viewer.Model
             VisualFilteredLineItem Vl = new VisualFilteredLineItem(this);
 
             return Vl;
+        }
+
+        public override void toogleHidden()
+        {
+            throw new Exception("filteredLineItem was never hidden");
         }
     }
 }

@@ -18,15 +18,24 @@ namespace Viewer.View
         private VisualCollection _children;
         private int fontSize = 16;
         private Point position = new Point(0,0);
+<<<<<<< Updated upstream
         private ILineItemHost _host;
+=======
+        private ILineItemHost host;
+>>>>>>> Stashed changes
 
 
         public VisualHost()
         {
 
             ActivityLogger logger = new ActivityLogger();
+<<<<<<< Updated upstream
             _host = LineItem.CreateLineItemHost();
             EnvironmentCreator ec = new EnvironmentCreator(_host);
+=======
+            host = LineItem.CreateLineItemHost();
+            EnvironmentCreator ec = new EnvironmentCreator(host);
+>>>>>>> Stashed changes
             
             _children = new VisualCollection(this);
             

@@ -17,6 +17,7 @@ namespace Viewer.Model
         internal Status Status;
         internal DateTime LogtimeUtc;
         internal bool group;
+        internal VisualLineItem vl;
 
         public LogLineItem(String content, LogLevel loglevel, CKTrait tag, DateTime logTimeUtc, bool group)
         {
@@ -30,17 +31,61 @@ namespace Viewer.Model
 
         public override VisualLineItem CreateVisualLine()
         {
-            VisualLineItem Vl;
-
+            
             if (group)
             {
-                Vl = new VisualGroupLineItem(this);
+                vl = new VisualGroupLineItem(this);
             }
             else
             {
-                Vl = new VisualLogLineItem(this);
+                vl = new VisualLogLineItem(this);
             }
-            return Vl;
+            return vl;
+        }
+
+        internal void toogleCollapse()
+        {
+            if (Status == Model.Status.Expanded)
+            {
+                Status = Model.Status.Collapsed;
+                Host.OnCollapsed(this);
+
+                    var child = FirstChild;
+                    while (child != null)
+                    {
+                        child.toogleHidden();
+                        var next = child.Next;
+                        while (next != null)
+                        {
+                            next.toogleHidden();
+                            next = next.Next;
+                        }
+                        child = child.FirstChild;
+                    }
+            }
+            else if (Status == Model.Status.Collapsed)
+            {
+                Status = Model.Status.Expanded;
+                Host.OnExpended(this);
+            }
+            else
+            {
+                throw new NotImplementedException("toogleCollapse status = hidden");
+            }
+        }
+
+        public override void toogleHidden()
+        {
+            if (Status == Model.Status.Hidden)
+            {
+                Status = Model.Status.Expanded;
+                Host.OnExpended(this);
+            }
+            else
+            {
+                Status = Model.Status.Hidden;
+                Host.OnHiddened(this);
+            }
         }
     }
 }

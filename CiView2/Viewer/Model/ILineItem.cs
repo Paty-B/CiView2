@@ -23,5 +23,7 @@ namespace Viewer.Model
         void RemoveChild( ILineItem child );
         event EventHandler ChildInserted;
         VisualLineItem CreateVisualLine();
+
+        void UpdateVisual();
     }
 }
