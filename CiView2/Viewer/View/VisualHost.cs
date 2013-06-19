@@ -241,41 +241,57 @@ namespace Viewer.View
 
         public void UpdateFromTagFilter(string tag,bool isChecked)
         {
-            if (isChecked == false)
-            {
+            
                 LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromTagFilter(FirstChild, tag);
-            }
+                UpdateFromTagFilterWhitoutRoot(FirstChild, tag,isChecked);
+           
         }
 
-        private void UpdateFromTagFilter(LogLineItem FirstChild, string tag)
+        private void UpdateFromTagFilterWhitoutRoot(LogLineItem FirstChild, string tag,bool isChecked)
         {
            
             
             if (FirstChild != null)
             {
-               HaveFindTagUnchecked( FirstChild,tag);
+               HaveFindTag( FirstChild,tag,isChecked);
             }
             
             LogLineItem next=(LogLineItem)FirstChild.Next;
             while( next != null )
             {
-                HaveFindTagUnchecked( next,tag);
+                HaveFindTag( next,tag,isChecked);
                 if(next.FirstChild!=null)
                 {
-                    UpdateFromTagFilter(FirstChild,tag);
+                    UpdateFromTagFilterWhitoutRoot(FirstChild, tag, isChecked);
                 }
                 next=(LogLineItem)next.Next;
             }
             
         }
-        private bool HaveFindTagUnchecked(LogLineItem LogLineItem, string tag)
+        private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
         {
+
                foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
                 {
                     if (trait.ToString() == tag)
                     {
-                        LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                        if (isChecked)
+                        {
+                            LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                        }
+                        else
+                        {
+                            ILineItemParentImpl parent=LogLineItem.Parent;
+                            ILineItem next=parent.FirstChild;
+                            while(next!=null)
+                            {
+                                if (next.GetType() == typeof(FilteredLineItem))
+                                {
+                                     parent.RemoveChild(next);            
+                                }
+                            }
+                           
+                        }
                         return true;
                     }
                 }
@@ -297,16 +313,15 @@ namespace Viewer.View
         private void UpdateFromLogLevelFilterWhitoutRoot(LogLineItem FirstChild, string loglevel,bool isChecked)
         {
 
-
             if (FirstChild != null)
             {
-                HaveFindLogLevelUnchecked(FirstChild, loglevel,isChecked);
+                HaveFindLogLevel(FirstChild, loglevel,isChecked);
             }
 
             LogLineItem next = (LogLineItem)FirstChild.Next;
             while (next != null)
             {
-                HaveFindLogLevelUnchecked(next, loglevel,isChecked);
+                HaveFindLogLevel(next, loglevel,isChecked);
                 if (next.FirstChild != null)
                 {
                     UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
@@ -315,7 +330,7 @@ namespace Viewer.View
             }
 
         }
-        private bool HaveFindLogLevelUnchecked(LogLineItem LogLineItem, string loglevel,bool isChecked)
+        private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel,bool isChecked)
         {
             if (LogLineItem.LogLevel.ToString() == loglevel)
             {
