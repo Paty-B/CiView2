@@ -24,11 +24,10 @@ namespace Viewer.View
             switch (status)
             {
                 case Status.Collapsed:
-                    bi = ImageRequest.Instance.GetImage("expander.ico");
+                    bi = ImageRequest.Instance.GetImage("expander2.ico");
                     break;
                 case Status.Expanded:
                     bi = ImageRequest.Instance.GetImage("expander.ico");
-                    bi.Rotation = Rotation.Rotate270;
                     break;
                 //case Status.Hidden:
                   //  break;
@@ -100,13 +99,28 @@ namespace Viewer.View
         }
         public static void CreateNextImportantLogsIndicator(DrawingContext dc, Point pt, int warn, int error, int fatal)
         {
-            CreateSymbol(dc, pt, LogLevel.Warn);
-            CreateContent(dc, pt, warn.ToString(), 1);
-            CreateSymbol(dc, pt, LogLevel.Error);
-            CreateContent(dc, pt, error.ToString(), 1);
-            CreateSymbol(dc, pt, LogLevel.Fatal);
-            CreateContent(dc, pt, fatal.ToString(), 1);
-
+            if (warn != 0)
+            {
+                CreateSymbol(dc, pt, LogLevel.Warn);
+                pt.X += frontSize;
+                CreateContent(dc, pt, warn.ToString(), 1);
+                pt.X += frontSize;
+            }
+            if (error != 0)
+            {
+                CreateSymbol(dc, pt, LogLevel.Error);
+                pt.X += frontSize;
+                CreateContent(dc, pt, error.ToString(), 1);
+                pt.X += frontSize;
+            }
+            if (fatal != 0)
+            {
+                CreateSymbol(dc, pt, LogLevel.Fatal);
+                pt.X += frontSize;
+                CreateContent(dc, pt, fatal.ToString(), 1);
+                pt.X += frontSize;
+            }          
+                        
         }
         public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
@@ -137,18 +151,24 @@ namespace Viewer.View
         }
         internal static void CreateSimpleLine(DrawingContext dc, Status status, LogLevel logLevel, String text,int lineHeight, CKTrait tag, Point pt)
         {
-            CreateExpander(dc, pt, status);
-            pt.X += frontSize;
-            CreateSymbol(dc, pt, logLevel);
+            if (status == Status.Hidden)
+            {
+            }
+            else
+            {
+                CreateExpander(dc, pt, status);
+                pt.X += frontSize;
+                CreateSymbol(dc, pt, logLevel);
 
-            pt.X += frontSize;
+                pt.X += frontSize;
 
-            CreateContent(dc, pt, text, lineHeight);
+                CreateContent(dc, pt, text, lineHeight);
 
-            int logLovelContent = text.Length;
-            pt.X += logLovelContent * frontSize;
-            
-            CreateTag(dc, pt, tag);
+                int logLovelContent = text.Length;
+                pt.X += logLovelContent * frontSize;
+
+                CreateTag(dc, pt, tag);
+            }
         }
 
         internal static void CreateException(DrawingContext dc, Status status, LogLevel logLevel, String text, int lineHeight, CKTrait tag, Exception exception)
@@ -162,8 +182,30 @@ namespace Viewer.View
         internal static void CreateGroupeLine(DrawingContext dc, Status status, LogLevel logLevel, string text, int lineHeight, CKTrait tag, int warn, int error, int fatal)
         {
             Point pt = new Point(0, 0);
-            CreateSimpleLine(dc, status, logLevel, text, lineHeight, tag, pt);
-            CreateNextImportantLogsIndicator(dc, pt, warn, error, fatal);
+
+            if (status == Status.Hidden)
+            {
+            }
+            else
+            {
+                CreateExpander(dc, pt, status);
+                pt.X += frontSize;
+                CreateSymbol(dc, pt, logLevel);
+
+                pt.X += frontSize;
+
+                CreateContent(dc, pt, text, lineHeight);
+
+                int logLovelContent = text.Length;
+                pt.X += logLovelContent * frontSize;
+
+                CreateTag(dc, pt, tag);
+
+                int tagLength = tag.ToString().Length;
+                pt.X += tagLength * frontSize;
+
+                CreateNextImportantLogsIndicator(dc, pt, warn, error, fatal);
+            }
         }
     }
 }

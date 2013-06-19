@@ -61,9 +61,16 @@ namespace Viewer.Model
             get { return 0; }
         }
 
-        public int TotalLineHeight
+        int ILineItem.TotalLineHeight
         {
-            get { return _totalHeight; }
+            get
+            {
+                return _totalHeight;
+            }
+            set
+            {
+                _totalHeight = value;
+            }
         }
 
         public LineItemHost Host
@@ -148,5 +155,14 @@ namespace Viewer.Model
         {
             CountLogLevel(loglevel, add);
         }
+
+
+        public void UpdateVisual()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        
     }
 }

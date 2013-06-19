@@ -18,16 +18,24 @@ namespace Viewer.View
         private VisualCollection _children;
         private int fontSize = 16;
         private Point position = new Point(0,0);
+<<<<<<< Updated upstream
         private ILineItemHost _host;
-        private EnvironmentCreator ec;
+=======
+        private ILineItemHost host;
+>>>>>>> Stashed changes
 
 
         public VisualHost()
         {
 
             ActivityLogger logger = new ActivityLogger();
+<<<<<<< Updated upstream
             _host = LineItem.CreateLineItemHost();
-            ec = new EnvironmentCreator(_host);
+            EnvironmentCreator ec = new EnvironmentCreator(_host);
+=======
+            host = LineItem.CreateLineItemHost();
+            EnvironmentCreator ec = new EnvironmentCreator(host);
+>>>>>>> Stashed changes
             
             _children = new VisualCollection(this);
             
@@ -71,14 +79,8 @@ namespace Viewer.View
                                 + Environment.NewLine + "multiple lines.");
                         }
                         logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
-
-                        logger.Info("T1");
-                        logger.Trace("T2");
                     }
                 }
-
-
-                EventManager.Instance.RegisterClient += RegisterClient;
             }
 
             #endregion
@@ -86,7 +88,6 @@ namespace Viewer.View
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
             EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
-            EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
         }
 
@@ -276,57 +277,41 @@ namespace Viewer.View
 
         public void UpdateFromTagFilter(string tag,bool isChecked)
         {
-            
+            if (isChecked == false)
+            {
                 LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromTagFilterWhitoutRoot(FirstChild, tag,isChecked);
-           
+                UpdateFromTagFilter(FirstChild, tag);
+            }
         }
 
-        private void UpdateFromTagFilterWhitoutRoot(LogLineItem FirstChild, string tag,bool isChecked)
+        private void UpdateFromTagFilter(LogLineItem FirstChild, string tag)
         {
            
             
             if (FirstChild != null)
             {
-               HaveFindTag( FirstChild,tag,isChecked);
+               HaveFindTagUnchecked( FirstChild,tag);
             }
             
             LogLineItem next=(LogLineItem)FirstChild.Next;
             while( next != null )
             {
-                HaveFindTag( next,tag,isChecked);
+                HaveFindTagUnchecked( next,tag);
                 if(next.FirstChild!=null)
                 {
-                    UpdateFromTagFilterWhitoutRoot(FirstChild, tag, isChecked);
+                    UpdateFromTagFilter(FirstChild,tag);
                 }
                 next=(LogLineItem)next.Next;
             }
             
         }
-        private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
+        private bool HaveFindTagUnchecked(LogLineItem LogLineItem, string tag)
         {
-
                foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
                 {
                     if (trait.ToString() == tag)
                     {
-                        if (isChecked)
-                        {
-                            LogLineItem.Parent.InsertChild(new FilteredLineItem());
-                        }
-                        else
-                        {
-                            ILineItemParentImpl parent=LogLineItem.Parent;
-                            ILineItem next=parent.FirstChild;
-                            while(next!=null)
-                            {
-                                if (next.GetType() == typeof(FilteredLineItem))
-                                {
-                                     parent.RemoveChild(next);            
-                                }
-                            }
-                           
-                        }
+                        LogLineItem.Parent.InsertChild(new FilteredLineItem());
                         return true;
                     }
                 }
@@ -335,57 +320,8 @@ namespace Viewer.View
 
         #endregion
 
-        #region UpdateTreeWithLogLevelFilter
-
-        public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
-        {
-            
-                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
-
-        }
-
-        private void UpdateFromLogLevelFilterWhitoutRoot(LogLineItem FirstChild, string loglevel,bool isChecked)
-        {
-
-            if (FirstChild != null)
-            {
-                HaveFindLogLevel(FirstChild, loglevel,isChecked);
-            }
-
-            LogLineItem next = (LogLineItem)FirstChild.Next;
-            while (next != null)
-            {
-                HaveFindLogLevel(next, loglevel,isChecked);
-                if (next.FirstChild != null)
-                {
-                    UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
-                }
-                next = (LogLineItem)next.Next;
-            }
-
-        }
-        private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel,bool isChecked)
-        {
-            if (LogLineItem.LogLevel.ToString() == loglevel)
-            {
-                if (isChecked)
-                {
-                    LogLineItem.Status = Status.Expanded;
-                }
-                else
-                {
-                    LogLineItem.Status = Status.Collapsed;
-                }
-                return true;
-            }
-            else { return false; }
-        }
 
 
-        #endregion
-        
-        
         public void GoToLineItem(ILineItem lineItem)
         {
             position.X = lineItem.Depth;
@@ -411,12 +347,6 @@ namespace Viewer.View
         {
             int index = _children.IndexOf(vli);
             
-        }
-
-        public void RegisterClient(ActivityLogger logger)
-        {
-            logger.Output.UnregisterClient(ec);
-            logger.Output.RegisterClient(ec);
         }
     }
 }

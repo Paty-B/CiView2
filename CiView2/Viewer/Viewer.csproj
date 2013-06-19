@@ -185,6 +185,15 @@
       <Name>Randomizer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\img\expander2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Randomizer\Randomizer.csproj">
+      <Project>{fe73b87c-aea7-4339-ab69-020178ed658f}</Project>
+      <Name>Randomizer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
