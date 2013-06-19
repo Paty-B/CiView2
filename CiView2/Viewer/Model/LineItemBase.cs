@@ -69,7 +69,7 @@ namespace Viewer.Model
 
         public int AbsoluteY { get { return _absoluteY;}}
 
-        public int TotalLineHeight { get { return _totalHeight; } }
+        public int TotalLineHeight { get { return _totalHeight; } set { _totalHeight = value; } }
 
         public int LineHeight { get { return _lineHeight; }}
 

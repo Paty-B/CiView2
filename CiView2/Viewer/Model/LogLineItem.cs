@@ -54,21 +54,20 @@ namespace Viewer.Model
                     while (child != null)
                     {
                         child.toogleHidden();
-                        var next = child.Next;
+                        var next = child.FirstChild;
                         while (next != null)
                         {
                             next.toogleHidden();
-                            if (next.Next == null)
-                            {
-                                next = next.FirstChild;
-                            }
-                            else
+                            if (next.FirstChild == null)
                             {
                                 next = next.Next;
                             }
-                            
+                            else
+                            {
+                                next = next.FirstChild;
+                            }             
                         }
-                        child = child.FirstChild;
+                        child = child.Next;
                     }
             }
             else if (Status == Model.Status.Collapsed)
@@ -80,21 +79,20 @@ namespace Viewer.Model
                 while (child != null)
                 {
                     child.toogleHidden();
-                    var next = child.Next;
+                    var next = child.FirstChild;
                     while (next != null)
                     {
                         next.toogleHidden();
-                        if (next.Next == null)
-                        {
-                            next = next.FirstChild;
-                        }
-                        else
+                        if (next.FirstChild == null)
                         {
                             next = next.Next;
                         }
-
+                        else
+                        {
+                            next = next.FirstChild;
+                        }
                     }
-                    child = child.FirstChild;
+                    child = child.Next;
                 }
             }
             else

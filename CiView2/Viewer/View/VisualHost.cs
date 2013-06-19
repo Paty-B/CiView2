@@ -70,6 +70,9 @@ namespace Viewer.View
                                 + Environment.NewLine + "multiple lines.");
                         }
                         logger.CloseGroup("Conclusions on one line are displayed separated by dash.");
+
+                        logger.Info("T1");
+                        logger.Trace("T2");
                     }
                 }
             }
