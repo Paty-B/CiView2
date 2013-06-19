@@ -14,17 +14,25 @@ namespace Randomizer
         Random r;
         ActivityLogger _activityLogger;
         int depth;
-  
+        List<CKTrait> tags = new List<CKTrait>();
 
         static readonly double _openGroupProba = 0.3;
-        static readonly double _openGroupWithExProba = 0.2;
-        static readonly double _unfilteredProba = 0.4;
-        static readonly double _closeGroupProba = 0.1;
+        static readonly double _openGroupWithExProba = 0;
+        static readonly double _unfilteredProba = 0.5;
 
         public RandomLog()
         {
             _activityLogger = new ActivityLogger();
             depth = 0;
+            CKTrait firstTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag1");
+            CKTrait secondTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag2");
+            CKTrait thirdTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag3");
+            CKTrait fourthTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag4");
+
+            tags.Add(firstTag);
+            tags.Add(secondTag);
+            tags.Add(thirdTag);
+            tags.Add(fourthTag);
         }
 
         public ActivityLogger Logger { get { return _activityLogger; } }
@@ -36,34 +44,31 @@ namespace Randomizer
 
         private void RandomOnUnfilteredLog()
         {
-            CKTrait tag = ActivityLogger.RegisteredTags.FindOrCreate("Tag" + RandomString(3));
             LogLevel logLevel = (LogLevel)r.Next(5);
             string text = "Text" + RandomString(3);
             DateTime dateTime = DateTime.UtcNow;
           
-            _activityLogger.UnfilteredLog(tag, logLevel, text, dateTime);
+            _activityLogger.UnfilteredLog(tags[r.Next(4)], logLevel, text, dateTime);
         }
 
         private void RandomOnOpenGroup()
         {
-            CKTrait tag = ActivityLogger.RegisteredTags.FindOrCreate("GroupTag" + RandomString(3));
             LogLevel logLevel = (LogLevel)r.Next(5);
-            string text = "GroupText" + RandomString(3);
+            string text = "Group" + depth.ToString();
             DateTime dateTime = DateTime.UtcNow;
-            
-            _activityLogger.OpenGroup(tag, logLevel, null, text, dateTime);
+
+            _activityLogger.OpenGroup(tags[r.Next(4)], logLevel, null, text, dateTime);
 
         }
 
         private void RandomOnOpenGroupWithException()
         {
-            CKTrait tag = ActivityLogger.RegisteredTags.FindOrCreate("GroupTagEx" + RandomString(3));
             LogLevel logLevel = (LogLevel)r.Next(5);
-            string text = "GroupText" + RandomString(3);
+            string text = "GroupEx" + depth.ToString();
             DateTime dateTime = DateTime.UtcNow;
             Exception e = new Exception("Erreur");
-        
-            _activityLogger.OpenGroup(tag, logLevel, null, text, dateTime, e);
+
+            _activityLogger.OpenGroup(tags[r.Next(4)], logLevel, null, text, dateTime, e);
 
         }
 
@@ -98,16 +103,16 @@ namespace Randomizer
             {
                 if (depth < maxDepth)
                 {
-                    RandomOnOpenGroup();
                     depth++;
+                    RandomOnOpenGroup();                    
                 }
             }
             else if (randomNum <= _openGroupProba + _openGroupWithExProba)
             {
                 if (depth < maxDepth)
                 {
-                    RandomOnOpenGroupWithException();
                     depth++;
+                    RandomOnOpenGroupWithException();                   
                 }
             }
             else if (randomNum <= _openGroupProba + _openGroupWithExProba + _unfilteredProba)
@@ -118,8 +123,8 @@ namespace Randomizer
             {
                 if (depth > 0)
                 {
-                    RandomOnGroupClosed();
                     depth--;
+                    RandomOnGroupClosed();                   
                 }
             }
         }
