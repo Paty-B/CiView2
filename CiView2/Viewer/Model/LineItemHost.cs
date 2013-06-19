@@ -18,7 +18,7 @@ namespace Viewer.Model
         private int lineItemCount = 0;
 
         #endregion
-        
+
         public LineItemHost()
         {
             Root = new LineItemRoot(this);
@@ -28,9 +28,8 @@ namespace Viewer.Model
             //_indexILineItemByTag = new Dictionary<string, List<ILineItem>>();
             //_indexILineItemByLogLevel = new Dictionary<LogLevel, List<ILineItem>>();
 
-            EventManager.Instance.CheckBoxFilterTagClick += CheckBoxFilterTagClick;
-
             #endregion
+
         }
 
         ILineItem ILineItemHost.Root
@@ -39,17 +38,17 @@ namespace Viewer.Model
         }
 
         public event EventHandler<LineItemChangedEventArgs> ItemChanged;
-        
-        internal void OnCollapsed( ILineItem item )
+
+        internal void OnCollapsed(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Collapsed) );
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Collapsed));
         }
-        
+
         internal void OnExpended(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Expanded) );
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Expanded));
         }
 
         internal void OnItemDeleted(ILineItem item)
@@ -83,11 +82,11 @@ namespace Viewer.Model
             }
 
             #endregion
-            */
+           */
             lineItemCount--;
 
             var h = ItemChanged;
-            if (h != null) h( this, new LineItemChangedEventArgs(item,LineItemChangedStatus.Deleted) );
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Deleted));
         }
 
         internal void OnChildInserted(ILineItem inserted)
@@ -129,12 +128,15 @@ namespace Viewer.Model
             }
 
             var h = ItemChanged;
-            if (h != null) h( this, new LineItemChangedEventArgs(inserted,LineItemChangedStatus.Inserted) );
+            if (h != null) h(this, new LineItemChangedEventArgs(inserted, LineItemChangedStatus.Inserted));
         }
 
-        private void CheckBoxFilterTagClick(string uid, bool isChecked)
-        {
-            /*
+        /*private void CheckBoxFilterTagClick(string uid, bool isChecked)
+          {
+               foreach (CKTrait tag in ((LogLineItem)inserted).Tag.AtomicTraits)
+                     tag.ToString() == uid;*/
+        #region
+        /*
             List<ILineItem> items;
             if (_indexILineItemByTag.TryGetValue(uid, out items))
             {
@@ -145,6 +147,7 @@ namespace Viewer.Model
                 }
             }
              */
-        }
+        #endregion
     }
 }
+

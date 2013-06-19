@@ -18,18 +18,19 @@ namespace Viewer.View
         private VisualCollection _children;
         private int fontSize = 16;
         private Point position = new Point(0,0);
+        private ILineItemHost _host;
 
 
         public VisualHost()
         {
 
             ActivityLogger logger = new ActivityLogger();
-            ILineItemHost host = LineItem.CreateLineItemHost();
-            EnvironmentCreator ec = new EnvironmentCreator(host);
+            _host = LineItem.CreateLineItemHost();
+            EnvironmentCreator ec = new EnvironmentCreator(_host);
             
             _children = new VisualCollection(this);
             
-            host.ItemChanged += CheckEvents;
+            _host.ItemChanged += CheckEvents;
             logger.Output.RegisterClient(ec);
 
 
@@ -76,6 +77,8 @@ namespace Viewer.View
             #endregion
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
+
+            EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
 
         }
 
@@ -231,19 +234,54 @@ namespace Viewer.View
         }
 
 
-        public void UpdateFromTagFilter(CKTrait tag)
+
+
+        #region UpdateTreeWithTagFilter
+
+        public void UpdateFromTagFilter(string tag,bool isChecked)
         {
-            LogLineItem logLineItem;
-            foreach (VisualLogLineItem child in _children)
+            if (isChecked == false)
             {
-                logLineItem = (LogLineItem)child.Model;
-                if (logLineItem.Tag == tag)
-                {
-                    logLineItem.Parent.InsertChild(new FilteredLineItem());
-                }
+                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+                UpdateFromTagFilter(FirstChild, tag);
             }
         }
 
+        private void UpdateFromTagFilter(LogLineItem FirstChild, string tag)
+        {
+           
+            
+            if (FirstChild != null)
+            {
+               HaveFindTagUnchecked( FirstChild,tag);
+            }
+            
+            LogLineItem next=(LogLineItem)FirstChild.Next;
+            while( next != null )
+            {
+                HaveFindTagUnchecked( next,tag);
+                if(next.FirstChild!=null)
+                {
+                    UpdateFromTagFilter(FirstChild,tag);
+                }
+                next=(LogLineItem)next.Next;
+            }
+            
+        }
+        private bool HaveFindTagUnchecked(LogLineItem LogLineItem, string tag)
+        {
+               foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
+                {
+                    if (trait.ToString() == tag)
+                    {
+                        LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                        return true;
+                    }
+                }
+                return false;
+        }
+
+        #endregion
 
 
 
