@@ -58,7 +58,15 @@ namespace Viewer.Model
                         while (next != null)
                         {
                             next.toogleHidden();
-                            next = next.Next;
+                            if (next.Next == null)
+                            {
+                                next = next.FirstChild;
+                            }
+                            else
+                            {
+                                next = next.Next;
+                            }
+                            
                         }
                         child = child.FirstChild;
                     }
@@ -67,6 +75,27 @@ namespace Viewer.Model
             {
                 Status = Model.Status.Expanded;
                 Host.OnExpended(this);
+
+                var child = FirstChild;
+                while (child != null)
+                {
+                    child.toogleHidden();
+                    var next = child.Next;
+                    while (next != null)
+                    {
+                        next.toogleHidden();
+                        if (next.Next == null)
+                        {
+                            next = next.FirstChild;
+                        }
+                        else
+                        {
+                            next = next.Next;
+                        }
+
+                    }
+                    child = child.FirstChild;
+                }
             }
             else
             {
