@@ -32,19 +32,21 @@ namespace Viewer
             _listBoxOfCheckBoxCounter.Add("Warn").Text = "Warning";
             _listBoxOfCheckBoxCounter.Add("Error");
             _listBoxOfCheckBoxCounter.Add("Fatal");
-            _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+          //  _listBoxOfCheckBoxCounter.CheckBoxClick += CKTraitChecked;
+            _listBoxOfCheckBoxCounter.CheckBoxClick += EventManager.Instance.OnCheckBoxFilterLogLevelClick;
 
             EventManager.Instance.InsertChild += InsertChild;
             EventManager.Instance.RemoveChild += RemoveChild;
        }
 
-        private void CKTraitChecked(string uid, bool isChecked)
+        /*private void CKTraitChecked(string uid, bool isChecked)
         {
             /*
             MessageBox.Show("CheckBox is " + (isChecked ? "checked " : "unchecked ") + uid
                     , "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            //*/
-        }
+            //
+        }*/
+    
 
         private void InsertChild(ILineItem itemImpl, LogLineItem item)
         {

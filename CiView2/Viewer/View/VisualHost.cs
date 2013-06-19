@@ -79,6 +79,7 @@ namespace Viewer.View
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
             EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
+            EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
         }
 
@@ -283,8 +284,58 @@ namespace Viewer.View
 
         #endregion
 
+        #region UpdateTreeWithLogLevelFilter
+
+        public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
+        {
+            
+                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+                UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
+
+        }
+
+        private void UpdateFromLogLevelFilterWhitoutRoot(LogLineItem FirstChild, string loglevel,bool isChecked)
+        {
 
 
+            if (FirstChild != null)
+            {
+                HaveFindLogLevelUnchecked(FirstChild, loglevel,isChecked);
+            }
+
+            LogLineItem next = (LogLineItem)FirstChild.Next;
+            while (next != null)
+            {
+                HaveFindLogLevelUnchecked(next, loglevel,isChecked);
+                if (next.FirstChild != null)
+                {
+                    UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
+                }
+                next = (LogLineItem)next.Next;
+            }
+
+        }
+        private bool HaveFindLogLevelUnchecked(LogLineItem LogLineItem, string loglevel,bool isChecked)
+        {
+            if (LogLineItem.LogLevel.ToString() == loglevel)
+            {
+                if (isChecked)
+                {
+                    LogLineItem.Status = Status.Expanded;
+                }
+                else
+                {
+                    LogLineItem.Status = Status.Collapsed;
+                }
+                return true;
+            }
+            else { return false; }
+        }
+
+
+        #endregion
+        
+        
         public void GoToLineItem(ILineItem lineItem)
         {
             position.X = lineItem.Depth;
