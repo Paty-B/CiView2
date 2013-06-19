@@ -48,5 +48,13 @@ namespace Viewer
             if (CheckBoxFilterTagClick != null)
                 CheckBoxFilterTagClick(uid, isChecked);
         }
+
+        public delegate void EventCheckBoxFilterLogLevelClick(string uid, bool isChecked);
+        public event EventCheckBoxFilterLogLevelClick CheckBoxFilterLogLevelClick;
+        public void OnCheckBoxFilterLogLevelClick(string uid, bool isChecked)
+        {
+            if (CheckBoxFilterLogLevelClick != null)
+                CheckBoxFilterLogLevelClick(uid, isChecked);
+        }
     }
 }

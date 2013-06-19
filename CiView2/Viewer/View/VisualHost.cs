@@ -82,6 +82,7 @@ namespace Viewer.View
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
 
             EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
+            EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
         }
 
@@ -271,41 +272,57 @@ namespace Viewer.View
 
         public void UpdateFromTagFilter(string tag,bool isChecked)
         {
-            if (isChecked == false)
-            {
+            
                 LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-                UpdateFromTagFilter(FirstChild, tag);
-            }
+                UpdateFromTagFilterWhitoutRoot(FirstChild, tag,isChecked);
+           
         }
 
-        private void UpdateFromTagFilter(LogLineItem FirstChild, string tag)
+        private void UpdateFromTagFilterWhitoutRoot(LogLineItem FirstChild, string tag,bool isChecked)
         {
            
             
             if (FirstChild != null)
             {
-               HaveFindTagUnchecked( FirstChild,tag);
+               HaveFindTag( FirstChild,tag,isChecked);
             }
             
             LogLineItem next=(LogLineItem)FirstChild.Next;
             while( next != null )
             {
-                HaveFindTagUnchecked( next,tag);
+                HaveFindTag( next,tag,isChecked);
                 if(next.FirstChild!=null)
                 {
-                    UpdateFromTagFilter(FirstChild,tag);
+                    UpdateFromTagFilterWhitoutRoot(FirstChild, tag, isChecked);
                 }
                 next=(LogLineItem)next.Next;
             }
             
         }
-        private bool HaveFindTagUnchecked(LogLineItem LogLineItem, string tag)
+        private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
         {
+
                foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
                 {
                     if (trait.ToString() == tag)
                     {
-                        LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                        if (isChecked)
+                        {
+                            LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                        }
+                        else
+                        {
+                            ILineItemParentImpl parent=LogLineItem.Parent;
+                            ILineItem next=parent.FirstChild;
+                            while(next!=null)
+                            {
+                                if (next.GetType() == typeof(FilteredLineItem))
+                                {
+                                     parent.RemoveChild(next);            
+                                }
+                            }
+                           
+                        }
                         return true;
                     }
                 }
@@ -314,8 +331,57 @@ namespace Viewer.View
 
         #endregion
 
+        #region UpdateTreeWithLogLevelFilter
+
+        public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
+        {
+            
+                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+                UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
+
+        }
+
+        private void UpdateFromLogLevelFilterWhitoutRoot(LogLineItem FirstChild, string loglevel,bool isChecked)
+        {
+
+            if (FirstChild != null)
+            {
+                HaveFindLogLevel(FirstChild, loglevel,isChecked);
+            }
+
+            LogLineItem next = (LogLineItem)FirstChild.Next;
+            while (next != null)
+            {
+                HaveFindLogLevel(next, loglevel,isChecked);
+                if (next.FirstChild != null)
+                {
+                    UpdateFromLogLevelFilterWhitoutRoot(FirstChild, loglevel,isChecked);
+                }
+                next = (LogLineItem)next.Next;
+            }
+
+        }
+        private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel,bool isChecked)
+        {
+            if (LogLineItem.LogLevel.ToString() == loglevel)
+            {
+                if (isChecked)
+                {
+                    LogLineItem.Status = Status.Expanded;
+                }
+                else
+                {
+                    LogLineItem.Status = Status.Collapsed;
+                }
+                return true;
+            }
+            else { return false; }
+        }
 
 
+        #endregion
+        
+        
         public void GoToLineItem(ILineItem lineItem)
         {
             position.X = lineItem.Depth;
