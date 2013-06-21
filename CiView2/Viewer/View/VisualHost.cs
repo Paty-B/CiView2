@@ -20,6 +20,8 @@ namespace Viewer.View
         private ILineItemHost _host;
         private EnvironmentCreator ec;
 
+        private int _maxPrintableLog = 35;
+
 
         public VisualHost()
         {
@@ -95,7 +97,7 @@ namespace Viewer.View
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
             //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
-
+            this.MouseWheel += new MouseWheelEventHandler(Visual_Move);
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
@@ -142,9 +144,9 @@ namespace Viewer.View
                         _children.Insert(index, vl);
                     }   
                     break;
-                case LineItemChangedStatus.Inserted:
-                    vl = e.LineItem.CreateVisualLine();
-                    _children.Add(vl);                    
+                case LineItemChangedStatus.Inserted:          
+                        vl = e.LineItem.CreateVisualLine();
+                        _children.Add(vl);
                     break;
                 case LineItemChangedStatus.Update:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
@@ -339,5 +341,21 @@ namespace Viewer.View
             logger.Output.UnregisterClient(ec);
             logger.Output.RegisterClient(ec);
         }
+
+        private void Visual_Move(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                foreach(VisualLineItem vl in _children)
+                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y+10);
+                
+            }
+            if (e.Delta > 0)
+            {            
+                foreach (VisualLineItem vl in _children)
+                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+            }
+        }
+        
     }
 }
