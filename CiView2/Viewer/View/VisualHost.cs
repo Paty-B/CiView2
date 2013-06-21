@@ -96,7 +96,6 @@ namespace Viewer.View
             EventManager.Instance.RegisterClient += RegisterClient;
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
-            //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
             this.MouseWheel += new MouseWheelEventHandler(Visual_Move);
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
@@ -168,14 +167,6 @@ namespace Viewer.View
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
         }
 
-        /*private void VisualHost_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            int move = e.Delta;
-            foreach (VisualLineItem vl in _children)
-            {
-                vl.Offset = new Vector(0, move);
-            }
-        }*/
 
         public HitTestResultBehavior myCallback(HitTestResult result)
         {
@@ -346,14 +337,18 @@ namespace Viewer.View
         {
             if (e.Delta < 0)
             {
-                foreach(VisualLineItem vl in _children)
-                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y+10);
+                VisualLineItem firstTest = (VisualLineItem)_children[_children.Count - 1];
+                if(firstTest.Offset.Y < this.ActualHeight)
+                    foreach(VisualLineItem vl in _children)
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y+10);
                 
             }
             if (e.Delta > 0)
-            {            
-                foreach (VisualLineItem vl in _children)
-                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+            {
+                VisualLineItem firstTest = (VisualLineItem)_children[0];
+                if(firstTest.Offset.Y > 0)
+                    foreach (VisualLineItem vl in _children)
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
             }
         }
         
