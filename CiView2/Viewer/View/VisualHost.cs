@@ -150,7 +150,8 @@ namespace Viewer.View
                         _children.Add(vl);
                         break;
                     }
-                    if (_host.Root.TotalLineHeight < _maxPrintableLog)
+                    if (_host.Root.TotalLineHeight < _maxPrintableLog 
+                        || IsOnScreen((VisualLineItem)_children[_children.Count -1]))
                     {
                         VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
                         vl = e.LineItem.CreateVisualLine();
@@ -345,6 +346,8 @@ namespace Viewer.View
             logger.Output.RegisterClient(ec);
         }
 
+        #region scrolling function
+
         private void Visual_Move(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta < 0)
@@ -354,10 +357,13 @@ namespace Viewer.View
                 
                 if (newLine != null)
                 {
-                    if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
-                        _children.RemoveAt(0);
-                    newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
-                    _children.Add(newLine);
+                    if (!IsOnScreen((VisualLineItem)_children[0]))
+                    {
+                        if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
+                            _children.RemoveAt(0);
+                        newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
+                        _children.Add(newLine);
+                    }
                 }
                 if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
                     foreach (VisualLineItem vl in _children)
@@ -370,15 +376,25 @@ namespace Viewer.View
                 
                 if (newLine != null)
                 {
-                    if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
-                        _children.RemoveAt(_children.Count - 1);
-                    newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
-                    _children.Insert(0, newLine);
+                    if(!IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
+                    {
+                        if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
+                            _children.RemoveAt(_children.Count - 1);
+                        newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
+                        _children.Insert(0, newLine);
+                    }
                 }
                 if (((VisualLineItem)_children[0]).Offset.Y <= 0)
                 foreach (VisualLineItem vl in _children)
                     vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
             }
+        }
+
+        private bool IsOnScreen(VisualLineItem visualLine)
+        {
+            if (visualLine.Offset.Y >= 0 && visualLine.Offset.Y <= this.ActualHeight)
+                return true;
+            return false;
         }
 
         private VisualLineItem SelectNextVisualLine(VisualLineItem visualLine , bool downward)
@@ -397,11 +413,10 @@ namespace Viewer.View
                     {
                         if (lineItem.Parent.Next != null)
                             return lineItem.Parent.Next.CreateVisualLine();
-                        lineItem = lineItem.Parent;
-                        
-                    }
-                   
+                        lineItem = lineItem.Parent;                      
+                    }                   
             }
+
             if (downward == false)
             {
                 if (lineItem.Prev != null)
@@ -410,7 +425,8 @@ namespace Viewer.View
                     return lineItem.Parent.CreateVisualLine();
             }
             return null;
+        }
 
-        }     
+        #endregion
     }
 }
