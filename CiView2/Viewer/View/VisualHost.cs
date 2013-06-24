@@ -20,7 +20,7 @@ namespace Viewer.View
         private ILineItemHost _host;
         private EnvironmentCreator ec;
 
-        private int _maxPrintableLog = 35;
+        private int _maxPrintableLog = 60;
 
 
         public VisualHost()
@@ -143,9 +143,20 @@ namespace Viewer.View
                         _children.Insert(index, vl);
                     }   
                     break;
-                case LineItemChangedStatus.Inserted:          
+                case LineItemChangedStatus.Inserted:
+                    if (_children.Count == 0)
+                    {
                         vl = e.LineItem.CreateVisualLine();
                         _children.Add(vl);
+                        break;
+                    }
+                    if (_host.Root.TotalLineHeight < _maxPrintableLog)
+                    {
+                        VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                        vl = e.LineItem.CreateVisualLine();
+                        vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        _children.Add(vl);
+                    }
                     break;
                 case LineItemChangedStatus.Update:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
@@ -159,6 +170,7 @@ namespace Viewer.View
                     break;
             }
         }
+
 
         private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -337,20 +349,68 @@ namespace Viewer.View
         {
             if (e.Delta < 0)
             {
-                VisualLineItem firstTest = (VisualLineItem)_children[_children.Count - 1];
-                if(firstTest.Offset.Y < this.ActualHeight)
-                    foreach(VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y+10);
+                VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                VisualLineItem newLine = SelectNextVisualLine(lastLine, true);
                 
-            }
-            if (e.Delta > 0)
-            {
-                VisualLineItem firstTest = (VisualLineItem)_children[0];
-                if(firstTest.Offset.Y > 0)
+                if (newLine != null)
+                {
+                    if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
+                        _children.RemoveAt(0);
+                    newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
+                    _children.Add(newLine);
+                }
+                if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
                     foreach (VisualLineItem vl in _children)
                         vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
             }
+            if (e.Delta > 0)
+            {
+                VisualLineItem firstLine = (VisualLineItem)_children[0];
+                VisualLineItem newLine = SelectNextVisualLine(firstLine, false);
+                
+                if (newLine != null)
+                {
+                    if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
+                        _children.RemoveAt(_children.Count - 1);
+                    newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
+                    _children.Insert(0, newLine);
+                }
+                if (((VisualLineItem)_children[0]).Offset.Y <= 0)
+                foreach (VisualLineItem vl in _children)
+                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
+            }
         }
-        
+
+        private VisualLineItem SelectNextVisualLine(VisualLineItem visualLine , bool downward)
+        {
+            if (visualLine.Model.Host.Root == visualLine.Model)
+                return null;
+            ILineItem lineItem = visualLine.Model;
+            if (downward == true)
+            {
+                if (lineItem.FirstChild != null)
+                    return lineItem.FirstChild.CreateVisualLine();
+                if (lineItem.Next != null)
+                    return lineItem.Next.CreateVisualLine();
+                if (lineItem == lineItem.Parent.LastChild)
+                    while (lineItem.Parent != null)
+                    {
+                        if (lineItem.Parent.Next != null)
+                            return lineItem.Parent.Next.CreateVisualLine();
+                        lineItem = lineItem.Parent;
+                        
+                    }
+                   
+            }
+            if (downward == false)
+            {
+                if (lineItem.Prev != null)
+                    return lineItem.Prev.CreateVisualLine();
+                if (lineItem.Parent != null && lineItem.Parent != lineItem.Host.Root)
+                    return lineItem.Parent.CreateVisualLine();
+            }
+            return null;
+
+        }     
     }
 }
