@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CiView.Recorder
 {
-    public class LEOpenGroup : ILogEntry
+    class LEOpenGroup : ILogEntry
     {
         readonly DateTime _time;
         readonly string _text;
