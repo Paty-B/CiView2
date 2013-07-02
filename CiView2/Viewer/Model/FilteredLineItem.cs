@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Viewer.View;
 
 namespace Viewer.Model
@@ -20,6 +21,7 @@ namespace Viewer.Model
 
         public override void Hidden()
         {
+            
             throw new NotImplementedException();
         }
 

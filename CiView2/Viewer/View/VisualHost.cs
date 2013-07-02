@@ -118,10 +118,17 @@ namespace Viewer.View
                         index = _children.IndexOf(logLineItem.vl);
                         _children.RemoveAt(index);
                         vl = e.LineItem.CreateVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
                         _children.Insert(index, vl);
+
+                        
                     }     
                     break;
-                case LineItemChangedStatus.Deleted :
+                case LineItemChangedStatus.Deleted:
                     break;
                 case LineItemChangedStatus.Expanded:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
@@ -130,6 +137,11 @@ namespace Viewer.View
                         index = _children.IndexOf(logLineItem.vl);
                         _children.RemoveAt(index);
                         vl = e.LineItem.CreateVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
                         _children.Insert(index, vl);
                     }   
                     break;
@@ -140,6 +152,12 @@ namespace Viewer.View
                         index = _children.IndexOf(logLineItem.vl);
                         _children.RemoveAt(index);
                         vl = e.LineItem.CreateVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
+
                         _children.Insert(index, vl);
                     }   
                     break;
@@ -168,6 +186,37 @@ namespace Viewer.View
                         vl = e.LineItem.CreateVisualLine();
                         _children.Insert(index, vl);
                     }  
+                    break;
+                case LineItemChangedStatus.Filtered:
+                    if (e.LineItem.GetType() == typeof(LogLineItem))
+                    {
+                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        index = _children.IndexOf(logLineItem.vl);
+                        _children.RemoveAt(index);
+                        vl = logLineItem.CreateFilteredVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
+                        _children.Insert(index, vl);
+                    }   
+                    break;
+                case LineItemChangedStatus.Unfiltered:
+                   if (e.LineItem.GetType() == typeof(LogLineItem))
+                    {
+                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        index = _children.IndexOf(logLineItem.vl);
+                        _children.RemoveAt(index);
+                        vl = e.LineItem.CreateVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
+
+                        _children.Insert(index, vl);
+                    }   
                     break;
             }
         }
@@ -214,6 +263,7 @@ namespace Viewer.View
         {
             
                 LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+
                 var child = FirstChild;
                 while (child != null)
                 {
@@ -273,7 +323,7 @@ namespace Viewer.View
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
-
+      
             LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
             var child = FirstChild;
             while (child != null)
@@ -285,7 +335,10 @@ namespace Viewer.View
                     HaveFindLogLevel((LogLineItem)next, loglevel, isChecked);
                     if (next.FirstChild == null)
                     {
-                        next = next.Next;
+                        if (next.Next == null)                        
+                            next = (LogLineItem)next.Parent.Parent.Next;
+                        else
+                            next = next.Next;           
                     }
                     else
                     {
@@ -294,6 +347,7 @@ namespace Viewer.View
                 }
                 child = (LogLineItem)child.Next;
             }
+          
         }
 
      
@@ -303,13 +357,12 @@ namespace Viewer.View
             {
                 if (isChecked)
                 {
-                    LogLineItem.Status = Status.Expanded;
-                    LogLineItem.UnCollapse();
+                    ((LineItemHost)_host).OnUnfiltered(LogLineItem);
+                   
                 }
-                else
+                else  
                 {
-                    LogLineItem.Status = Status.Collapsed;
-                    LogLineItem.Collapse();
+                    ((LineItemHost)_host).OnFiltered(LogLineItem);
                 }
                 return true;
             }

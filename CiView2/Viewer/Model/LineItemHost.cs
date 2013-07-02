@@ -145,6 +145,18 @@ namespace Viewer.Model
             if (h != null) h(this, new LineItemChangedEventArgs(inserted, LineItemChangedStatus.Inserted));
         }
 
+        internal void OnFiltered(ILineItem item)
+        {
+            var h = ItemChanged;
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Filtered));
+        }
+
+        internal void OnUnfiltered(ILineItem item)
+        {
+            var h = ItemChanged;
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Unfiltered));
+        }
+
         private void CheckBoxFilterTagClick(string uid, bool isChecked)
         {
             #region
