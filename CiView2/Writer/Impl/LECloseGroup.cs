@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CiView.Recorder
 {
-    public class LECloseGroup: ILogEntry
+    class LECloseGroup: ILogEntry
     {
         readonly DateTime _time;
         readonly IReadOnlyList<ActivityLogGroupConclusion> _conclusions;

@@ -20,6 +20,8 @@ namespace Viewer.View
         private ILineItemHost _host;
         private EnvironmentCreator ec;
 
+        private int _maxPrintableLog = 60;
+
 
         public VisualHost()
         {
@@ -94,8 +96,7 @@ namespace Viewer.View
             EventManager.Instance.RegisterClient += RegisterClient;
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
-            //this.MouseWheel += new MouseWheelEventHandler(VisualHost_MouseWheel);
-
+            this.MouseWheel += new MouseWheelEventHandler(Visual_Move);
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
 
@@ -143,8 +144,20 @@ namespace Viewer.View
                     }   
                     break;
                 case LineItemChangedStatus.Inserted:
-                    vl = e.LineItem.CreateVisualLine();
-                    _children.Add(vl);                    
+                    if (_children.Count == 0)
+                    {
+                        vl = e.LineItem.CreateVisualLine();
+                        _children.Add(vl);
+                        break;
+                    }
+                    if (_host.Root.TotalLineHeight < _maxPrintableLog 
+                        || IsOnScreen((VisualLineItem)_children[_children.Count -1]))
+                    {
+                        VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                        vl = e.LineItem.CreateVisualLine();
+                        vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        _children.Add(vl);
+                    }
                     break;
                 case LineItemChangedStatus.Update:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
@@ -159,6 +172,7 @@ namespace Viewer.View
             }
         }
 
+
         private void VisualHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //capture la position de la sourie dans mon framwork element
@@ -166,14 +180,6 @@ namespace Viewer.View
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
         }
 
-        /*private void VisualHost_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            int move = e.Delta;
-            foreach (VisualLineItem vl in _children)
-            {
-                vl.Offset = new Vector(0, move);
-            }
-        }*/
 
         public HitTestResultBehavior myCallback(HitTestResult result)
         {
@@ -339,5 +345,88 @@ namespace Viewer.View
             logger.Output.UnregisterClient(ec);
             logger.Output.RegisterClient(ec);
         }
+
+        #region scrolling function
+
+        private void Visual_Move(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                VisualLineItem newLine = SelectNextVisualLine(lastLine, true);
+                
+                if (newLine != null)
+                {
+                    if (!IsOnScreen((VisualLineItem)_children[0]))
+                    {
+                        if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
+                            _children.RemoveAt(0);
+                        newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
+                        _children.Add(newLine);
+                    }
+                }
+                if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
+                    foreach (VisualLineItem vl in _children)
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+            }
+            if (e.Delta > 0)
+            {
+                VisualLineItem firstLine = (VisualLineItem)_children[0];
+                VisualLineItem newLine = SelectNextVisualLine(firstLine, false);
+                
+                if (newLine != null)
+                {
+                    if(!IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
+                    {
+                        if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
+                            _children.RemoveAt(_children.Count - 1);
+                        newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
+                        _children.Insert(0, newLine);
+                    }
+                }
+                if (((VisualLineItem)_children[0]).Offset.Y <= 0)
+                foreach (VisualLineItem vl in _children)
+                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
+            }
+        }
+
+        private bool IsOnScreen(VisualLineItem visualLine)
+        {
+            if (visualLine.Offset.Y >= 0 && visualLine.Offset.Y <= this.ActualHeight)
+                return true;
+            return false;
+        }
+
+        private VisualLineItem SelectNextVisualLine(VisualLineItem visualLine , bool downward)
+        {
+            if (visualLine.Model.Host.Root == visualLine.Model)
+                return null;
+            ILineItem lineItem = visualLine.Model;
+            if (downward == true)
+            {
+                if (lineItem.FirstChild != null)
+                    return lineItem.FirstChild.CreateVisualLine();
+                if (lineItem.Next != null)
+                    return lineItem.Next.CreateVisualLine();
+                if (lineItem == lineItem.Parent.LastChild)
+                    while (lineItem.Parent != null)
+                    {
+                        if (lineItem.Parent.Next != null)
+                            return lineItem.Parent.Next.CreateVisualLine();
+                        lineItem = lineItem.Parent;                      
+                    }                   
+            }
+
+            if (downward == false)
+            {
+                if (lineItem.Prev != null)
+                    return lineItem.Prev.CreateVisualLine();
+                if (lineItem.Parent != null && lineItem.Parent != lineItem.Host.Root)
+                    return lineItem.Parent.CreateVisualLine();
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
