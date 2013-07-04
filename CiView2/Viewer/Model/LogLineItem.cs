@@ -51,57 +51,57 @@ namespace Viewer.Model
 
         internal void Collapse()
         {
-                Status = Model.Status.Collapsed;
-                Grow(-(TotalLineHeight - LineHeight));
-                Host.OnCollapsed(this);
+            Status = Model.Status.Collapsed;
+            Grow(-(TotalLineHeight - LineHeight));
+            Host.OnCollapsed(this);
 
-                var child = FirstChild;
-                while (child != null)
+            var child = FirstChild;
+            while (child != null)
+            {
+                child.Hidden();
+                var next = child.FirstChild;
+                while (next != null)
                 {
-                    child.Hidden();
-                    var next = child.FirstChild;
-                    while (next != null)
+                    next.Hidden();
+                    if (next.FirstChild == null)
                     {
-                        next.Hidden();
-                        if (next.FirstChild == null)
-                        {
-                            next = next.Next;
-                        }
-                        else
-                        {
-                            next = next.FirstChild;
-                        }
+                        next = next.Next;
                     }
-                    child = child.Next;
+                    else
+                    {
+                        next = next.FirstChild;
+                    }
                 }
+                child = child.Next;
+            }
         }
 
         internal void UnCollapse()
         {
-                Status = Model.Status.Expanded;
-                Grow(restoreTotalLineHeight()-LineHeight);
-                Host.OnExpended(this);
+            Status = Model.Status.Expanded;
+            Grow(restoreTotalLineHeight()-LineHeight);
+            Host.OnExpended(this);
 
-                var child = FirstChild;
-                while (child != null)
+            var child = FirstChild;
+            while (child != null)
+            {
+                child.unHidden();
+                var next = child.FirstChild;
+                while (next != null)
                 {
-                    child.unHidden();
-                    var next = child.FirstChild;
-                    while (next != null)
+                    next.unHidden();
+                    if (next.FirstChild == null)
                     {
-                        next.unHidden();
-                        if (next.FirstChild == null)
-                        {
-                            next = next.Next;
-                        }
-                        else
-                        {
-                            next = next.FirstChild;
-                        }
+                        next = next.Next;
                     }
-                    child = child.Next;
+                    else
+                    {
+                        next = next.FirstChild;
+                    }
                 }
+                child = child.Next;
             }
+        }
 
         private int restoreTotalLineHeight()
         {
@@ -117,14 +117,27 @@ namespace Viewer.Model
 
         public override void Hidden()
         {
-                Status = Model.Status.Hidden;
-                Host.OnHiddened(this);
+            Status = Model.Status.Hidden;
+            Host.OnHiddened(this);
         }
 
         public override void unHidden()
         {
-                Status = Model.Status.Expanded;
-                Host.OnExpended(this);
+            Status = Model.Status.Expanded;
+            Host.OnExpended(this);
+        }
+
+        public void Filtered()
+        {
+            Status = Model.Status.Filtered;
+            Host.OnFiltered(this);
+
+        }
+
+        public void UnFiltered()
+        {
+            Status = Model.Status.Expanded;
+            Host.OnUnfiltered(this);
         }
     }
 }

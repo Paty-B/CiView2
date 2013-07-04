@@ -44,8 +44,8 @@ namespace Randomizer
 
         private void RandomOnUnfilteredLog()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
-            string text = "Text" + RandomString(3);
+            LogLevel logLevel = (LogLevel)r.Next(6);
+            string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
           
             _activityLogger.UnfilteredLog(tags[r.Next(4)], logLevel, text, dateTime);
@@ -53,8 +53,8 @@ namespace Randomizer
 
         private void RandomOnOpenGroup()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
-            string text = "Group" + depth.ToString();
+            LogLevel logLevel = (LogLevel)r.Next(6);
+            string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
 
             _activityLogger.OpenGroup(tags[r.Next(4)], logLevel, null, text, dateTime);
@@ -63,8 +63,8 @@ namespace Randomizer
 
         private void RandomOnOpenGroupWithException()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
-            string text = "GroupEx" + depth.ToString();
+            LogLevel logLevel = (LogLevel)r.Next(6);
+            string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
             Exception e = new Exception("Erreur");
 
@@ -137,6 +137,23 @@ namespace Randomizer
                 RandomOnGroupClosed();
             }
             depth -= nbOpenGroup;
+        }
+
+        private string ChooseRealLog(int r)
+        {
+            if (r == 0)
+                return "Registering assembly";
+            if(r == 1)
+                return "Creating Structure Objects";
+            if (r == 2)
+                return "Handling dependencies";
+            if (r == 3)
+                return "Preparing";
+            if (r == 4)
+                return "First setup";
+            if (r == 5)
+                return "Collecting Ambient Contracts";
+            return "Preparing";
         }
     }
 }

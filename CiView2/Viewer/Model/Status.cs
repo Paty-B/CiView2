@@ -11,5 +11,6 @@ namespace Viewer.Model
         Collapsed, // replier
         Expanded, // déplier
         Hidden, // invisible
+        Filtered
     }
 }
