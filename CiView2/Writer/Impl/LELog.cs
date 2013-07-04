@@ -4,7 +4,7 @@ using CK.Core;
 
 namespace CiView.Recorder
 {
-    public class LELog : ILogEntry
+    class LELog : ILogEntry
     {
         readonly DateTime _time;
         readonly string _text;

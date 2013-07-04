@@ -14,7 +14,9 @@ namespace Viewer.Model
         Collapsed,
         Deleted,
         Inserted,
-        Update
+        Update,
+        Filtered,
+        Unfiltered
     }
 
     public class LineItemChangedEventArgs : EventArgs
@@ -23,7 +25,7 @@ namespace Viewer.Model
         public readonly LineItemChangedStatus Status;
 
         public LineItemChangedEventArgs(ILineItem line, LineItemChangedStatus status)
-        {
+        {       
             LineItem = line;
             Status = status;
         }

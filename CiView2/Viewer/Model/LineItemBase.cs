@@ -192,9 +192,13 @@ namespace Viewer.Model
             var next = _nextSibling;
             while( next != null )
             {
+                
                 next.AdjustAbsoluteY( delta );
                 Host.OnPositionChange(next);
-                next = next.Next;
+                if (next.FirstChild != null)
+                    next = next.FirstChild;
+                else
+                    next = next.Next;
             }
             if( _parent != null ) _parent.Grow( delta );
         }

@@ -19,6 +19,7 @@ namespace Viewer.View
             dc.Close();
             this.Offset = new Vector(0, model.AbsoluteY*25);
         }
+        
 
         internal override void OnClick(Visual target, Point inTarget)
         {

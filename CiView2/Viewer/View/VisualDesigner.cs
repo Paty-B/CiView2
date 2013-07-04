@@ -124,9 +124,9 @@ namespace Viewer.View
         }
         public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
-            Point pt = new Point(0,0);
-            Point pt2 = new Point(200,0);
-            dc.DrawLine(new Pen(), pt, pt2);
+            Point pt = new Point(0, 0);
+            Point pt2 = new Point(500, 0);
+            dc.DrawLine(new Pen(new SolidColorBrush(), 10), pt, pt2);
            
             FormattedText ft = new FormattedText(model.TotalLineHeight.ToString(),
                                 CultureInfo.GetCultureInfo("en-us"),
@@ -137,12 +137,11 @@ namespace Viewer.View
                                 FontStretches.Normal),
                                 frontSize,
                                 Brushes.Black);
-            pt.Y += frontSize;
+
             dc.DrawText(ft, pt);
-            pt.Y += frontSize;
-            pt2.Y += frontSize*2;
-            dc.DrawLine(new Pen(), pt, pt2);
+            dc.DrawLine(new Pen(new SolidColorBrush(Color.FromRgb(0,0,0)), 2), pt, pt2);
         }
+
         internal static void CreateSimpleLine(DrawingContext dc, Status status, LogLevel logLevel, String text,int lineHeight, CKTrait tag)
         {
             Point pt = new Point(0, 0);

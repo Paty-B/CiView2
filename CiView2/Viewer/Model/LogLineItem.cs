@@ -43,6 +43,12 @@ namespace Viewer.Model
             return vl;
         }
 
+        public VisualLineItem CreateFilteredVisualLine()
+        {
+            vl = new VisualFilteredLineItem(this);
+            return vl;
+        }
+
         internal void Collapse()
         {
                 Status = Model.Status.Collapsed;
