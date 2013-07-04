@@ -9,11 +9,9 @@ namespace CiView.Recorder
 
         TypeMask                    = 3,
 
-        TypeLog                     = 0,
-        TypeOpenGroup               = 1,
-        TypeOpenGroupWithException  = 2,
-        TypeGroupClosed             = 3,
-
-
+        TypeLog                     = 1,
+        TypeOpenGroup               = 2,
+        TypeOpenGroupWithException  = 3,
+        TypeGroupClosed             = 4
     }
 }
