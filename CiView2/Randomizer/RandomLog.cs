@@ -44,7 +44,7 @@ namespace Randomizer
 
         private void RandomOnUnfilteredLog()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
+            LogLevel logLevel = (LogLevel)r.Next(6);
             string text = "Text" + RandomString(3);
             DateTime dateTime = DateTime.UtcNow;
           
@@ -53,7 +53,7 @@ namespace Randomizer
 
         private void RandomOnOpenGroup()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
+            LogLevel logLevel = (LogLevel)r.Next(6);
             string text = "Group" + depth.ToString();
             DateTime dateTime = DateTime.UtcNow;
 
@@ -63,7 +63,7 @@ namespace Randomizer
 
         private void RandomOnOpenGroupWithException()
         {
-            LogLevel logLevel = (LogLevel)r.Next(5);
+            LogLevel logLevel = (LogLevel)r.Next(6);
             string text = "GroupEx" + depth.ToString();
             DateTime dateTime = DateTime.UtcNow;
             Exception e = new Exception("Erreur");

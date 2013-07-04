@@ -324,9 +324,10 @@ namespace Viewer.View
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
-      
+      /*
             LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
             var child = FirstChild;
+   
             while (child != null)
             {
                 HaveFindLogLevel(child, loglevel, isChecked);
@@ -347,8 +348,37 @@ namespace Viewer.View
                     }
                 }
                 child = (LogLineItem)child.Next;
+            }*/
+            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+            var child = FirstChild;
+            var parent = child;
+            while (child != null)
+            {
+                HaveFindLogLevel(child, loglevel, isChecked);
+                if (child.FirstChild != null)
+                {
+                    parent = child;
+                    child = (LogLineItem)parent.FirstChild;
+                    continue;
+                }
+                if (child == parent.LastChild)
+                {
+                    while (parent.Next == null)
+                    {
+                        if (parent == _host.Root.LastChild)
+                            break;
+                        child = parent;
+                        parent = (LogLineItem)child.Parent;
+                    }
+                    child = (LogLineItem)parent.Next;
+                    if(child != null && child.Parent!=_host.Root)
+                        parent = (LogLineItem)child.Parent;
+                    continue;
+                    
+                }
+                child = (LogLineItem)child.Next;
+
             }
-          
         }
 
      
@@ -359,11 +389,11 @@ namespace Viewer.View
                 if (isChecked)
                 {
 
-                    LogLineItem.UnFiltered();           
+                    LogLineItem.unHidden();           
                 }
                 else  
                 {
-                    LogLineItem.Filtered();
+                    LogLineItem.Hidden();
                 }
                 return true;
             }
