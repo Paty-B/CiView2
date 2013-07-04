@@ -180,6 +180,7 @@ namespace Viewer.View
                 case LineItemChangedStatus.Update:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
                     {
+                        
                         LogLineItem logLineItem = (LogLineItem)e.LineItem;
                         index = _children.IndexOf(logLineItem.vl);
                         _children.RemoveAt(index);
@@ -357,12 +358,12 @@ namespace Viewer.View
             {
                 if (isChecked)
                 {
-                    ((LineItemHost)_host).OnUnfiltered(LogLineItem);
-                   
+
+                    LogLineItem.UnFiltered();           
                 }
                 else  
                 {
-                    ((LineItemHost)_host).OnFiltered(LogLineItem);
+                    LogLineItem.Filtered();
                 }
                 return true;
             }
