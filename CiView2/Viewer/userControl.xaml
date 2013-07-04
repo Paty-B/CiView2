@@ -22,8 +22,8 @@
             <Expander Header="Reading option" IsExpanded="True">
                 <Recorder:UserControl1 HorizontalAlignment="Left" Width="212" Height="150"/>
             </Expander>
-            <Expander Header="Writing option">
-                <Grid Background="#FFE5E5E5"/>
+            <Expander Header="Writing option" IsExpanded="True">
+                <local:Writer HorizontalAlignment="Left" Width="212"/>
             </Expander>
             <Expander Header="Randomizing option" IsExpanded="True">
                 <local:Randomizer />
