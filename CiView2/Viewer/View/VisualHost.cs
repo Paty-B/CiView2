@@ -44,9 +44,99 @@ namespace Viewer.View
 
 
 
-            using (logger.OpenGroup(LogLevel.None, () => "EndMainGroup", "MainGroup"))
+            using (logger.OpenGroup(LogLevel.Info, () => "EndMainGroup", "Begin dbSetup with:"))
             {
-               using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
+               logger.Info(@"RootPath: D:\Invenietis\Dev\Dev4\Cofely-BO\");
+               logger.Info(@"FilePaths:");
+               logger.Info(@"DllPaths: CFLY.Data.Setup\bin\Debug");
+               logger.Info(@"Assembly: CFLY.Data.Setup, CK.DB.Basic, CK.Authentication.Local");
+            }
+            using (logger.OpenGroup(LogLevel.Info, () => "EndMainGroup", "Connection"))
+            {
+                logger.Info(@" Connected to .\SQLSERVER2012/Cofely");
+            }
+            using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "First setup"))
+            {
+                using (logger.OpenGroup(LogLevel.Info, () => "", "Collecting objects."))
+                {
+                    using (logger.OpenGroup(LogLevel.Info, () => "", "Discovering assemblies & types from configuration."))
+                    {
+                        logger.Trace(@"Discovering assembly 'CFLY.Data.Setup, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null'.");
+                        logger.Trace(@"Discovering assembly 'CK.DB.Basic, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null'.");
+                        logger.Trace(@"Discovering assembly 'CK.Authentication.Local, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null'.");
+                    }
+                    using (logger.OpenGroup(LogLevel.Trace, () => "", "Registering 3 assemblies"))
+                    {
+                        logger.Trace(@"Registering assembly 'CFLY.Data.Setup, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null'.");
+                        logger.Trace(@"Registering assembly 'CK.DB.Basic, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null'.");
+                        logger.Trace(@"Registering assembly 'CK.Authentication.Local, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null'.");
+                    }
+                }
+                using (logger.OpenGroup(LogLevel.Info, () => "", "Collecting Ambient Contracts and Type structure."))
+                {
+                    using (logger.OpenGroup(LogLevel.Trace, () => "", "Ambient Contract discovering: 1 context(s)."))
+                    {
+                        logger.Trace(@"Ambient Contract for context '': 47 mappings for 43 concrete paths.");
+                    }
+                }
+                using (logger.OpenGroup(LogLevel.Info, () => "", "Creating Structure Objects."))
+                {
+                    logger.Info(@"Working on Context [].");
+                }
+                using (logger.OpenGroup(LogLevel.Info, () => "", "Handling dependencies."))
+                {
+                    using (logger.OpenGroup(LogLevel.Info, () => "", "Working on Context []."))
+                    {
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.Cultures.CultureHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.Cultures.CulturesPackage'.");
+                        }
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.DSP.Activities.ActivityHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Activities.ActivitiesPackage'.");
+                        }
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.DSP.ExternalVersioning.ExternalVersioningHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.ExternalVersioning.ExternalVersioningPackage'.");
+                        }
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.DSP.Notifications.NotificationHistoryHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Notifications.NotificationsPackage'.");
+                        }
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Notifications.DeviceTokenHome'.");
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.DSP.Refs.ContentBindingHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Notifications.NotificationsPackage'.");
+                        }
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.VersionedRefSearchableContentHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.DetailsArticleHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.SolutionBindingHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.KeyDataHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.DocumentLocationHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.VersionedRefTargetHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.VersionedRefHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.RefHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.DocumentHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.FileHome'.");
+                        logger.Trace(@"Preparing '[]CFLY.Data.Setup.DSP.Refs.TargetHome'.");
+                        using (logger.OpenGroup(LogLevel.Trace, () => "", "Preparing '[]CFLY.Data.Setup.DSP.Themes.ContentHome'."))
+                        {
+                            logger.Trace(@"Preparing '[]CFLY.Data.Setup.ThemesPackage'.");
+                        }
+
+                    }
+
+                }
+
+
+
+            }
+
+
+
+
+
+              /* using (logger.OpenGroup(LogLevel.Trace, () => "EndMainGroup", "MainGroup"))
                 {
                     logger.Trace(tag1, "First2");
                     using (logger.AutoTags(tag1))
@@ -88,8 +178,7 @@ namespace Viewer.View
                             }
                         }
                     }
-                }
-            }
+            }*/
             
             #endregion
 
