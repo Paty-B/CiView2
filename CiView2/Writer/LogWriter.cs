@@ -31,7 +31,7 @@ namespace CiView.Recorder.Writer
             return new LogWriter( new FileStream( path, FileMode.Create, FileAccess.Write ), writeVersion );
         }
 
-        void IActivityLoggerClient.OnUnfilteredLog( CKTrait tags, LogLevel level, string text, DateTime logTimeUtc )
+        void IActivityLoggerClient.OnUnfilteredLog(CKTrait tags, LogLevel level, string text, DateTime logTimeUtc)
         {
             _binaryWriter.Write( (byte)FileLogType.TypeLog );
             _binaryWriter.Write( tags.ToString() );
@@ -40,7 +40,7 @@ namespace CiView.Recorder.Writer
             _binaryWriter.Write( logTimeUtc.ToBinary() );
         }
 
-        void IActivityLoggerClient.OnOpenGroup( IActivityLogGroup group )
+        void IActivityLoggerClient.OnOpenGroup(IActivityLogGroup group)
         {
             FileLogType o = group.Exception == null ? FileLogType.TypeOpenGroup : FileLogType.TypeOpenGroupWithException;
             _binaryWriter.Write( (byte)o );
@@ -54,8 +54,9 @@ namespace CiView.Recorder.Writer
             }
         }
 
-        void IActivityLoggerClient.OnGroupClosed( IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions )
+        void IActivityLoggerClient.OnGroupClosed(IActivityLogGroup group, ICKReadOnlyList<ActivityLogGroupConclusion> conclusions)
         {
+            _binaryWriter.Write((byte)FileLogType.TypeGroupClosed);
             _binaryWriter.Write( group.CloseLogTimeUtc.ToBinary() );
             _binaryWriter.Write( conclusions.Count );
             foreach( ActivityLogGroupConclusion c in conclusions)

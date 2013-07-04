@@ -20,7 +20,6 @@ namespace CiView.Recorder
         BinaryReader _binaryReader;
         ILogEntry _current;
         int _streamVersion;
-        bool _endOfStream;
         
         public const int CurrentStreamVersion = 4;
 
@@ -129,7 +128,7 @@ namespace CiView.Recorder
                         var text = _binaryReader.ReadString();
                         var logTimeUtc = DateTime.FromBinary( _binaryReader.ReadInt64() );
                         if( tags != ActivityLogger.EmptyTag ) _current = new LEOpenGroupWithTrait( text, logTimeUtc, logLevel, tags );
-                        _current = new LEOpenGroup( text, logTimeUtc, logLevel );
+                        else _current = new LEOpenGroup( text, logTimeUtc, logLevel );
                         break;
                     }
                 case FileLogType.TypeOpenGroupWithException:
