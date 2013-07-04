@@ -110,7 +110,7 @@ namespace CiView.Recorder
                 Close( false );
                 return false;
             }
-            switch( (h&FileLogType.TypeMask) )
+            switch( h )
             {
                 case FileLogType.TypeLog:
                     {
