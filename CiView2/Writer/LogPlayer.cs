@@ -7,7 +7,7 @@ using CK.Core;
 
 namespace CiView.Recorder
 {
-    class LogPlayer : IDisposable
+    public class LogPlayer : IDisposable
     {
         
         IEnumerator<ILogEntry> _readerEnum;
@@ -27,7 +27,7 @@ namespace CiView.Recorder
 
         public LogPlayer(string filePath)
         {
-            _readerEnum = LogReader.Open(filePath);
+            _readerEnum = LogReader.Open(filePath, 4);
             _activityLogger = new ActivityLogger();
             _lastSendTime = DateTime.Now;
             _lastLogTimeUtc = DateTime.MinValue;
@@ -35,6 +35,8 @@ namespace CiView.Recorder
             _playing = false;
             
         }
+
+        public ActivityLogger Logger { get { return _activityLogger; } }
 
         public int Play(int Count = 1)
         {

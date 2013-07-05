@@ -57,12 +57,18 @@ namespace Viewer
 
         public void CKtraitIncrease(CKTrait ckTrait)
         {
-            UpdateCKTrait(ckTrait);
+            if (ckTrait == ActivityLogger.EmptyTag)
+                _listBoxOfCheckBoxCounter.Increase("none");
+            else
+                UpdateCKTrait(ckTrait);
         }
 
         public void CKTraitDecrease(CKTrait ckTrait)
         {
-            UpdateCKTrait(ckTrait, false);
+            if (ckTrait == ActivityLogger.EmptyTag)
+                _listBoxOfCheckBoxCounter.Decrease("none");
+            else
+                UpdateCKTrait(ckTrait, false);
         }
 
         private void UpdateCKTrait(CKTrait ckTrait, bool rise = true)

@@ -83,6 +83,10 @@ namespace Viewer.Model
         {
             RemoveChild( child, this, ref _firstChild, ref _lastChild );
             Host.OnItemDeleted(child);
+            if (child.GetType() != typeof(FilteredLineItem))
+            {
+                EventManager.Instance.OnRemoveChild(child, (LogLineItem)child);
+            }
         }
 
         public void InsertChild( ILineItem child, ILineItem nextChild = null )
@@ -110,8 +114,6 @@ namespace Viewer.Model
             c.Prev = c.Next = null;
             c.Parent = null;
             parent.Grow( -c.TotalLineHeight );
-            EventManager.Instance.OnRemoveChild(c, (LogLineItem)c);
-
         }
 
         internal static void InsertChild( ILineItem child, ILineItem nextChild, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
