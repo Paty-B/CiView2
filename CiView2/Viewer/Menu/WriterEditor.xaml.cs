@@ -33,12 +33,37 @@ namespace Viewer
             var menu = sender as MenuItem;
             textBoxEditor.SelectedText = menu.Header.ToString().Substring(1).ToUpper() + " ";
             textBoxEditor.SelectionStart = textBoxEditor.SelectionStart + textBoxEditor.SelectedText.Length;
+            textBoxEditor.SelectionLength = 0;
         }
 
         private void MenuHelperDateTimeNow_Click(object sender, RoutedEventArgs e)
         {
             textBoxEditor.SelectedText = DateTime.UtcNow.ToString() + " ";
             textBoxEditor.SelectionStart = textBoxEditor.SelectionStart + textBoxEditor.SelectedText.Length;
+            textBoxEditor.SelectionLength = 0;
+        }
+
+        private void MenuHelperLog_Click(object sender, RoutedEventArgs e)
+        {
+            var menu = sender as MenuItem;
+            textBoxEditor.SelectedText = DateTime.UtcNow.ToString() + " LOG " + menu.Header.ToString().Substring(1).ToUpper() + " none" + Environment.NewLine;
+            textBoxEditor.SelectionStart = textBoxEditor.SelectionStart + textBoxEditor.SelectedText.Length;
+            textBoxEditor.SelectionLength = 0;
+        }
+
+        private void MenuHelperOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var menu = sender as MenuItem;
+            textBoxEditor.SelectedText = DateTime.UtcNow.ToString() + " OPEN " + menu.Header.ToString().Substring(1).ToUpper() + " none" + Environment.NewLine;
+            textBoxEditor.SelectionStart = textBoxEditor.SelectionStart + textBoxEditor.SelectedText.Length;
+            textBoxEditor.SelectionLength = 0;
+        }
+
+        private void MenuHelperClose_Click(object sender, RoutedEventArgs e)
+        {
+            textBoxEditor.SelectedText = DateTime.UtcNow.ToString() + " CLOSE" + Environment.NewLine;
+            textBoxEditor.SelectionStart = textBoxEditor.SelectionStart + textBoxEditor.SelectedText.Length;
+            textBoxEditor.SelectionLength = 0;
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)

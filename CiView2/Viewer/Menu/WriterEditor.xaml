@@ -28,6 +28,21 @@
                     <MenuItem Header="_Error" Click="MenuHelper_Click" />
                     <MenuItem Header="_Fatal" Click="MenuHelper_Click" />
                 </MenuItem>
+                <MenuItem Header="_Open">
+                    <MenuItem Header="_Trace" Click="MenuHelperOpen_Click" />
+                    <MenuItem Header="_Info" Click="MenuHelperOpen_Click" />
+                    <MenuItem Header="_Warn" Click="MenuHelperOpen_Click" />
+                    <MenuItem Header="_Error" Click="MenuHelperOpen_Click" />
+                    <MenuItem Header="_Fatal" Click="MenuHelperOpen_Click" />
+                </MenuItem>
+                <MenuItem Header="_Log">
+                    <MenuItem Header="_Trace" Click="MenuHelperLog_Click" />
+                    <MenuItem Header="_Info" Click="MenuHelperLog_Click" />
+                    <MenuItem Header="_Warn" Click="MenuHelperLog_Click" />
+                    <MenuItem Header="_Error" Click="MenuHelperLog_Click" />
+                    <MenuItem Header="_Fatal" Click="MenuHelperLog_Click" />
+                </MenuItem>
+                <MenuItem Header="_Close" Click="MenuHelperClose_Click" />
             </MenuItem>
         </Menu>
         <TextBox Name="textBoxEditor" HorizontalAlignment="Left" Margin="0,22,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Height="500" Width="700" VerticalScrollBarVisibility="Auto"/>

@@ -37,7 +37,7 @@ namespace Viewer.View
 
 
             #region generation log
-
+            /*
             var tag1 = ActivityLogger.RegisteredTags.FindOrCreate("Product");
             var tag2 = ActivityLogger.RegisteredTags.FindOrCreate("Sql");
             var tag3 = ActivityLogger.RegisteredTags.FindOrCreate("Combined Tag|Sql|Engine V2|Product");
@@ -132,7 +132,7 @@ namespace Viewer.View
 
             }
 
-
+            //*/
 
 
 
