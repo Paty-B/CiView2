@@ -48,32 +48,28 @@ namespace Viewer.Model
             vl = new VisualFilteredLineItem(this);
             return vl;
         }
+        internal void HideChildOrNot(ILineItemImpl parent, bool hide)
+        {
+            var child = parent.FirstChild;
+            while (child != null)
+            {
+                if (hide)
+                {
+                    child.Hidden();
+                }
+                else { child.unHidden(); }
+                HideChildOrNot(child, hide);
+                child = child.Next;
+            }
 
+        }
         internal void Collapse()
         {
             Status = Model.Status.Collapsed;
             Grow(-(TotalLineHeight - LineHeight));
             Host.OnCollapsed(this);
-
-            var child = FirstChild;
-            while (child != null)
-            {
-                child.Hidden();
-                var next = child.FirstChild;
-                while (next != null)
-                {
-                    next.Hidden();
-                    if (next.FirstChild == null)
-                    {
-                        next = next.Next;
-                    }
-                    else
-                    {
-                        next = next.FirstChild;
-                    }
-                }
-                child = child.Next;
-            }
+            HideChildOrNot(this, true);
+ 
         }
 
         internal void UnCollapse()
@@ -81,26 +77,7 @@ namespace Viewer.Model
             Status = Model.Status.Expanded;
             Grow(restoreTotalLineHeight()-LineHeight);
             Host.OnExpended(this);
-
-            var child = FirstChild;
-            while (child != null)
-            {
-                child.unHidden();
-                var next = child.FirstChild;
-                while (next != null)
-                {
-                    next.unHidden();
-                    if (next.FirstChild == null)
-                    {
-                        next = next.Next;
-                    }
-                    else
-                    {
-                        next = next.FirstChild;
-                    }
-                }
-                child = child.Next;
-            }
+            HideChildOrNot(this, false);
         }
 
         private int restoreTotalLineHeight()

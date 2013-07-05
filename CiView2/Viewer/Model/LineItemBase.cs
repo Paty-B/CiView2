@@ -186,8 +186,20 @@ namespace Viewer.Model
             }
             if (_parent != null) _parent.CountLogLevel(loglevel,add);
         }
-        
 
+        internal void GrowChild(ILineItemImpl parent, int delta)
+        {
+            var child = parent.FirstChild;
+            while (child != null)
+            {
+                child.AdjustAbsoluteY(delta);
+                Host.OnPositionChange(child);
+                GrowChild(child, delta);
+                child = child.Next;
+            }
+
+        }
+        
         public void Grow( int delta )
         {
             _totalHeight += delta;
@@ -197,10 +209,8 @@ namespace Viewer.Model
                 
                 next.AdjustAbsoluteY( delta );
                 Host.OnPositionChange(next);
-                if (next.FirstChild != null)
-                    next = next.FirstChild;
-                else
-                    next = next.Next;
+                GrowChild(next, delta);
+                next = next.Next;
             }
             if( _parent != null ) _parent.Grow( delta );
         }
