@@ -115,7 +115,9 @@ namespace Viewer
                             break;
                         default: break;
                     }
-                    textBoxEditor.Text += logEntry.LogLevel.ToString().ToUpper() + " " + logEntry.Tags.ToString();
+                    //ActivityLogger.EmptyTag 
+                    //textBoxEditor.Text += logEntry.LogLevel.ToString().ToUpper() + " " + logEntry.Tags.ToString();
+                    textBoxEditor.Text += logEntry.LogLevel.ToString().ToUpper() + " none";
                     textBoxEditor.Text += Environment.NewLine + logEntry.Text + Environment.NewLine;
                 }
             }
@@ -149,10 +151,12 @@ namespace Viewer
                     switch (words[2].ToLower().Trim())
                     {
                         case "log":
-                            logger.UnfilteredLog(Str2Tags(words[4]), Str2LogLevel(words[3]), textBoxEditor.GetLineText(++i).Trim(), dateTime);
+                            //logger.UnfilteredLog(Str2Tags(words[4]), Str2LogLevel(words[3]), textBoxEditor.GetLineText(++i).Trim(), dateTime);
+                            logger.UnfilteredLog(ActivityLogger.EmptyTag, Str2LogLevel(words[3]), textBoxEditor.GetLineText(++i).Trim(), dateTime);
                             break;
                         case "open":
-                            logger.OpenGroup(Str2Tags(words[4]), Str2LogLevel(words[3]), null, textBoxEditor.GetLineText(++i).Trim(), dateTime);
+                            //logger.OpenGroup(Str2Tags(words[4]), Str2LogLevel(words[3]), null, textBoxEditor.GetLineText(++i).Trim(), dateTime);
+                            logger.OpenGroup(ActivityLogger.EmptyTag, Str2LogLevel(words[3]), null, textBoxEditor.GetLineText(++i).Trim(), dateTime);
                             break;
                         case "close":
                             logger.CloseGroup(dateTime);
