@@ -24,6 +24,7 @@ namespace Randomizer
         {
             _activityLogger = new ActivityLogger();
             depth = 0;
+            r = new Random();
             CKTrait firstTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag1");
             CKTrait secondTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag2");
             CKTrait thirdTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag3");
@@ -83,7 +84,6 @@ namespace Randomizer
         {
             string chars = "abcdefghijklmnopqrstuvwxyz";
             StringBuilder sb = new StringBuilder(length);
-            r = new Random();
 
             for (int i = 0; i < length; i++)
             {
@@ -95,7 +95,7 @@ namespace Randomizer
         #region Generate function
         public void GenerateOneLog( int maxDepth)
         {
-            r = new Random();
+            
             double randomNum;
                      
             randomNum = r.NextDouble();
