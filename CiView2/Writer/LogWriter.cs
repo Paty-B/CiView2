@@ -74,12 +74,12 @@ namespace CiView.Recorder.Writer
         }
 
         /// <summary>
-        /// Closes the stream (without writing the end of log marker).
-        /// Use an explicit call to <see cref="Close"/> to write the marker.
+        /// Closes the stream after having written the end of log marker.
+        /// Use an explicit call to <see cref="Close"/> to not write the end marker.
         /// </summary>
         public void Dispose()
         {
-            Close( false );
+            Close( true );
         }
 
         /// <summary>
