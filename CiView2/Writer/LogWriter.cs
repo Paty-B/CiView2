@@ -47,7 +47,7 @@ namespace CiView.Recorder.Writer
             _binaryWriter.Write( (byte)group.GroupLevel );
             _binaryWriter.Write( group.GroupText );
             _binaryWriter.Write( group.LogTimeUtc.ToBinary() );
-            if( group.Exception == null )
+            if( group.Exception != null )
             {
                 _binaryFormatter.Serialize( _stream, group.Exception );
             }
