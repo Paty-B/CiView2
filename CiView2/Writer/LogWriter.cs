@@ -14,14 +14,13 @@ namespace CiView.Recorder.Writer
         Stream _stream;
         BinaryWriter _binaryWriter;
         BinaryFormatter _binaryFormatter;
-        bool _writeVersion;
 
         public LogWriter( Stream stream, bool writeVersion, bool mustClose = true )
         {
             _stream = stream;
             _binaryWriter = new BinaryWriter(stream, Encoding.UTF8, !mustClose);
             _binaryFormatter = new BinaryFormatter();
-            _writeVersion = writeVersion;
+            if( writeVersion ) _binaryWriter.Write( LogReader.CurrentStreamVersion );
         }
 
         public static LogWriter Create( string fileDirectory, string autoNameFile = "CiView2_{0:u}.log", bool writeVersion = true )
