@@ -89,14 +89,7 @@ namespace CiView.Recorder
                     _activityLogger.UnfilteredLog(log.Tags, log.LogLevel, log.Text, log.LogTimeUtc);
                     break;
                 case LogType.OpenGroup:
-                    if (log.Exception == null)
-                    {
-                        _activityLogger.OpenGroup(log.Tags, log.LogLevel, null, log.Text, log.LogTimeUtc);
-                    }
-                    else
-                    {
-                        _activityLogger.OpenGroup(log.Tags, log.LogLevel, null, log.Text, log.LogTimeUtc, log.Exception);
-                    }
+                    _activityLogger.OpenGroup(log.Tags, log.LogLevel, null, log.Text, log.LogTimeUtc, log.Exception);
                     break;
             }
         }

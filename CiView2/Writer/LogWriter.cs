@@ -14,14 +14,13 @@ namespace CiView.Recorder.Writer
         Stream _stream;
         BinaryWriter _binaryWriter;
         BinaryFormatter _binaryFormatter;
-        bool _writeVersion;
 
         public LogWriter( Stream stream, bool writeVersion, bool mustClose = true )
         {
             _stream = stream;
             _binaryWriter = new BinaryWriter(stream, Encoding.UTF8, !mustClose);
             _binaryFormatter = new BinaryFormatter();
-            _writeVersion = writeVersion;
+            if( writeVersion ) _binaryWriter.Write( LogReader.CurrentStreamVersion );
         }
 
         public static LogWriter Create( string fileDirectory, string autoNameFile = "CiView2_{0:u}.log", bool writeVersion = true )
@@ -48,7 +47,7 @@ namespace CiView.Recorder.Writer
             _binaryWriter.Write( (byte)group.GroupLevel );
             _binaryWriter.Write( group.GroupText );
             _binaryWriter.Write( group.LogTimeUtc.ToBinary() );
-            if( group.Exception == null )
+            if( group.Exception != null )
             {
                 _binaryFormatter.Serialize( _stream, group.Exception );
             }
@@ -75,12 +74,12 @@ namespace CiView.Recorder.Writer
         }
 
         /// <summary>
-        /// Closes the stream (without writing the end of log marker).
-        /// Use an explicit call to <see cref="Close"/> to write the marker.
+        /// Closes the stream after having written the end of log marker.
+        /// Use an explicit call to <see cref="Close"/> to not write the end marker.
         /// </summary>
         public void Dispose()
         {
-            Close( false );
+            Close( true );
         }
 
         /// <summary>

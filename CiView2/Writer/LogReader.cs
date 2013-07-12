@@ -28,7 +28,7 @@ namespace CiView.Recorder
         /// </summary>
         /// <param name="stream">Stream to read logs from.</param>
         /// <param name="mustClose">
-        /// Defaults to true (the stream wil be automaticaaly closed).
+        /// Defaults to true (the stream wil be automatically closed).
         /// False to let the stream opened once this reader is disposed, the end of the log data is reached or an error is encoutered.
         /// </param>
         public LogReader( Stream stream, bool mustClose = true )
