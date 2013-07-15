@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -26,6 +27,16 @@ namespace Viewer
 
         public LogViewer()
         {
+ 
         }
+
+        private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (e.OldValue < e.NewValue)
+                this.vHost.scroll(true);
+            else
+                this.vHost.scroll(false);
+        }
+
     }
 }

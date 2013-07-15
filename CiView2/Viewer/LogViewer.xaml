@@ -5,7 +5,8 @@
         Title="Ciview2" Height="600" Width="800">
     <Grid>
         <local:userControl HorizontalAlignment="Right" Margin="568,0,0,0" VerticalAlignment="Top" Height="570" Width="224"/>
-        <View:VisualHost HorizontalAlignment="Left" Height="482" Margin="37,34,0,0" VerticalAlignment="Top" Width="498"/>
+        <View:VisualHost x:Name="vHost" HorizontalAlignment="Left" Height="482" Margin="37,34,0,0" VerticalAlignment="Top" Width="498" />
+        <ScrollBar Name="scrollBar" HorizontalAlignment="Left" Margin="551,0,0,0" ValueChanged="ScrollBar_ValueChanged"  />
 
     </Grid>
 </Window>

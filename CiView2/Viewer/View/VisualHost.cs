@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Viewer.Model;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 namespace Viewer.View
 {
@@ -22,10 +24,9 @@ namespace Viewer.View
 
         private int _maxPrintableLog = 60;
 
-
         public VisualHost()
         {
-
+        
             ActivityLogger logger = new ActivityLogger();
             _host = LineItem.CreateLineItemHost();
             ec = new EnvironmentCreator(_host);
@@ -34,7 +35,6 @@ namespace Viewer.View
             
             _host.ItemChanged += CheckEvents;
             logger.Output.RegisterClient(ec);
-
 
             #region generation log
             /*
@@ -186,8 +186,10 @@ namespace Viewer.View
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
             this.MouseWheel += new MouseWheelEventHandler(Visual_Move);
+            
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
+
 
         }
 
@@ -317,6 +319,7 @@ namespace Viewer.View
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
+           
         }
 
 
@@ -413,31 +416,6 @@ namespace Viewer.View
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
-      /*
-            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-            var child = FirstChild;
-   
-            while (child != null)
-            {
-                HaveFindLogLevel(child, loglevel, isChecked);
-                var next = child.FirstChild;
-                while (next != null)
-                {
-                    HaveFindLogLevel((LogLineItem)next, loglevel, isChecked);
-                    if (next.FirstChild == null)
-                    {
-                        if (next.Next == null)                        
-                            next = (LogLineItem)next.Parent.Parent.Next;
-                        else
-                            next = next.Next;           
-                    }
-                    else
-                    {
-                        next = next.FirstChild;
-                    }
-                }
-                child = (LogLineItem)child.Next;
-            }*/
             LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
             var child = FirstChild;
             var parent = child;
@@ -521,45 +499,15 @@ namespace Viewer.View
 
         #region scrolling function
 
-        private void Visual_Move(object sender, MouseWheelEventArgs e)
+        public void Visual_Move(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta < 0)
             {
-                VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
-                VisualLineItem newLine = SelectNextVisualLine(lastLine, true);
-                
-                if (newLine != null)
-                {
-                    if (!IsOnScreen((VisualLineItem)_children[0]))
-                    {
-                        if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
-                            _children.RemoveAt(0);
-                        newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
-                        _children.Add(newLine);
-                    }
-                }
-                if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
-                    foreach (VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+                scroll(true);
             }
             if (e.Delta > 0)
             {
-                VisualLineItem firstLine = (VisualLineItem)_children[0];
-                VisualLineItem newLine = SelectNextVisualLine(firstLine, false);
-                
-                if (newLine != null)
-                {
-                    if(!IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
-                    {
-                        if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
-                            _children.RemoveAt(_children.Count - 1);
-                        newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
-                        _children.Insert(0, newLine);
-                    }
-                }
-                if (((VisualLineItem)_children[0]).Offset.Y <= 0)
-                foreach (VisualLineItem vl in _children)
-                    vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
+                scroll(false);
             }
         }
 
@@ -598,6 +546,48 @@ namespace Viewer.View
                     return lineItem.Parent.CreateVisualLine();
             }
             return null;
+        }
+        
+        public void scroll(bool downWard)
+        {
+            if (downWard == true)
+            {
+                VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                VisualLineItem newLine = SelectNextVisualLine(lastLine, true);
+
+                if (newLine != null)
+                {
+                    if (!IsOnScreen((VisualLineItem)_children[0]))
+                    {
+                        if (_children[0] != _host.Root.FirstChild.CreateVisualLine())
+                            _children.RemoveAt(0);
+                        newLine.Offset = new Vector(newLine.Offset.X, lastLine.Offset.Y + 15);
+                        _children.Add(newLine);
+                    }
+                }
+                if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
+                    foreach (VisualLineItem vl in _children)
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+            }
+            if (downWard == false)
+            {
+                VisualLineItem firstLine = (VisualLineItem)_children[0];
+                VisualLineItem newLine = SelectNextVisualLine(firstLine, false);
+
+                if (newLine != null)
+                {
+                    if (!IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
+                    {
+                        if (_children[_children.Count - 1] != _host.Root.LastChild.CreateVisualLine())
+                            _children.RemoveAt(_children.Count - 1);
+                        newLine.Offset = new Vector(newLine.Offset.X, firstLine.Offset.Y - 15);
+                        _children.Insert(0, newLine);
+                    }
+                }
+                if (((VisualLineItem)_children[0]).Offset.Y <= 0)
+                    foreach (VisualLineItem vl in _children)
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
+            }
         }
 
         #endregion
