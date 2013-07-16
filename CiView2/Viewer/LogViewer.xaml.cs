@@ -32,10 +32,20 @@ namespace Viewer
 
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (e.OldValue < e.NewValue)
-                this.vHost.scroll(true);
-            else
-                this.vHost.scroll(false);
+            
+            if (vHost.GetLineItemHost().Root.TotalLineHeight != 0)
+            {
+                
+                scrollBar.ViewportSize = vHost.ActualHeight/15;
+                scrollBar.Minimum = 0;
+                scrollBar.Maximum = vHost.GetLineItemHost().Root.TotalLineHeight - scrollBar.ViewportSize;
+             
+                if (e.OldValue < e.NewValue)
+                    this.vHost.scroll(true);
+                else
+                    this.vHost.scroll(false);
+                
+            }
         }
 
     }

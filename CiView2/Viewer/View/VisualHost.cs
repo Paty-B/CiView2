@@ -193,6 +193,11 @@ namespace Viewer.View
 
         }
 
+        public ILineItemHost GetLineItemHost()
+        {
+            return _host;
+        }
+
         private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
             VisualLineItem vl;
@@ -567,7 +572,7 @@ namespace Viewer.View
                 }
                 if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
                     foreach (VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 10);
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 15);
             }
             if (downWard == false)
             {
@@ -586,7 +591,7 @@ namespace Viewer.View
                 }
                 if (((VisualLineItem)_children[0]).Offset.Y <= 0)
                     foreach (VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 10);
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 15);
             }
         }
 
