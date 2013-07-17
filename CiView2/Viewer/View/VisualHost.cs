@@ -546,7 +546,11 @@ namespace Viewer.View
             if (downward == false)
             {
                 if (lineItem.Prev != null)
+                {
+                    if (lineItem.Prev.LastChild != null)
+                        return lineItem.Prev.LastChild.CreateVisualLine();
                     return lineItem.Prev.CreateVisualLine();
+                }
                 if (lineItem.Parent != null && lineItem.Parent != lineItem.Host.Root)
                     return lineItem.Parent.CreateVisualLine();
             }
