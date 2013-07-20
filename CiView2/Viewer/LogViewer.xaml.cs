@@ -39,11 +39,13 @@ namespace Viewer
                 scrollBar.ViewportSize = vHost.ActualHeight/15;
                 scrollBar.Minimum = 0;
                 scrollBar.Maximum = vHost.GetLineItemHost().Root.TotalLineHeight - scrollBar.ViewportSize;
-             
+
+                
+                double difference = Math.Abs(e.NewValue - e.OldValue);
                 if (e.OldValue < e.NewValue)
-                    this.vHost.scroll(true);
-                else
-                    this.vHost.scroll(false);
+                    this.vHost.scroll(true, difference*15);
+                if(e.OldValue > e.NewValue)
+                    this.vHost.scroll(false, difference*15);
                 
             }
         }
