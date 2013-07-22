@@ -557,7 +557,7 @@ namespace Viewer.View
             return null;
         }
         
-        public void scroll(bool downWard)
+        public void scroll(bool downWard, double speed = 15)
         {
             if (downWard == true)
             {
@@ -576,7 +576,7 @@ namespace Viewer.View
                 }
                 if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
                     foreach (VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - 15);
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y - speed);
             }
             if (downWard == false)
             {
@@ -595,7 +595,7 @@ namespace Viewer.View
                 }
                 if (((VisualLineItem)_children[0]).Offset.Y <= 0)
                     foreach (VisualLineItem vl in _children)
-                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + 15);
+                        vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + speed);
             }
         }
 
