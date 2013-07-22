@@ -21,7 +21,7 @@ namespace Viewer.View
         private Point position = new Point(0,0);
         private ILineItemHost _host;
         private EnvironmentCreator ec;
-
+        private int _nbVisualElement = 0;
         private int _maxPrintableLog = 60;
 
         public VisualHost()
@@ -201,119 +201,97 @@ namespace Viewer.View
         {
             VisualLineItem vl;
             Point pt = new Point(0, 0);
-            int index;
+            int index = 0;
 
             switch(e.Status)
             {
-                case LineItemChangedStatus.Collapsed:
-                    //update visual
+                case LineItemChangedStatus.Visible:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
                     {
                         LogLineItem logLineItem = (LogLineItem)e.LineItem;
                         index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
                         vl = e.LineItem.CreateVisualLine();
-                        if (index != 0)
+                        if (index == -1)
                         {
+                            if (_children.Count == 0)
+                            {
+                                _children.Add(vl);
+                                break;
+                            }
+                            
+                            VisualLineItem lastLine = (VisualLineItem)_children[_children.Count-1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                            _children.Add(vl);
+                        }
+                        else
+                        {
+                            if (index == 0)
+                            {
+                                vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
+                                _children.RemoveAt(0);
+                                _children.Insert(index, vl);
+                                break;
+                            }
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                            _children.RemoveAt(index);
+                            _children.Insert(index, vl);
+                            RefreshVisual(vl);
                         }
-                        _children.Insert(index, vl);
-
-                        
-                    }     
-                    break;
-                case LineItemChangedStatus.Deleted:
-                    break;
-                case LineItemChangedStatus.Expanded:
-                    if (e.LineItem.GetType() == typeof(LogLineItem))
-                    {
-                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
-                        index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
-                        vl = e.LineItem.CreateVisualLine();
-                        if (index != 0)
-                        {
-                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                        }
-                        _children.Insert(index, vl);
-                    }   
-                    break;
-                case LineItemChangedStatus.Hidden:
-                    if (e.LineItem.GetType() == typeof(LogLineItem))
-                    {
-                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
-                        index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
-                        vl = e.LineItem.CreateVisualLine();
-                        if (index != 0)
-                        {
-                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                        }
-
-                        _children.Insert(index, vl);
-                    }   
-                    break;
-                case LineItemChangedStatus.Inserted:
-                    if (_children.Count == 0)
-                    {
-                        vl = e.LineItem.CreateVisualLine();
-                        _children.Add(vl);
-                        break;
-                    }
-                    if (_host.Root.TotalLineHeight < _maxPrintableLog 
-                        || IsOnScreen((VisualLineItem)_children[_children.Count -1]))
-                    {
-                        VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
-                        vl = e.LineItem.CreateVisualLine();
-                        vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                        _children.Add(vl);
                     }
                     break;
-                case LineItemChangedStatus.Update:
-                    if (e.LineItem.GetType() == typeof(LogLineItem))
-                    {
-                        
-                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
-                        index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
-                        vl = e.LineItem.CreateVisualLine();
-                        _children.Insert(index, vl);
-                    }  
-                    break;
-                case LineItemChangedStatus.Filtered:
-                    if (e.LineItem.GetType() == typeof(LogLineItem))
-                    {
-                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
-                        index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
-                        vl = logLineItem.CreateFilteredVisualLine();
-                        if (index != 0)
-                        {
-                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                        }
-                        _children.Insert(index, vl);
-                    }   
-                    break;
-                case LineItemChangedStatus.Unfiltered:
-                   if (e.LineItem.GetType() == typeof(LogLineItem))
-                    {
-                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
-                        index = _children.IndexOf(logLineItem.vl);
-                        _children.RemoveAt(index);
-                        vl = e.LineItem.CreateVisualLine();
-                        if (index != 0)
-                        {
-                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                        }
 
-                        _children.Insert(index, vl);
-                    }   
+                case LineItemChangedStatus.Invisible:
+                    if (e.LineItem.GetType() == typeof(LogLineItem))
+                    {
+                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        index = _children.IndexOf(logLineItem.vl);
+                        vl = e.LineItem.CreateVisualLine();
+                        if (index == -1)
+                        {
+                            if (_children.Count == 0)
+                            {
+                                _children.Add(vl);
+                                break;
+                            }
+
+                            VisualLineItem lastLine = (VisualLineItem)_children[_children.Count];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
+                            _children.Add(vl);
+                        }
+                        else
+                        {
+                            if (index == 0)
+                            {
+                                vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
+                                _children.RemoveAt(0);
+                                _children.Insert(index, vl);
+                                break;
+                            }
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
+                            _children.RemoveAt(index);
+                            _children.Insert(index, vl);
+                            RefreshVisual(vl);
+                        }
+                    }
                     break;
+            }
+        }
+
+        private void RefreshVisual(VisualLineItem vl)
+        {
+            int index = _children.IndexOf(vl);
+            VisualLineItem lastLine;
+            VisualLineItem currentLine;
+            for (int i = index+1; i < _children.Count; i++)
+            {
+                lastLine = (VisualLineItem)_children[i-1];
+                currentLine = (VisualLineItem)_children[i];
+                _children.RemoveAt(i);
+                currentLine.Offset = new Vector(currentLine.Offset.X, lastLine.Offset.Y+15);
+                _children.Insert(i, currentLine);
+
             }
         }
 

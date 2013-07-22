@@ -9,14 +9,11 @@ namespace Viewer.Model
 
     public enum LineItemChangedStatus
     {
-        Hidden,
-        Expanded,
-        Collapsed,
-        Deleted,
+        Visible,
+        Invisible, 
         Inserted,
-        Update,
-        Filtered,
-        Unfiltered
+        Deleted, 
+        Update
     }
 
     public class LineItemChangedEventArgs : EventArgs

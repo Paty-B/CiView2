@@ -43,19 +43,19 @@ namespace Viewer.Model
         internal void OnCollapsed(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Collapsed));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Visible));
         }
 
         internal void OnExpended(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Expanded));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Visible));
         }
 
         internal void OnHiddened(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Hidden));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Invisible));
         }
 
         internal void OnPositionChange(ILineItem item)
@@ -142,19 +142,19 @@ namespace Viewer.Model
             }
 
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(inserted, LineItemChangedStatus.Inserted));
+            if (h != null) h(this, new LineItemChangedEventArgs(inserted, LineItemChangedStatus.Visible));
         }
 
         internal void OnFiltered(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Filtered));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Invisible));
         }
 
         internal void OnUnfiltered(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Unfiltered));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Visible));
         }
 
         private void CheckBoxFilterTagClick(string uid, bool isChecked)
