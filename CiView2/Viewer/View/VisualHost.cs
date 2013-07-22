@@ -185,7 +185,6 @@ namespace Viewer.View
             EventManager.Instance.RegisterClient += RegisterClient;
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
-            this.MouseWheel += new MouseWheelEventHandler(Visual_Move);
             
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
@@ -503,18 +502,6 @@ namespace Viewer.View
         }
 
         #region scrolling function
-
-        public void Visual_Move(object sender, MouseWheelEventArgs e)
-        {
-            if (e.Delta < 0)
-            {
-                scroll(true);
-            }
-            if (e.Delta > 0)
-            {
-                scroll(false);
-            }
-        }
 
         private bool IsOnScreen(VisualLineItem visualLine)
         {

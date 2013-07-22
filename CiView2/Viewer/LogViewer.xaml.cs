@@ -27,7 +27,15 @@ namespace Viewer
 
         public LogViewer()
         {
- 
+            this.MouseWheel += new MouseWheelEventHandler(ScrollBarWheel);
+        }
+
+        public void ScrollBarWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+                scrollBar.Value++;
+            else
+                scrollBar.Value--;
         }
 
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
