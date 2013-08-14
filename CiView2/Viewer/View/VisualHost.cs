@@ -197,6 +197,11 @@ namespace Viewer.View
             return _host;
         }
 
+        public int GetNbVisualElement()
+        {
+            return _nbVisualElement;
+        }
+
         private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
             VisualLineItem vl;
@@ -215,13 +220,24 @@ namespace Viewer.View
                         {
                             if (_children.Count == 0)
                             {
+                                _nbVisualElement++;
                                 _children.Add(vl);
                                 break;
                             }
                             
                             VisualLineItem lastLine = (VisualLineItem)_children[_children.Count-1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
-                            _children.Add(vl);
+                            _nbVisualElement++;
+                            if (_nbVisualElement < _maxPrintableLog)
+                                _children.Add(vl);
+                            else
+                            {
+                                if (IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
+                                {
+                                    _children.RemoveAt(0);
+                                    _children.Add(vl);
+                                }
+                            }
                         }
                         else
                         {
@@ -229,12 +245,15 @@ namespace Viewer.View
                             {
                                 vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
                                 _children.RemoveAt(0);
+                                _nbVisualElement++;
                                 _children.Insert(index, vl);
                                 break;
                             }
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
                             _children.RemoveAt(index);
+                            if(vl.GetType().ToString() != "Viewer.View.VisualGroupLineItem")
+                                _nbVisualElement++;
                             _children.Insert(index, vl);
                             RefreshVisual(vl);
                         }
@@ -255,7 +274,7 @@ namespace Viewer.View
                                 break;
                             }
 
-                            VisualLineItem lastLine = (VisualLineItem)_children[_children.Count];
+                            VisualLineItem lastLine = (VisualLineItem)_children[_children.Count-1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
                             _children.Add(vl);
                         }
@@ -265,18 +284,20 @@ namespace Viewer.View
                             {
                                 vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
                                 _children.RemoveAt(0);
+                                _nbVisualElement--;
                                 _children.Insert(index, vl);
                                 break;
                             }
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
                             _children.RemoveAt(index);
+                            _nbVisualElement--;
                             _children.Insert(index, vl);
                             RefreshVisual(vl);
                         }
                     }
                     break;
-            }
+            }       
         }
 
         private void RefreshVisual(VisualLineItem vl)
@@ -284,6 +305,7 @@ namespace Viewer.View
             int index = _children.IndexOf(vl);
             VisualLineItem lastLine;
             VisualLineItem currentLine;
+ 
             for (int i = index+1; i < _children.Count; i++)
             {
                 lastLine = (VisualLineItem)_children[i-1];
@@ -301,7 +323,7 @@ namespace Viewer.View
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
-           
+            MessageBox.Show(_children.Count.ToString() + "\n" + _nbVisualElement.ToString());
         }
 
 
@@ -513,7 +535,12 @@ namespace Viewer.View
                 if (lineItem.Prev != null)
                 {
                     if (lineItem.Prev.LastChild != null)
-                        return lineItem.Prev.LastChild.CreateVisualLine();
+                    {
+                        lineItem = lineItem.Prev.LastChild;
+                        while (lineItem.LastChild != null)
+                            lineItem = lineItem.LastChild;
+                        return lineItem.CreateVisualLine();
+                    }                       
                     return lineItem.Prev.CreateVisualLine();
                 }
                 if (lineItem.Parent != null && lineItem.Parent != lineItem.Host.Root)
