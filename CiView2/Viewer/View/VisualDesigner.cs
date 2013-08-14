@@ -125,7 +125,7 @@ namespace Viewer.View
         public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
             Point pt = new Point(0, 0);
-            Point pt2 = new Point(500, 0);
+            Point pt2 = new Point(10, 0);
             dc.DrawLine(new Pen(new SolidColorBrush(), 10), pt, pt2);
            
             FormattedText ft = new FormattedText(model.TotalLineHeight.ToString(),

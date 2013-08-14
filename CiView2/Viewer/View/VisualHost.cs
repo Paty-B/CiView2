@@ -297,7 +297,28 @@ namespace Viewer.View
                         }
                     }
                     break;
-            }       
+
+                case LineItemChangedStatus.Filtered:
+                    if (e.LineItem.GetType() == typeof(LogLineItem))
+                    {
+                        LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        index = _children.IndexOf(logLineItem.vl);
+                        LogLineItem temp = (LogLineItem)e.LineItem;
+                        vl = temp.CreateFilteredVisualLine();
+                        if (index != 0)
+                        {
+                            VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
+                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                        }
+                        else
+                            vl.Offset = new Vector(vl.Offset.X, 0  );
+                        _children.RemoveAt(index);
+                        _children.Insert(index, vl);
+                    }
+                    break;
+            }
+
+            
         }
 
         private void RefreshVisual(VisualLineItem vl)
@@ -323,7 +344,6 @@ namespace Viewer.View
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
-            MessageBox.Show(_children.Count.ToString() + "\n" + _nbVisualElement.ToString());
         }
 
 
@@ -464,7 +484,7 @@ namespace Viewer.View
                 }
                 else  
                 {
-                    LogLineItem.Hidden();
+                    LogLineItem.Filtered();
                 }
                 return true;
             }

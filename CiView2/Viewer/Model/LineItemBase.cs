@@ -83,7 +83,7 @@ namespace Viewer.Model
         {
             RemoveChild( child, this, ref _firstChild, ref _lastChild );
             Host.OnItemDeleted(child);
-            if (child.GetType() != typeof(FilteredLineItem))
+            if (child != null)
             {
                 EventManager.Instance.OnRemoveChild(child, (LogLineItem)child);
             }
@@ -93,7 +93,7 @@ namespace Viewer.Model
         {
             InsertChild(child, nextChild, this, ref _firstChild, ref _lastChild);
             Host.OnChildInserted(child);
-            if (child.GetType() != typeof(FilteredLineItem))
+            if (child != null)
             {
                 EventManager.Instance.OnInsertChild(child, (LogLineItem)child);
             }
@@ -205,8 +205,7 @@ namespace Viewer.Model
             _totalHeight += delta;
             var next = _nextSibling;
             while( next != null )
-            {
-                
+            {           
                 next.AdjustAbsoluteY( delta );
                 Host.OnPositionChange(next);
                 GrowChild(next, delta);

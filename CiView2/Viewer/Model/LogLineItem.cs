@@ -48,6 +48,7 @@ namespace Viewer.Model
             vl = new VisualFilteredLineItem(this);
             return vl;
         }
+
         internal void HideChildOrNot(ILineItemImpl parent, bool hide)
         {
             var child = parent.FirstChild;
@@ -61,15 +62,14 @@ namespace Viewer.Model
                 HideChildOrNot(child, hide);
                 child = child.Next;
             }
-
         }
+
         internal void Collapse()
         {
             Status = Model.Status.Collapsed;
             Grow(-(TotalLineHeight - LineHeight));
             Host.OnCollapsed(this);
             HideChildOrNot(this, true);
- 
         }
 
         internal void UnCollapse()

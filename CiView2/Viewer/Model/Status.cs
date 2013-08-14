@@ -9,8 +9,8 @@ namespace Viewer.Model
     public enum Status
     {
         Collapsed, // replier
-        Expanded, // déplier
+        Expanded, // déplier, visible
         Hidden, // invisible
-        Filtered
+        Filtered // filtrer
     }
 }
