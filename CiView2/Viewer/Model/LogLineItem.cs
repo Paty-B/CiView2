@@ -43,6 +43,11 @@ namespace Viewer.Model
             return vl;
         }
 
+        public Status GetStatut()
+        {
+            return Status;
+        }
+
         public VisualLineItem CreateFilteredVisualLine()
         {
             vl = new VisualFilteredLineItem(this);
@@ -72,11 +77,11 @@ namespace Viewer.Model
             HideChildOrNot(this, true);
         }
 
-        internal void UnCollapse()
+        internal void Expand()
         {
             Status = Model.Status.Expanded;
             Grow(restoreTotalLineHeight()-LineHeight);
-            Host.OnExpended(this);
+            Host.OnExpanded(this);
             HideChildOrNot(this, false);
         }
 
@@ -101,7 +106,7 @@ namespace Viewer.Model
         public override void unHidden()
         {
             Status = Model.Status.Expanded;
-            Host.OnExpended(this);
+            Host.OnExpanded(this);
         }
 
         public void Filtered()

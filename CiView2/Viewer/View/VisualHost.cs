@@ -361,7 +361,7 @@ namespace Viewer.View
                 }
                 else if (logLineItem.Status == Status.Collapsed)
                 {
-                    logLineItem.UnCollapse();
+                    logLineItem.Expand();
                 }
                 else
                 {

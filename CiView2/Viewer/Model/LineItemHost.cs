@@ -46,7 +46,7 @@ namespace Viewer.Model
             if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Visible));
         }
 
-        internal void OnExpended(ILineItem item)
+        internal void OnExpanded(ILineItem item)
         {
             var h = ItemChanged;
             if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Visible));
