@@ -16,7 +16,7 @@ namespace Viewer.Model
         ILineItemImpl _lastChild;
         ILineItemImpl _prevSibling;
         ILineItemImpl _nextSibling;
-        int _absoluteY;
+ 
         int _totalHeight;
         int _lineHeight;
 
@@ -47,13 +47,6 @@ namespace Viewer.Model
             set 
             { 
                 _parent = value;
-                if (_parent != null)
-                {
-                    _absoluteY = _prevSibling != null
-                        ? _prevSibling.AbsoluteY + _prevSibling.TotalLineHeight
-                        : _parent.AbsoluteY + _parent.TotalLineHeight;
-                }
-                else _absoluteY = 0;
             } 
         }
 
@@ -66,8 +59,6 @@ namespace Viewer.Model
         public ILineItemImpl LastChild { get { return _lastChild; } }
 
         public int Depth { get { return _parent == null ? -2 : _parent.Depth + 1; } }
-
-        public int AbsoluteY { get { return _absoluteY;}}
 
         public int TotalLineHeight { get { return _totalHeight; } set { _totalHeight = value; } }
 
@@ -113,7 +104,7 @@ namespace Viewer.Model
 
             c.Prev = c.Next = null;
             c.Parent = null;
-            parent.Grow( -c.TotalLineHeight );
+         
         }
 
         internal static void InsertChild( ILineItem child, ILineItem nextChild, ILineItemParentImpl parent, ref ILineItemImpl firstChild, ref ILineItemImpl lastChild )
@@ -144,7 +135,6 @@ namespace Viewer.Model
                 if( firstChild == nextC ) firstChild = c;
             }
             c.Parent = parent;
-            parent.Grow( c.TotalLineHeight );
         }
 
         public void CountLogLevel(LogLevel loglevel,bool add)
@@ -185,38 +175,6 @@ namespace Viewer.Model
                     break;
             }
             if (_parent != null) _parent.CountLogLevel(loglevel,add);
-        }
-
-        internal void GrowChild(ILineItemImpl parent, int delta)
-        {
-            var child = parent.FirstChild;
-            while (child != null)
-            {
-                child.AdjustAbsoluteY(delta);
-                Host.OnPositionChange(child);
-                GrowChild(child, delta);
-                child = child.Next;
-            }
-
-        }
-        
-        public void Grow( int delta )
-        {
-            _totalHeight += delta;
-            var next = _nextSibling;
-            while( next != null )
-            {           
-                next.AdjustAbsoluteY( delta );
-                Host.OnPositionChange(next);
-                GrowChild(next, delta);
-                next = next.Next;
-            }
-            if( _parent != null ) _parent.Grow( delta );
-        }
-
-        public void AdjustAbsoluteY( int delta )
-        {
-            _absoluteY += delta;
         }
 
         public abstract VisualLineItem CreateVisualLine();

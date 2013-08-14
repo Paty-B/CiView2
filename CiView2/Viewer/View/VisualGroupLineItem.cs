@@ -19,7 +19,7 @@ namespace Viewer.View
 
             VisualDesigner.CreateGroupeLine(dc, model.Status, model.LogLevel, model.Content,model.LineHeight, model.Tag, model.FollowingNumberWarning, model.FollowingNumberError, model.FollowingNumberFatal);
             dc.Close();
-            this.Offset = new Vector(model.Depth*14, model.AbsoluteY*14);
+            this.Offset = new Vector(model.Depth*14, 0);
         }
         internal override void OnClick(Visual target, Point inTarget)
         {

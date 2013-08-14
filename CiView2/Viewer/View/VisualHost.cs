@@ -252,7 +252,7 @@ namespace Viewer.View
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
                             _children.RemoveAt(index);
-                            if(vl.GetType().ToString() != "Viewer.View.VisualGroupLineItem")
+                            if(vl.GetType() != typeof(VisualGroupLineItem))
                                 _nbVisualElement++;
                             _children.Insert(index, vl);
                             RefreshVisual(vl);
@@ -326,13 +326,17 @@ namespace Viewer.View
             int index = _children.IndexOf(vl);
             VisualLineItem lastLine;
             VisualLineItem currentLine;
- 
+            LogLineItem temp;
             for (int i = index+1; i < _children.Count; i++)
             {
                 lastLine = (VisualLineItem)_children[i-1];
                 currentLine = (VisualLineItem)_children[i];
                 _children.RemoveAt(i);
-                currentLine.Offset = new Vector(currentLine.Offset.X, lastLine.Offset.Y+15);
+                temp = (LogLineItem)currentLine.Model;
+                if(temp.Status == Status.Hidden)
+                    currentLine.Offset = new Vector(currentLine.Offset.X, lastLine.Offset.Y);
+                else
+                    currentLine.Offset = new Vector(currentLine.Offset.X, lastLine.Offset.Y+15);
                 _children.Insert(i, currentLine);
 
             }

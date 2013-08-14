@@ -18,7 +18,7 @@ namespace Viewer.View
 
             VisualDesigner.CreateSimpleLine(dc, model.Status, model.LogLevel, model.Content, model.LineHeight, model.Tag);
             dc.Close();
-            this.Offset = new Vector(model.Depth*14, model.AbsoluteY*14);
+            this.Offset = new Vector(model.Depth*14, 0);
         }
 
         internal override void OnClick(Visual target, Point inTarget)

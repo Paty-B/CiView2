@@ -43,11 +43,6 @@ namespace Viewer.Model
             return vl;
         }
 
-        public Status GetStatut()
-        {
-            return Status;
-        }
-
         public VisualLineItem CreateFilteredVisualLine()
         {
             vl = new VisualFilteredLineItem(this);
@@ -72,7 +67,7 @@ namespace Viewer.Model
         internal void Collapse()
         {
             Status = Model.Status.Collapsed;
-            Grow(-(TotalLineHeight - LineHeight));
+            
             Host.OnCollapsed(this);
             HideChildOrNot(this, true);
         }
@@ -80,21 +75,9 @@ namespace Viewer.Model
         internal void Expand()
         {
             Status = Model.Status.Expanded;
-            Grow(restoreTotalLineHeight()-LineHeight);
+          
             Host.OnExpanded(this);
             HideChildOrNot(this, false);
-        }
-
-        private int restoreTotalLineHeight()
-        {
-            int tlh = LineHeight;
-            var child = FirstChild;
-            while (child != null)
-            {
-                tlh += child.TotalLineHeight;
-                child = child.Next;
-            }
-            return tlh;
         }
 
         public override void Hidden()

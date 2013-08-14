@@ -13,7 +13,6 @@ namespace Viewer.Model
         new ILineItemImpl Prev { get; set; }
         new ILineItemImpl FirstChild { get; }
         new ILineItemImpl LastChild { get; }
-        void AdjustAbsoluteY( int delta );
 
         void Hidden();
 

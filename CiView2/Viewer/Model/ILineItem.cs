@@ -16,7 +16,6 @@ namespace Viewer.Model
         ILineItem FirstChild { get; }
         ILineItem LastChild { get; }
         int Depth { get; }
-        int AbsoluteY { get; }
         int TotalLineHeight { get; set; }
         int LineHeight { get; }
         void InsertChild( ILineItem child, ILineItem nextChild = null );

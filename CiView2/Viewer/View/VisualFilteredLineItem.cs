@@ -17,7 +17,7 @@ namespace Viewer.View
             DrawingContext dc = this.RenderOpen();
             VisualDesigner.CreateFiltredLogRepresentation(dc, model);
             dc.Close();
-            this.Offset = new Vector(0, model.AbsoluteY*25);
+            this.Offset = new Vector(0, 0);
         }
         
 
