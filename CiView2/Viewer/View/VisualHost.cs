@@ -353,7 +353,7 @@ namespace Viewer.View
 
 
 
-
+/*
         #region UpdateTreeWithTagFilter
 
         public void UpdateFromTagFilter(string tag,bool isChecked)
@@ -415,7 +415,7 @@ namespace Viewer.View
         }
 
         #endregion
-
+*/
         #region UpdateTreeWithLogLevelFilter
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)

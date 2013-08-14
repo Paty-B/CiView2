@@ -19,11 +19,6 @@ namespace Viewer.Model
             return new LogLineItem(text,loglevel,tag,logTimeUtc, group);
         }
 
-        public static ILineItem CreateFilteredLineItem()
-        {
-            return new FilteredLineItem();
-        }
-
         internal static ILineItem CreateExceptionLineItem(String text, LogLevel logLevel, CKTrait tag, DateTime logTimeUtc, Exception exception)
         {
             return new ExceptionLineItem(text, logLevel, tag, logTimeUtc, exception);

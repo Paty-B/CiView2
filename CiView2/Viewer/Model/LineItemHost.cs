@@ -105,7 +105,7 @@ namespace Viewer.Model
 
         internal void OnChildInserted(ILineItem inserted)
         {
-            if (inserted.GetType() != typeof(FilteredLineItem))
+            if (inserted!=null)
             {
                 //*
                 List<ILineItem> items;
@@ -166,7 +166,9 @@ namespace Viewer.Model
                 foreach (ILineItem item in items)
                 {
                     if (!isChecked)
-                        item.Parent.InsertChild(new FilteredLineItem());
+                    {
+                        //item.Parent.InsertChild(new FilteredLineItem());
+                    }
                 }
             }
             #endregion
