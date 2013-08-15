@@ -76,6 +76,7 @@
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Events\LineItemEventArgs.cs" />
+    <Compile Include="Model\Events\SizeScrollBarChangedEventArgs.cs" />
     <Compile Include="Model\ExceptionLineItem.cs" />
     <Compile Include="Model\ILineItem.cs" />
     <Compile Include="Model\ILineItemHost.cs" />

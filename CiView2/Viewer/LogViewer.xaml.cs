@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Viewer.Model;
+using Viewer.Model.Events;
 using Viewer.View;
 
 namespace Viewer
@@ -25,9 +26,21 @@ namespace Viewer
     {
         public ILineItemHost host;
 
+  
+
         public LogViewer()
         {
             this.MouseWheel += new MouseWheelEventHandler(ScrollBarWheel);
+      
+        }
+
+        private void ScrollBarSizeChanged(object sender, SizeScrollBarChangedEventArgs e)
+        {
+            scrollBar.ViewportSize = vHost.ActualHeight / 15;
+            if (scrollBar.ViewportSize > e.Size)
+                scrollBar.Maximum = 1;
+            else
+                scrollBar.Maximum = e.Size - scrollBar.ViewportSize;
         }
 
         public void ScrollBarWheel(object sender, MouseWheelEventArgs e)
@@ -40,22 +53,11 @@ namespace Viewer
 
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            
-            if (vHost.GetLineItemHost().Root.TotalLineHeight != 0)
-            {
-                
-                scrollBar.ViewportSize = vHost.ActualHeight/15;
-                scrollBar.Minimum = 0;
-                scrollBar.Maximum = vHost.GetLineItemHost().Root.TotalLineHeight - scrollBar.ViewportSize;
-
-                
-                double difference = Math.Abs(e.NewValue - e.OldValue);
-                if (e.OldValue < e.NewValue)
-                    this.vHost.scroll(true, difference*15);
-                if(e.OldValue > e.NewValue)
-                    this.vHost.scroll(false, difference*15);
-                
-            }
+            double difference = Math.Abs(e.NewValue - e.OldValue);
+            if (e.OldValue < e.NewValue)
+                this.vHost.scroll(true, difference*15);
+            if(e.OldValue > e.NewValue)
+                this.vHost.scroll(false, difference*15);
         }
 
     }

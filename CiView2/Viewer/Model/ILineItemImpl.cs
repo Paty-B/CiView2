@@ -17,5 +17,6 @@ namespace Viewer.Model
         void Hidden();
 
         void unHidden();
+
     }
 }

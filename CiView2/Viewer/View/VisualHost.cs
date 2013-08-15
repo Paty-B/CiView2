@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using Viewer.Model;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
+using Viewer.Model.Events;
 
 namespace Viewer.View
 {
@@ -23,6 +24,8 @@ namespace Viewer.View
         private EnvironmentCreator ec;
         private int _nbVisualElement = 0;
         private int _maxPrintableLog = 60;
+
+        public event EventHandler<SizeScrollBarChangedEventArgs> LinesChanged;
 
         public VisualHost()
         {
@@ -188,7 +191,7 @@ namespace Viewer.View
             
             //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
-
+            
 
         }
 
@@ -207,6 +210,7 @@ namespace Viewer.View
             VisualLineItem vl;
             Point pt = new Point(0, 0);
             int index = 0;
+            var _LinesChanged = LinesChanged;
 
             switch(e.Status)
             {
@@ -317,6 +321,8 @@ namespace Viewer.View
                     }
                     break;
             }
+            if(_LinesChanged != null)
+                _LinesChanged(this, new SizeScrollBarChangedEventArgs(_nbVisualElement));
 
             
         }

@@ -58,7 +58,10 @@ namespace Viewer.Model
                 {
                     child.Hidden();
                 }
-                else { child.unHidden(); }
+                else 
+                { 
+                    child.unHidden(); 
+                }
                 HideChildOrNot(child, hide);
                 child = child.Next;
             }
