@@ -15,6 +15,7 @@ namespace Randomizer
         ActivityLogger _activityLogger;
         int depth;
         List<CKTrait> tags = new List<CKTrait>();
+        bool _groupOpened = false;
 
         static readonly double _openGroupProba = 0.3;
         static readonly double _openGroupWithExProba = 0;
@@ -45,6 +46,7 @@ namespace Randomizer
 
         private void RandomOnUnfilteredLog()
         {
+            _groupOpened = false;
             LogLevel logLevel = (LogLevel)r.Next(6);
             string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
@@ -54,6 +56,7 @@ namespace Randomizer
 
         private void RandomOnOpenGroup()
         {
+            _groupOpened = true;
             LogLevel logLevel = (LogLevel)r.Next(6);
             string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
@@ -64,6 +67,7 @@ namespace Randomizer
 
         private void RandomOnOpenGroupWithException()
         {
+            _groupOpened = true;
             LogLevel logLevel = (LogLevel)r.Next(6);
             string text = ChooseRealLog(r.Next(6));
             DateTime dateTime = DateTime.UtcNow;
@@ -121,7 +125,7 @@ namespace Randomizer
             }
             else
             {
-                if (depth > 0)
+                if (depth > 0 && _groupOpened == false)
                 {
                     depth--;
                     RandomOnGroupClosed();                   

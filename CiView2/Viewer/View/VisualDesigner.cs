@@ -122,7 +122,8 @@ namespace Viewer.View
             }          
                         
         }
-        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
+
+        public static int CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
             Point pt = new Point(0, 0);
             Point pt2 = new Point(10, 0);
@@ -140,6 +141,43 @@ namespace Viewer.View
 
             dc.DrawText(ft, pt);
             dc.DrawLine(new Pen(new SolidColorBrush(Color.FromRgb(0,0,0)), 2), pt, pt2);
+            return model.TotalLineHeight;
+        }
+
+        public static int CreateFiltredLogRepresentation(DrawingContext dc, int nbLine)
+        {
+            Point pt = new Point(0, 0);
+            Point pt2 = new Point(10, 0);
+            dc.DrawLine(new Pen(new SolidColorBrush(), 10), pt, pt2);
+
+            FormattedText ft = new FormattedText(nbLine.ToString(),
+                                CultureInfo.GetCultureInfo("en-us"),
+                                FlowDirection.LeftToRight,
+                                new Typeface(new FontFamily("Consolas"),
+                                FontStyles.Normal,
+                                FontWeights.Bold,
+                                FontStretches.Normal),
+                                frontSize,
+                                Brushes.Black);
+
+            dc.DrawText(ft, pt);
+            dc.DrawLine(new Pen(new SolidColorBrush(Color.FromRgb(0, 0, 0)), 2), pt, pt2);
+            return nbLine;
+        }
+
+        public static void CreateInvisibleLog(DrawingContext dc)
+        {
+            Point pt = new Point(0, 0);
+            FormattedText ft = new FormattedText("",
+                                CultureInfo.GetCultureInfo("en-us"),
+                                FlowDirection.LeftToRight,
+                                new Typeface(new FontFamily("Consolas"),
+                                FontStyles.Normal,
+                                FontWeights.Bold,
+                                FontStretches.Normal),
+                                frontSize,
+                                Brushes.Black);
+            dc.DrawText(ft, pt);
         }
 
         internal static void CreateSimpleLine(DrawingContext dc, Status status, LogLevel logLevel, String text,int lineHeight, CKTrait tag)

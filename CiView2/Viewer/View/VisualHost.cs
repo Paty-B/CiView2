@@ -309,15 +309,32 @@ namespace Viewer.View
                         index = _children.IndexOf(logLineItem.vl);
                         LogLineItem temp = (LogLineItem)e.LineItem;
                         vl = temp.CreateFilteredVisualLine();
-                        if (index != 0)
+                        if (index > 0)
                         {
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                            vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+                            if (lastLine.GetType() == typeof(VisualFilteredLineItem))
+                            {
+                                vl = temp.CreateFilteredVisualLine(vl.Model.TotalLineHeight 
+                                                            + ((VisualFilteredLineItem)lastLine).GetLinesFiltered());
+                                vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
+                                ((VisualFilteredLineItem)lastLine).HideALine();
+                                _children.RemoveAt(index - 1);
+                                _children.Insert(index - 1, lastLine);
+                                          
+                            }
+                            else                              
+                                vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
+    
                         }
                         else
                             vl.Offset = new Vector(vl.Offset.X, 0  );
-                        _children.RemoveAt(index);
-                        _children.Insert(index, vl);
+                        if (index >= 0)
+                        {
+                            _children.RemoveAt(index);
+                            _children.Insert(index, vl);
+                            RefreshVisual(vl);
+                        }
+                        
                     }
                     break;
             }
@@ -354,6 +371,7 @@ namespace Viewer.View
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
+            MessageBox.Show(_children.Count.ToString() + "\n" + _nbVisualElement.ToString());
         }
 
 
