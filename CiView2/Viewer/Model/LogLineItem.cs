@@ -49,6 +49,12 @@ namespace Viewer.Model
             return vl;
         }
 
+        public VisualLineItem CreateFilteredVisualLine(int nb)
+        {
+            vl = new VisualFilteredLineItem(this, nb);
+            return vl;
+        }
+
         internal void HideChildOrNot(ILineItemImpl parent, bool hide)
         {
             var child = parent.FirstChild;
