@@ -149,7 +149,7 @@ namespace Viewer.Model
         internal void OnFiltered(ILineItem item)
         {
             var h = ItemChanged;
-            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Filtered));
+            if (h != null) h(this, new LineItemChangedEventArgs(item, LineItemChangedStatus.Invisible));
         }
 
         internal void OnUnfiltered(ILineItem item)

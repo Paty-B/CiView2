@@ -123,7 +123,7 @@ namespace Viewer.View
                         
         }
 
-        public static int CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
+        public static void CreateFiltredLogRepresentation(DrawingContext dc, ILineItem model)
         {
             Point pt = new Point(0, 0);
             Point pt2 = new Point(10, 0);
@@ -141,10 +141,10 @@ namespace Viewer.View
 
             dc.DrawText(ft, pt);
             dc.DrawLine(new Pen(new SolidColorBrush(Color.FromRgb(0,0,0)), 2), pt, pt2);
-            return model.TotalLineHeight;
+
         }
 
-        public static int CreateFiltredLogRepresentation(DrawingContext dc, int nbLine)
+        public static void CreateFiltredLogRepresentation(DrawingContext dc, int nbLine)
         {
             Point pt = new Point(0, 0);
             Point pt2 = new Point(10, 0);
@@ -162,7 +162,6 @@ namespace Viewer.View
 
             dc.DrawText(ft, pt);
             dc.DrawLine(new Pen(new SolidColorBrush(Color.FromRgb(0, 0, 0)), 2), pt, pt2);
-            return nbLine;
         }
 
         public static void CreateInvisibleLog(DrawingContext dc)

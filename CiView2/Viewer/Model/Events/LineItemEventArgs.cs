@@ -13,7 +13,6 @@ namespace Viewer.Model
         Invisible, 
         Inserted,
         Deleted, 
-        Filtered,
         Update
     }
 

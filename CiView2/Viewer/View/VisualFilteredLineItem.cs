@@ -16,9 +16,11 @@ namespace Viewer.View
             : base(model)
         {
             DrawingContext dc = this.RenderOpen();
-            linesFiltered = VisualDesigner.CreateFiltredLogRepresentation(dc, model);
+            linesFiltered = 1;
+            VisualDesigner.CreateFiltredLogRepresentation(dc, model);       
             dc.Close();
             this.Offset = new Vector(0, 0);
+            
             
         }
 
@@ -26,7 +28,8 @@ namespace Viewer.View
             : base(model)
         {
             DrawingContext dc = this.RenderOpen();
-            linesFiltered = VisualDesigner.CreateFiltredLogRepresentation(dc, nb);
+            linesFiltered = nb;
+            VisualDesigner.CreateFiltredLogRepresentation(dc, nb);
             dc.Close();
             this.Offset = new Vector(0, 0);
         }
@@ -35,6 +38,20 @@ namespace Viewer.View
         {
             return linesFiltered;
         }
+
+        public int AddFilteredLine(int nb = 1)
+        {
+            linesFiltered = linesFiltered + nb;
+            return linesFiltered;
+        }
+
+        public int RemoveFilteredLine()
+        {
+            if(this.linesFiltered != 0)
+                return --this.linesFiltered;
+            return 0;
+        }
+
 
         public void HideALine()
         {

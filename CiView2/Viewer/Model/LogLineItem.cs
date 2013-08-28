@@ -103,7 +103,7 @@ namespace Viewer.Model
 
         public void Filtered()
         {
-            Status = Model.Status.Filtered;
+            Status = Model.Status.Hidden;
             Host.OnFiltered(this);
 
         }
@@ -113,5 +113,6 @@ namespace Viewer.Model
             Status = Model.Status.Expanded;
             Host.OnUnfiltered(this);
         }
+
     }
 }
