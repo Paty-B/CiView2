@@ -189,7 +189,7 @@ namespace Viewer.View
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
             
-            //EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
+            EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
             
 
@@ -292,7 +292,7 @@ namespace Viewer.View
                             {
                                 vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
                                 _children.RemoveAt(0);
-                                if (((LogLineItem)e.LineItem).OldStatus == Status.Expanded)
+                                if (((LogLineItem)e.LineItem).OldStatus != Status.Hidden )
                                     _nbVisualElement--;
                                 _children.Insert(index, vl);
                                 break;
@@ -300,7 +300,7 @@ namespace Viewer.View
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
                             _children.RemoveAt(index);
-                            if (((LogLineItem)e.LineItem).OldStatus == Status.Expanded)
+                            if (((LogLineItem)e.LineItem).OldStatus != Status.Hidden)
                                 _nbVisualElement--;
                             _children.Insert(index, vl);
                             RefreshVisual(vl);
@@ -310,9 +310,7 @@ namespace Viewer.View
 
             }
             if(_LinesChanged != null)
-                _LinesChanged(this, new SizeScrollBarChangedEventArgs(_nbVisualElement));
-
-            
+                _LinesChanged(this, new SizeScrollBarChangedEventArgs(_nbVisualElement));           
         }
 
         private void RefreshVisual(VisualLineItem vl)
@@ -378,35 +376,39 @@ namespace Viewer.View
             return HitTestResultBehavior.Stop;
         }
 
-
-
-/*
         #region UpdateTreeWithTagFilter
 
         public void UpdateFromTagFilter(string tag,bool isChecked)
         {
-            
-                LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-
-                var child = FirstChild;
-                while (child != null)
+            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
+            var child = FirstChild;
+            var parent = child;
+            while (child != null)
+            {
+                HaveFindTag((LogLineItem)child, tag, isChecked);
+                if (child.FirstChild != null)
                 {
-                    HaveFindTag(child,tag,isChecked);
-                    var next = child.FirstChild;
-                    while (next != null)
+                    parent = child;
+                    child = (LogLineItem)parent.FirstChild;
+                    continue;
+                }
+                if (child == parent.LastChild)
+                {
+                    while (parent.Next == null)
                     {
-                        HaveFindTag((LogLineItem)next, tag, isChecked);
-                        if (next.FirstChild == null)
-                        {
-                            next = next.Next;
-                        }
-                        else
-                        {
-                            next = next.FirstChild;
-                        }
+                        if (parent == _host.Root.LastChild)
+                            break;
+                        child = parent;
+                        parent = (LogLineItem)child.Parent;
                     }
-                    child = (LogLineItem)child.Next;
-                }     
+                    child = (LogLineItem)parent.Next;
+                    if (child != null && child.Parent != _host.Root)
+                        parent = (LogLineItem)child.Parent;
+                    continue;
+
+                }
+                child = (LogLineItem)child.Next;
+            }
         }
 
         private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
@@ -420,19 +422,16 @@ namespace Viewer.View
                     {
                         if (isChecked)
                         {
-                            LogLineItem.Parent.InsertChild(new FilteredLineItem());
+                            LogLineItem.unHidden();
                         }
                         else
                         {
                             ILineItemParentImpl parent=LogLineItem.Parent;
                             ILineItem next=parent.FirstChild;
-                            while(next!=null)
-                            {
-                                if (next.GetType() == typeof(FilteredLineItem))
-                                {
-                                     parent.RemoveChild(next);            
-                                }
-                            }
+                           /* while(next!=null)
+                            {*/
+                            LogLineItem.Filtered();
+                           // }
                            
                         }
                         return true;
@@ -442,7 +441,7 @@ namespace Viewer.View
         }
 
         #endregion
-*/
+
         #region UpdateTreeWithLogLevelFilter
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)

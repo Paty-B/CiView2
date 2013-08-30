@@ -20,6 +20,7 @@ namespace Viewer
             _stringFormat = "{0} ({1})";
             _text = "";
             update();
+
         }
 
         public int Counter
