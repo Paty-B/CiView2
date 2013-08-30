@@ -134,12 +134,20 @@ namespace Viewer.Model
         {
             LineItemBase.InsertChild( child, nextChild, this, ref _firstChild, ref _lastChild );
             Host.OnChildInserted(child);
+            if (child != null)
+            {
+                EventManager.Instance.OnInsertChild(child, (LogLineItem)child);
+            }
         }
 
         public void RemoveChild( ILineItem child )
         {
             LineItemBase.RemoveChild( child, this, ref _firstChild, ref _lastChild );
             Host.OnItemDeleted(child);
+            if (child != null)
+            {
+                EventManager.Instance.OnRemoveChild(child, (LogLineItem)child);
+            }
         }
 
         public View.VisualLineItem CreateVisualLine()

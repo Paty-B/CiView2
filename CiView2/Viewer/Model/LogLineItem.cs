@@ -14,6 +14,7 @@ namespace Viewer.Model
         internal String Content;
         internal LogLevel LogLevel;
         internal CKTrait Tag;
+        internal Status OldStatus;
         internal Status Status;
         internal DateTime LogtimeUtc;
         internal bool group;
@@ -75,43 +76,54 @@ namespace Viewer.Model
 
         internal void Collapse()
         {
+            OldStatus = Status;
             Status = Model.Status.Collapsed;
-            
             Host.OnCollapsed(this);
+           
             HideChildOrNot(this, true);
+            
         }
 
         internal void Expand()
         {
+            OldStatus = Status;
             Status = Model.Status.Expanded;
-          
             Host.OnExpanded(this);
             HideChildOrNot(this, false);
+            
         }
 
         public override void Hidden()
         {
+            OldStatus = Status;
             Status = Model.Status.Hidden;
             Host.OnHiddened(this);
+            
         }
 
         public override void unHidden()
         {
+            OldStatus = Status;
             Status = Model.Status.Expanded;
             Host.OnExpanded(this);
+            
         }
 
         public void Filtered()
         {
+            OldStatus = Status;
             Status = Model.Status.Hidden;
             Host.OnFiltered(this);
+            
 
         }
 
         public void UnFiltered()
         {
+            OldStatus = Status;
             Status = Model.Status.Expanded;
             Host.OnUnfiltered(this);
+            
         }
 
     }

@@ -36,6 +36,7 @@ namespace Viewer
 
         private void ScrollBarSizeChanged(object sender, SizeScrollBarChangedEventArgs e)
         {
+            PrintTextBox.Text = e.Size.ToString() + " lines printed.";
             scrollBar.ViewportSize = vHost.ActualHeight / 15;
             if (scrollBar.ViewportSize > e.Size)
                 scrollBar.Maximum = 1;
@@ -67,7 +68,7 @@ namespace Viewer
 
             while(currentLine != null)
             {
-                if (currentLine.Content.Contains(TextBox.Text))
+                if (currentLine.Content.Contains(SearchTextBox.Text))
                 {
                     currentLine.unHidden();
                 }

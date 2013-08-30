@@ -174,7 +174,7 @@ namespace Viewer.Model
                 default:
                     break;
             }
-            if (_parent != null) _parent.CountLogLevel(loglevel,add);
+            /*if (_parent != null)*/ _parent.CountLogLevel(loglevel, add);
         }
 
         public abstract VisualLineItem CreateVisualLine();

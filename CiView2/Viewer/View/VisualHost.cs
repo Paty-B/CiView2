@@ -249,19 +249,16 @@ namespace Viewer.View
                             {
                                 vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
                                 _children.RemoveAt(0);
-                                _nbVisualElement++;
+                                if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
+                                    _nbVisualElement++;
                                 _children.Insert(index, vl);
                                 break;
                             }
                           
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
-                               if (vl.GetType() != typeof(VisualGroupLineItem))
+                            if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
                                 _nbVisualElement++;
-                            else
-                            {
-                                if(logLineItem.vl.Offset == lastLine.Offset)
-                                    _nbVisualElement++;
-                            }
+                           
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
                             _children.RemoveAt(index);
                            
@@ -295,14 +292,16 @@ namespace Viewer.View
                             {
                                 vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
                                 _children.RemoveAt(0);
-                                _nbVisualElement--;
+                                if (((LogLineItem)e.LineItem).OldStatus == Status.Expanded)
+                                    _nbVisualElement--;
                                 _children.Insert(index, vl);
                                 break;
                             }
                             VisualLineItem lastLine = (VisualLineItem)_children[index - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y);
                             _children.RemoveAt(index);
-                            _nbVisualElement--;
+                            if (((LogLineItem)e.LineItem).OldStatus == Status.Expanded)
+                                _nbVisualElement--;
                             _children.Insert(index, vl);
                             RefreshVisual(vl);
                         }
@@ -314,15 +313,6 @@ namespace Viewer.View
                 _LinesChanged(this, new SizeScrollBarChangedEventArgs(_nbVisualElement));
 
             
-        }
-
-        private int FoundFilteredAncestor(int index)
-        {
-            while (index > 0 && _children[index-1].GetType() == typeof(VisualFilteredLineItem))
-            {
-                index--;
-            }
-            return index;
         }
 
         private void RefreshVisual(VisualLineItem vl)
@@ -361,7 +351,6 @@ namespace Viewer.View
             //capture la position de la sourie dans mon framwork element
             System.Windows.Point pt = e.GetPosition((UIElement)sender);
             VisualTreeHelper.HitTest(this, null, new HitTestResultCallback(myCallback), new PointHitTestParameters(pt));
-            MessageBox.Show(_children.Count.ToString() + "\n" + _nbVisualElement.ToString());
         }
 
 
