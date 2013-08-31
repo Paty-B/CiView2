@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CK.Core;
 using Viewer.Model;
 using Viewer.Model.Events;
 using Viewer.View;
@@ -31,7 +32,15 @@ namespace Viewer
         public LogViewer()
         {
             this.MouseWheel += new MouseWheelEventHandler(ScrollBarWheel);
+
+            EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
+            EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
       
+        }
+
+        public bool blocView()
+        {
+            return true;
         }
 
         private void ScrollBarSizeChanged(object sender, SizeScrollBarChangedEventArgs e)
@@ -51,6 +60,8 @@ namespace Viewer
             else
                 scrollBar.Value--;
         }
+
+
 
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -119,5 +130,133 @@ namespace Viewer
             return null;
         }
 
+        #region UpdateTreeWithTagFilter
+
+        public void UpdateFromTagFilter(string tag, bool isChecked)
+        {
+            LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
+            var child = FirstChild;
+            var parent = child;
+            while (child != null)
+            {
+                HaveFindTag((LogLineItem)child, tag, isChecked);
+                if (child.FirstChild != null)
+                {
+                    parent = child;
+                    child = (LogLineItem)parent.FirstChild;
+                    continue;
+                }
+                if (child == parent.LastChild)
+                {
+                    while (parent.Next == null)
+                    {
+                        if (parent == vHost.GetLineItemHost().Root.LastChild)
+                            break;
+                        child = parent;
+                        parent = (LogLineItem)child.Parent;
+                    }
+                    child = (LogLineItem)parent.Next;
+                    if (child != null && child.Parent != vHost.GetLineItemHost().Root)
+                        parent = (LogLineItem)child.Parent;
+                    continue;
+
+                }
+                child = (LogLineItem)child.Next;
+            }
+        }
+
+        private bool HaveFindTag(LogLineItem LogLineItem, string tag, bool isChecked)
+        {
+
+            if (LogLineItem.Tag.IsEmpty)
+                return false;
+            foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
+            {
+                if (trait.ToString() == tag)
+                {
+                    if (isChecked)
+                    {
+                        if (this._userControl._logLevelFilters._listBoxOfCheckBoxCounter.IsLogLevelOrTagChecked(LogLineItem.LogLevel.ToString())) 
+                            LogLineItem.unHidden();
+                    }
+                    else
+                    {
+                        ILineItemParentImpl parent = LogLineItem.Parent;
+                        ILineItem next = parent.FirstChild;
+                        /* while(next!=null)
+                         {*/
+                        LogLineItem.Filtered();
+                        // }
+
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region UpdateTreeWithLogLevelFilter
+
+        public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
+        {
+            LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
+            var child = FirstChild;
+            var parent = child;
+            while (child != null)
+            {
+                HaveFindLogLevel(child, loglevel, isChecked);
+                if (child.FirstChild != null)
+                {
+                    parent = child;
+                    child = (LogLineItem)parent.FirstChild;
+                    continue;
+                }
+                if (child == parent.LastChild)
+                {
+                    while (parent.Next == null)
+                    {
+                        if (parent == vHost.GetLineItemHost().Root.LastChild)
+                            break;
+                        child = parent;
+                        parent = (LogLineItem)child.Parent;
+                    }
+                    child = (LogLineItem)parent.Next;
+                    if (child != null && child.Parent != vHost.GetLineItemHost().Root)
+                        parent = (LogLineItem)child.Parent;
+                    continue;
+
+                }
+                child = (LogLineItem)child.Next;
+
+            }
+        }
+
+
+        private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel, bool isChecked)
+        {
+            if (LogLineItem.LogLevel.ToString() == loglevel)
+            {
+                if (isChecked)
+                {
+                    if (this._userControl._tagFilters._listBoxOfCheckBoxCounter.IsLogLevelOrTagChecked(LogLineItem.Tag.ToString())) 
+                        LogLineItem.unHidden();
+                }
+                else
+                {
+                    LogLineItem.Filtered();
+                }
+                return true;
+            }
+            else { return false; }
+        }
+
+
+        #endregion
+
     }
+
+     
+        
 }

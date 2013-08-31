@@ -4,7 +4,7 @@
         xmlns:View="clr-namespace:Viewer.View" xmlns:local="clr-namespace:Viewer" x:Class="Viewer.LogViewer"
         Title="Ciview2" Height="600" Width="800">
     <Grid>
-        <local:userControl HorizontalAlignment="Right" Margin="568,0,0,0" VerticalAlignment="Top" Height="570" Width="224"/>
+        <local:userControl x:Name="_userControl" HorizontalAlignment="Right" Margin="568,0,0,0" VerticalAlignment="Top" Height="570" Width="224"/>
         <View:VisualHost x:Name="vHost" HorizontalAlignment="Left" Height="482" Margin="37,34,0,0" VerticalAlignment="Top" Width="30"  LinesChanged="ScrollBarSizeChanged"/>
         <ScrollBar Name="scrollBar" HorizontalAlignment="Right"  Margin="0,0,224,0" ValueChanged="ScrollBar_ValueChanged"  
                    SmallChange="1" LargeChange = "1" Maximum="1"/>

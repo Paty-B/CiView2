@@ -80,6 +80,14 @@ namespace Viewer
                 CheckBoxClick(uid, isChecked);
         }
 
+        public bool IsLogLevelOrTagChecked(string uid)
+        {
+            CheckBoxCounter checkBoxCounter;
+            if (_dictionary.TryGetValue(uid, out checkBoxCounter))
+                return checkBoxCounter.IsChecked.Value;
+            return false;
+        }
+
         private void Sorting()
         {
             if (Sort)

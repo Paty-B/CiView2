@@ -29,7 +29,7 @@ namespace Viewer.View
 
         public VisualHost()
         {
-        
+            
             ActivityLogger logger = new ActivityLogger();
             _host = LineItem.CreateLineItemHost();
             ec = new EnvironmentCreator(_host);
@@ -188,11 +188,7 @@ namespace Viewer.View
             EventManager.Instance.RegisterClient += RegisterClient;
 
             this.MouseLeftButtonUp += new MouseButtonEventHandler(VisualHost_MouseLeftButtonUp);
-            
-            EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
-            EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
-            
-
+           
         }
 
         public ILineItemHost GetLineItemHost()
@@ -202,6 +198,7 @@ namespace Viewer.View
 
         public int GetNbVisualElement()
         {
+            
             return _nbVisualElement;
         }
 
@@ -376,130 +373,7 @@ namespace Viewer.View
             return HitTestResultBehavior.Stop;
         }
 
-        #region UpdateTreeWithTagFilter
-
-        public void UpdateFromTagFilter(string tag,bool isChecked)
-        {
-            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-            var child = FirstChild;
-            var parent = child;
-            while (child != null)
-            {
-                HaveFindTag((LogLineItem)child, tag, isChecked);
-                if (child.FirstChild != null)
-                {
-                    parent = child;
-                    child = (LogLineItem)parent.FirstChild;
-                    continue;
-                }
-                if (child == parent.LastChild)
-                {
-                    while (parent.Next == null)
-                    {
-                        if (parent == _host.Root.LastChild)
-                            break;
-                        child = parent;
-                        parent = (LogLineItem)child.Parent;
-                    }
-                    child = (LogLineItem)parent.Next;
-                    if (child != null && child.Parent != _host.Root)
-                        parent = (LogLineItem)child.Parent;
-                    continue;
-
-                }
-                child = (LogLineItem)child.Next;
-            }
-        }
-
-        private bool HaveFindTag(LogLineItem LogLineItem, string tag,bool isChecked)
-        {
-
-            if (LogLineItem.Tag.IsEmpty)
-                return false;
-               foreach (CKTrait trait in LogLineItem.Tag.AtomicTraits)
-                {
-                    if (trait.ToString() == tag)
-                    {
-                        if (isChecked)
-                        {
-                            LogLineItem.unHidden();
-                        }
-                        else
-                        {
-                            ILineItemParentImpl parent=LogLineItem.Parent;
-                            ILineItem next=parent.FirstChild;
-                           /* while(next!=null)
-                            {*/
-                            LogLineItem.Filtered();
-                           // }
-                           
-                        }
-                        return true;
-                    }
-                }
-                return false;
-        }
-
-        #endregion
-
-        #region UpdateTreeWithLogLevelFilter
-
-        public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
-        {
-            LogLineItem FirstChild = (LogLineItem)_host.Root.FirstChild;
-            var child = FirstChild;
-            var parent = child;
-            while (child != null)
-            {
-                HaveFindLogLevel(child, loglevel, isChecked);
-                if (child.FirstChild != null)
-                {
-                    parent = child;
-                    child = (LogLineItem)parent.FirstChild;
-                    continue;
-                }
-                if (child == parent.LastChild)
-                {
-                    while (parent.Next == null)
-                    {
-                        if (parent == _host.Root.LastChild)
-                            break;
-                        child = parent;
-                        parent = (LogLineItem)child.Parent;
-                    }
-                    child = (LogLineItem)parent.Next;
-                    if(child != null && child.Parent!=_host.Root)
-                        parent = (LogLineItem)child.Parent;
-                    continue;
-                    
-                }
-                child = (LogLineItem)child.Next;
-
-            }
-        }
-
-     
-        private bool HaveFindLogLevel(LogLineItem LogLineItem, string loglevel,bool isChecked)
-        {
-            if (LogLineItem.LogLevel.ToString() == loglevel)
-            {
-                if (isChecked)
-                {
-
-                    LogLineItem.unHidden();           
-                }
-                else  
-                {
-                    LogLineItem.Filtered();
-                }
-                return true;
-            }
-            else { return false; }
-        }
-
-
-        #endregion
-        
+      
                 
         protected override int VisualChildrenCount
         {

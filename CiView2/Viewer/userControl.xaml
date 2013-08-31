@@ -11,12 +11,12 @@
         <StackPanel HorizontalAlignment="Left" Height="558" Margin="10,10,0,0" VerticalAlignment="Top" Width="214">
             <Expander Header="LogLevel Filters" IsExpanded="True">
                 <StackPanel HorizontalAlignment="Left" Width="187" Margin="25,0,0,0">
-                    <local:LogLevelFilters />
+                    <local:LogLevelFilters x:Name="_logLevelFilters"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Tag Filters" HorizontalAlignment="Left">
                 <StackPanel HorizontalAlignment="Left" Width="188" Margin="24,0,0,0">
-                    <local:TagFilters />
+                    <local:TagFilters x:Name="_tagFilters"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Reading option" IsExpanded="True">
