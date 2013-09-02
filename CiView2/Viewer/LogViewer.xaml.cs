@@ -48,7 +48,7 @@ namespace Viewer
             PrintTextBox.Text = e.Size.ToString() + " lines printed.";
             scrollBar.ViewportSize = vHost.ActualHeight / 15;
             if (scrollBar.ViewportSize > e.Size)
-                scrollBar.Maximum = 1;
+                scrollBar.Maximum = 0;
             else
                 scrollBar.Maximum = e.Size - scrollBar.ViewportSize;
         }
@@ -181,13 +181,8 @@ namespace Viewer
                     }
                     else
                     {
-                        ILineItemParentImpl parent = LogLineItem.Parent;
-                        ILineItem next = parent.FirstChild;
-                        /* while(next!=null)
-                         {*/
                         LogLineItem.Filtered();
-                        // }
-
+                       
                     }
                     return true;
                 }
