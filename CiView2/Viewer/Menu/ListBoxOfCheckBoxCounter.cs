@@ -80,7 +80,12 @@ namespace Viewer
                 CheckBoxClick(uid, isChecked);
         }
 
-        public bool IsLogLevelOrTagChecked(string uid)
+        public bool caseExist(string uid)
+        {
+            return _dictionary.ContainsKey(uid);
+        }
+
+        public bool IsCaseChecked(string uid)
         {
             CheckBoxCounter checkBoxCounter;
             if (_dictionary.TryGetValue(uid, out checkBoxCounter))

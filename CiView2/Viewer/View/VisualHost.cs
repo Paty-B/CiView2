@@ -27,6 +27,9 @@ namespace Viewer.View
 
         public event EventHandler<SizeScrollBarChangedEventArgs> LinesChanged;
 
+        public ListBoxOfCheckBoxCounter _logLevels = null;
+        public ListBoxOfCheckBoxCounter _tags = null;
+
         public VisualHost()
         {
             
@@ -191,6 +194,12 @@ namespace Viewer.View
            
         }
 
+        public void InitializeBoxes(ListBoxOfCheckBoxCounter tags, ListBoxOfCheckBoxCounter logLevels)
+        {
+            _tags = tags;
+            _logLevels = logLevels;
+        }
+
         public ILineItemHost GetLineItemHost()
         {
             return _host;
@@ -220,14 +229,27 @@ namespace Viewer.View
                             VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
                         }
+                        LogLineItem current = (LogLineItem)e.LineItem;
                         LogLineItem Parent = null;
                         _nbVisualElement++;
                         _children.Add(vl);
-                        if ((Parent = ((LogLineItem)vl.Model).GetParentCollapsed()) != null)
+                        if ((Parent = current.GetParentCollapsed()) != null)
                         {
-                            _nbVisualElement--;
                             ((LogLineItem)vl.Model).Hidden();
-                        }   
+                            break;
+                        }
+                        if(_logLevels != null && !_logLevels.IsCaseChecked(current.LogLevel.ToString()))
+                        {
+                            ((LogLineItem)vl.Model).Hidden();
+                            break;
+                        }
+                        if(_tags != null && _tags.caseExist(current.Tag.ToString()) == true)
+                        {
+                            if(!_tags.IsCaseChecked(current.Tag.ToString()))
+                            {
+                                ((LogLineItem)vl.Model).Hidden();
+                            }   
+                        }
                   
                     }
 
@@ -236,7 +258,15 @@ namespace Viewer.View
                 case LineItemChangedStatus.Visible:
                     if (e.LineItem.GetType() == typeof(LogLineItem))
                     {
+                        
                         LogLineItem logLineItem = (LogLineItem)e.LineItem;
+                        if (!_tags.IsCaseChecked(logLineItem.Tag.ToString())
+                            || !_logLevels.IsCaseChecked(logLineItem.LogLevel.ToString()))
+                        {
+                            _nbVisualElement++;
+                            logLineItem.Hidden();
+                            break;
+                        }
                         index = _children.IndexOf(logLineItem.vl);
                         vl = e.LineItem.CreateVisualLine();
                        

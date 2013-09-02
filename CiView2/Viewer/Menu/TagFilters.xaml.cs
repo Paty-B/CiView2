@@ -94,6 +94,7 @@ namespace Viewer
         private void InsertChild(ILineItem itemImpl, LogLineItem item)
         {
             CKtraitIncrease(item.Tag);
+            EventManager.Instance.OnNbBoxesChange();
         }
         private void RemoveChild(ILineItem itemImpl, LogLineItem item)
         {

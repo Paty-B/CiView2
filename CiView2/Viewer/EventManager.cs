@@ -26,6 +26,14 @@ namespace Viewer
             }
         }
 
+        public delegate void EventNbBoxesChange();
+        public event EventNbBoxesChange NbBoxesChange;
+        public void OnNbBoxesChange()
+        {
+            if (NbBoxesChange != null)
+                NbBoxesChange();
+        }
+
         public delegate void EventInsertChild(ILineItem itemImpl, LogLineItem item);
         public event EventInsertChild InsertChild;
         public void OnInsertChild(ILineItem itemImpl, LogLineItem item)

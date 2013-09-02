@@ -35,12 +35,20 @@ namespace Viewer
 
             EventManager.Instance.CheckBoxFilterTagClick += UpdateFromTagFilter;
             EventManager.Instance.CheckBoxFilterLogLevelClick += UpdateFromLogLevelFilter;
-      
+            EventManager.Instance.InsertChild += UpdateVisualHost;
+
         }
 
-        public bool blocView()
+        private void UpdateVisualHost(ILineItem itemImpl, LogLineItem item)
         {
-            return true;
+            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+                             , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
+        }
+
+        private void UpdateVisualHost()
+        {
+            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+                              , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
         }
 
         private void ScrollBarSizeChanged(object sender, SizeScrollBarChangedEventArgs e)
@@ -137,6 +145,9 @@ namespace Viewer
 
         public void UpdateFromTagFilter(string tag, bool isChecked)
         {
+
+            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+                                , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
             LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
             var child = FirstChild;
             var parent = child;
@@ -179,7 +190,7 @@ namespace Viewer
                 {
                     if (isChecked)
                     {
-                        if (this._userControl._logLevelFilters._listBoxOfCheckBoxCounter.IsLogLevelOrTagChecked(LogLineItem.LogLevel.ToString())) 
+                        if (this._userControl._logLevelFilters._listBoxOfCheckBoxCounter.IsCaseChecked(LogLineItem.LogLevel.ToString())) 
                             LogLineItem.unHidden();
                     }
                     else
@@ -199,6 +210,8 @@ namespace Viewer
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
+            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+                              , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
             LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
             var child = FirstChild;
             var parent = child;
@@ -238,7 +251,7 @@ namespace Viewer
             {
                 if (isChecked)
                 {
-                    if (this._userControl._tagFilters._listBoxOfCheckBoxCounter.IsLogLevelOrTagChecked(LogLineItem.Tag.ToString())) 
+                    if (this._userControl._tagFilters._listBoxOfCheckBoxCounter.IsCaseChecked(LogLineItem.Tag.ToString())) 
                         LogLineItem.unHidden();
                 }
                 else
@@ -253,8 +266,5 @@ namespace Viewer
 
         #endregion
 
-    }
-
-     
-        
+    }        
 }
