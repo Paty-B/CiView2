@@ -104,8 +104,14 @@ namespace Viewer.Model
         public override void unHidden()
         {
             OldStatus = Status;
-            Status = Model.Status.Expanded;
-            Host.OnExpanded(this);
+            if (this.GetParentCollapsed()!=null)
+            {
+            }
+            else
+            {
+                Status = Model.Status.Expanded;
+                Host.OnExpanded(this);
+            }
             
         }
 
@@ -123,6 +129,20 @@ namespace Viewer.Model
             OldStatus = Status;
             Status = Model.Status.Expanded;
             Host.OnUnfiltered(this);
+            
+        }
+
+        public LogLineItem GetParentCollapsed()
+        {
+            LogLineItem current = this;
+            while (current.Parent.GetType() != typeof(LineItemRoot))
+            {
+                current = (LogLineItem)current.Parent;
+                if (current.Status == Status.Collapsed)
+                    return current;
+            }
+            
+            return null;
             
         }
 

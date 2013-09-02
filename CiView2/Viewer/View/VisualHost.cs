@@ -220,9 +220,15 @@ namespace Viewer.View
                             VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
                             vl.Offset = new Vector(vl.Offset.X, lastLine.Offset.Y + 15);
                         }
+                        LogLineItem Parent = null;
                         _nbVisualElement++;
                         _children.Add(vl);
-                                             
+                        if ((Parent = ((LogLineItem)vl.Model).GetParentCollapsed()) != null)
+                        {
+                            _nbVisualElement--;
+                            ((LogLineItem)vl.Model).Hidden();
+                        }   
+                  
                     }
 
                     break;
@@ -247,6 +253,7 @@ namespace Viewer.View
                             if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
                                 _nbVisualElement++;
                             _children.Insert(index, vl);
+                            DefaultPosition();
                             break;
                         }
                           
