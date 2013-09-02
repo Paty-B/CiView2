@@ -236,7 +236,13 @@ namespace Viewer.View
                        
                         if (index == 0)
                         {
-                            vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
+                            if (_children.Count == 1)
+                                vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y);
+                            else
+                            {
+                                VisualLineItem previousLine = (VisualLineItem)_children[1];
+                                vl.Offset = new Vector(vl.Offset.X, previousLine.Offset.Y - 15);
+                            }
                             _children.RemoveAt(0);
                             if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
                                 _nbVisualElement++;
@@ -287,6 +293,11 @@ namespace Viewer.View
             }
             if(_LinesChanged != null)
                 _LinesChanged(this, new SizeScrollBarChangedEventArgs(_nbVisualElement));           
+        }
+
+        public void DefaultPosition()
+        {
+            RefreshVisual((VisualLineItem)_children[0]);
         }
 
         private void RefreshVisual(VisualLineItem vl)

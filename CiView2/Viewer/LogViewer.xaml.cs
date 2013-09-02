@@ -48,7 +48,10 @@ namespace Viewer
             PrintTextBox.Text = e.Size.ToString() + " lines printed.";
             scrollBar.ViewportSize = vHost.ActualHeight / 15;
             if (scrollBar.ViewportSize > e.Size)
+            {
                 scrollBar.Maximum = 0;
+                vHost.DefaultPosition();
+            }
             else
                 scrollBar.Maximum = e.Size - scrollBar.ViewportSize;
         }
