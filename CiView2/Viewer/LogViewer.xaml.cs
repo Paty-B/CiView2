@@ -41,13 +41,13 @@ namespace Viewer
 
         private void UpdateVisualHost(ILineItem itemImpl, LogLineItem item)
         {
-            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+            vHost.RefreshBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
                              , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
         }
 
         private void UpdateVisualHost()
         {
-            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+            vHost.RefreshBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
                               , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
         }
 
@@ -85,6 +85,7 @@ namespace Viewer
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            vHost.RefreshSearch(SearchTextBox.Text);
             ILineItem root = vHost.GetLineItemHost().Root;
             LogLineItem currentLine = (LogLineItem)root.FirstChild;
 
@@ -146,7 +147,7 @@ namespace Viewer
         public void UpdateFromTagFilter(string tag, bool isChecked)
         {
 
-            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+            vHost.RefreshBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
                                 , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
             LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
             var child = FirstChild;
@@ -210,7 +211,7 @@ namespace Viewer
 
         public void UpdateFromLogLevelFilter(string loglevel, bool isChecked)
         {
-            vHost.InitializeBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
+            vHost.RefreshBoxes(_userControl._tagFilters._listBoxOfCheckBoxCounter
                               , _userControl._logLevelFilters._listBoxOfCheckBoxCounter);
             LogLineItem FirstChild = (LogLineItem)vHost.GetLineItemHost().Root.FirstChild;
             var child = FirstChild;

@@ -29,6 +29,7 @@ namespace Viewer.View
 
         public ListBoxOfCheckBoxCounter _logLevels = null;
         public ListBoxOfCheckBoxCounter _tags = null;
+        public String _search = String.Empty;
 
         public VisualHost()
         {
@@ -194,10 +195,15 @@ namespace Viewer.View
            
         }
 
-        public void InitializeBoxes(ListBoxOfCheckBoxCounter tags, ListBoxOfCheckBoxCounter logLevels)
+        public void RefreshBoxes(ListBoxOfCheckBoxCounter tags, ListBoxOfCheckBoxCounter logLevels)
         {
             _tags = tags;
             _logLevels = logLevels;
+        }
+
+        public void RefreshSearch(string search)
+        {
+            _search = search;
         }
 
         public ILineItemHost GetLineItemHost()
@@ -248,9 +254,13 @@ namespace Viewer.View
                             if(!_tags.IsCaseChecked(current.Tag.ToString()))
                             {
                                 ((LogLineItem)vl.Model).Hidden();
+                                break;
                             }   
                         }
-                  
+                        if (!((LogLineItem)vl.Model).Content.Contains(_search))
+                        {
+                            ((LogLineItem)vl.Model).Hidden();
+                        }                 
                     }
 
                     break;
