@@ -35,7 +35,7 @@ namespace Viewer.View
                     bi = ImageRequest.Instance.GetImage("noImage.ico");
                     break;
             }
-            dc.DrawImage(bi, new Rect(pt, size));
+            dc.DrawImage(bi, new Rect(new Point(70, pt.Y), size));
 
         }
         public static void CreateSymbol(DrawingContext dc, Point pt, LogLevel logLevel)
@@ -67,7 +67,7 @@ namespace Viewer.View
                     bi = ImageRequest.Instance.GetImage("noImage.ico");
                     break;
             } 
-            dc.DrawImage(bi, new Rect(pt,size));
+            dc.DrawImage(bi, new Rect(new Point(85, pt.Y),size));
         }
         public static void CreateContent(DrawingContext drawingContext, Point pt, String content, int lineHeight)
         {
@@ -81,7 +81,7 @@ namespace Viewer.View
                                 FontStretches.Normal),
                                 frontSize,
                                 Brushes.Black);
-            drawingContext.DrawText(ft, pt);
+            drawingContext.DrawText(ft, new Point(100, pt.Y));
         }
         public static void CreateTag(DrawingContext dc, Point pt, CKTrait tag)
         {
@@ -94,7 +94,7 @@ namespace Viewer.View
                                 FontStretches.Normal),
                                 frontSize,
                                 Brushes.Black);
-            dc.DrawText(ft, pt);
+            dc.DrawText(ft, new Point(-20, pt.Y));
 
         }
         public static void CreateNextImportantLogsIndicator(DrawingContext dc, Point pt, int warn, int error, int fatal)

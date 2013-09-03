@@ -26,10 +26,10 @@ namespace Randomizer
             _activityLogger = new ActivityLogger();
             depth = 0;
             r = new Random();
-            CKTrait firstTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag1");
-            CKTrait secondTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag2");
-            CKTrait thirdTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag3");
-            CKTrait fourthTag = ActivityLogger.RegisteredTags.FindOrCreate("Tag4");
+            CKTrait firstTag = ActivityLogger.RegisteredTags.FindOrCreate("Cacahuete");
+            CKTrait secondTag = ActivityLogger.RegisteredTags.FindOrCreate("Chips");
+            CKTrait thirdTag = ActivityLogger.RegisteredTags.FindOrCreate("Pistache");
+            CKTrait fourthTag = ActivityLogger.RegisteredTags.FindOrCreate("Jambon");
 
             tags.Add(firstTag);
             tags.Add(secondTag);
