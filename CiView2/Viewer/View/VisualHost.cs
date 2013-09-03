@@ -283,7 +283,8 @@ namespace Viewer.View
                             if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
                                 _nbVisualElement++;
                             _children.Insert(index, vl);
-                            DefaultPosition();
+                            if(IsOnScreen(vl))
+                                DefaultPosition();
                             break;
                         }
                           
@@ -295,7 +296,12 @@ namespace Viewer.View
                         _children.RemoveAt(index);
                            
                         _children.Insert(index, vl);
-                        RefreshVisual(vl);
+                        if (!IsOnScreen((VisualLineItem)_children[0]))
+                        {
+                            DefaultPosition();
+                        }
+                        else
+                            RefreshVisual(vl);
                         
                     }
                     break;
@@ -334,6 +340,7 @@ namespace Viewer.View
 
         public void DefaultPosition()
         {
+            ((VisualLineItem)_children[0]).Offset = new Vector(0, 0);
             RefreshVisual((VisualLineItem)_children[0]);
         }
 
@@ -432,7 +439,7 @@ namespace Viewer.View
 
         private bool IsOnScreen(VisualLineItem visualLine)
         {
-            if (visualLine.Offset.Y >= 0 && visualLine.Offset.Y <= this.ActualHeight)
+            if (visualLine.Offset.Y >= -20 && visualLine.Offset.Y <= this.ActualHeight)
                 return true;
             return false;
         }
