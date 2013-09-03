@@ -296,11 +296,11 @@ namespace Viewer.View
                         _children.RemoveAt(index);
                            
                         _children.Insert(index, vl);
-                        if (!IsOnScreen((VisualLineItem)_children[0]))
+                 /*       if (!IsOnScreen((VisualLineItem)_children[0]))
                         {
                             DefaultPosition();
                         }
-                        else
+                        else*/
                             RefreshVisual(vl);
                         
                     }
