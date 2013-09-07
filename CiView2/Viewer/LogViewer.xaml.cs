@@ -53,7 +53,7 @@ namespace Viewer
 
         private void ScrollBarSizeChanged(object sender, SizeScrollBarChangedEventArgs e)
         {
-            PrintTextBox.Text = e.Size.ToString() + " lines printed.";
+            PrintTextBox.Text = e.Size.ToString() + " lines printed. (" + vHost.GetNbVisibleElement() + ")";
             scrollBar.ViewportSize = vHost.ActualHeight / 15;
             if (scrollBar.ViewportSize > e.Size)
             {

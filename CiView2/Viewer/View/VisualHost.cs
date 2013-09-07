@@ -221,6 +221,12 @@ namespace Viewer.View
             return _nbVisualElement;
         }
 
+        public int GetNbVisibleElement()
+        {
+
+            return _children.Count;
+        }
+
         private void CheckEvents(object sender, LineItemChangedEventArgs e)
         {
             VisualLineItem vl;
@@ -242,8 +248,12 @@ namespace Viewer.View
                         LogLineItem current = (LogLineItem)e.LineItem;
                         LogLineItem Parent = null;
                         _nbVisualElement++;
-                        _nbVisibleElement++;
-                        _children.Add(vl);
+                        if (_nbVisibleElement <= _capacityMax)
+                        {
+                            _nbVisibleElement++;
+                            _children.Add(vl);
+                        }
+
                         if ((Parent = current.GetParentCollapsed()) != null)
                         {
                             ((LogLineItem)vl.Model).Hidden();
@@ -554,7 +564,7 @@ namespace Viewer.View
             {
                 _scrollHelper += speed;
 
-                if (_scrollHelper / 15 == 1)
+                while (_scrollHelper / 15 >= 1)
                 {
                     _scrollHelper = _scrollHelper - 15;
                     VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
@@ -573,11 +583,11 @@ namespace Viewer.View
             }
             if (downWard == false)
             {
-                _scrollHelper += speed;
+                _scrollHelper -= speed;
 
-                if (_scrollHelper / 15 == -1)
+                while (_scrollHelper / 15 <= -1)
                 {
-                    _scrollHelper -= 15;
+                    _scrollHelper = _scrollHelper + 15;
                     VisualLineItem firstLine = (VisualLineItem)_children[0];
 
 
