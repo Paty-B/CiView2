@@ -27,6 +27,8 @@ namespace Viewer.View
         private int _nbVisibleElement = 0;
         private int _capacityMax = 60;
 
+        private double _scrollHelper = 0;
+
         public event EventHandler<SizeScrollBarChangedEventArgs> LinesChanged;
 
         public ListBoxOfCheckBoxCounter _logLevels = null;
@@ -240,6 +242,7 @@ namespace Viewer.View
                         LogLineItem current = (LogLineItem)e.LineItem;
                         LogLineItem Parent = null;
                         _nbVisualElement++;
+                        _nbVisibleElement++;
                         _children.Add(vl);
                         if ((Parent = current.GetParentCollapsed()) != null)
                         {
@@ -498,8 +501,10 @@ namespace Viewer.View
 
         private IEnumerable SelectNextLines(VisualLineItem visualLine, bool downward)
         {
-                  
-            VisualLineItem nextLine = SelectNextLine(visualLine, downward).CreateVisualLine();
+            LogLineItem verif = SelectNextLine(visualLine, downward);
+            if (verif == null)
+                yield break;
+            VisualLineItem nextLine = verif.CreateVisualLine();
             while (nextLine != null && ((LogLineItem)nextLine.Model).Status == Status.Hidden)
             {
                 if(downward == true)
@@ -522,22 +527,22 @@ namespace Viewer.View
         private int RemoveVisibleLine(VisualLineItem visualLine, bool downward)
         {
             int lineCount = 1;
-            VisualLineItem nextLine = SelectNextLine(visualLine, downward).CreateVisualLine();
+            LogLineItem nextLine = SelectNextLine(visualLine, downward);
             if (downward == true)
             {
-                nextLine = SelectNextLine(visualLine, downward).CreateVisualLine();
-                while (nextLine != null && ((LogLineItem)nextLine.Model).Status == Status.Hidden)
+                nextLine = SelectNextLine(visualLine, downward);
+                while (nextLine != null && nextLine.Status == Status.Hidden)
                 {
                     lineCount++;
-                    nextLine = SelectNextLine(visualLine, downward).CreateVisualLine();
+                    nextLine = SelectNextLine(visualLine, downward);
                 }
             }
             if (downward == false)
             {
-                while (nextLine != null && ((LogLineItem)nextLine.Model).Status == Status.Hidden)
+                while (nextLine != null && nextLine.Status == Status.Hidden)
                 {
                     lineCount++;
-                    nextLine = SelectNextLine(visualLine, downward).CreateVisualLine();
+                    nextLine = SelectNextLine(visualLine, downward);
                 }
             }
             return lineCount;
@@ -547,12 +552,19 @@ namespace Viewer.View
         {
             if (downWard == true)
             {
-                VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
+                _scrollHelper += speed;
 
-                foreach (VisualLineItem vl in SelectNextLines(lastLine, downWard)) 
-                    _children.Add(vl);
+                if (_scrollHelper / 15 == 1)
+                {
+                    _scrollHelper = _scrollHelper - 15;
+                    VisualLineItem lastLine = (VisualLineItem)_children[_children.Count - 1];
 
-                _children.RemoveRange(0, RemoveVisibleLine((VisualLineItem)_children[0], downWard));
+                    foreach (VisualLineItem vl in SelectNextLines(lastLine, downWard))
+                        _children.Add(vl);
+
+                    if (_nbVisibleElement > _capacityMax && !IsOnScreen((VisualLineItem)_children[0]))
+                        _children.RemoveRange(0, RemoveVisibleLine((VisualLineItem)_children[0], downWard));
+                }
 
 
                 if (((VisualLineItem)_children[_children.Count - 1]).Offset.Y > 0)
@@ -561,15 +573,23 @@ namespace Viewer.View
             }
             if (downWard == false)
             {
-                VisualLineItem firstLine = (VisualLineItem)_children[0];
-               
+                _scrollHelper += speed;
 
-                foreach (VisualLineItem vl in SelectNextLines(firstLine, downWard))
-                    _children.Insert(0, vl);
+                if (_scrollHelper / 15 == -1)
+                {
+                    _scrollHelper -= 15;
+                    VisualLineItem firstLine = (VisualLineItem)_children[0];
 
-                int remove = RemoveVisibleLine((VisualLineItem)_children[_children.Count - 1], downWard);
-                _children.RemoveRange(_children.Count - 1 - remove, remove);
 
+                    foreach (VisualLineItem vl in SelectNextLines(firstLine, downWard))
+                        _children.Insert(0, vl);
+
+                    if (_nbVisibleElement > _capacityMax && !IsOnScreen((VisualLineItem)_children[_children.Count - 1]))
+                    {
+                        int remove = RemoveVisibleLine((VisualLineItem)_children[_children.Count - 1], downWard);
+                        _children.RemoveRange(_children.Count - remove, remove);
+                    }
+                }
                 if (((VisualLineItem)_children[0]).Offset.Y <= 0)
                     foreach (VisualLineItem vl in _children)
                         vl.Offset = new Vector(vl.Offset.X, vl.Offset.Y + speed);
