@@ -312,8 +312,8 @@ namespace Viewer.View
                             if (((LogLineItem)e.LineItem).OldStatus == Status.Hidden)
                                 _nbVisualElement++;
                             _children.Insert(index, vl);
-                          /*  if(IsOnScreen(vl))
-                                DefaultPosition();*/
+                            if(vl.Model == vl.Model.Host.Root.FirstChild && IsOnScreen(vl))
+                                DefaultPosition();
                             break;
                         }
                           
